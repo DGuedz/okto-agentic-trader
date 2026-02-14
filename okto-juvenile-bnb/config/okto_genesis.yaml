@@ -1,0 +1,23 @@
+version: 1.0
+agent:
+  id: OKTO_SELF_BANK
+  display_name: "Okto: Self DeFi Bank"
+  mode: HEADLESS_SDD
+  net: BNB_CHAIN
+  strategy: SCAVENGER_COMPOUNDING
+
+limits:
+  min_order: 0.02  # BNB (Aprox $10-12)
+  max_gas: 5.0     # Gwei (BNB Chain standard safety limit)
+  stop_loss: 0.02  # 2%
+  take_profit: 0.05 # 5%
+
+ops:
+  - tentacle: 01_SCALP
+    trigger: "RSI_14 < 30"
+    target: "USDT_BNB"
+
+security:
+  mev_prot: TRUE
+  sim_first: TRUE
+  kill_switch: -0.20

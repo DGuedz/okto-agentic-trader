@@ -1,0 +1,6 @@
+ccxt
+web3
+python-dotenv
+keyring
+pandas
+termcolor
