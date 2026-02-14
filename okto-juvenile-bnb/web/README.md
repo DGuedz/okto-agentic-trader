@@ -13,12 +13,18 @@
   <a href="https://nextjs.org">
     <img src="https://img.shields.io/badge/Built_With-Next.js_14-000000?style=for-the-badge&logo=next.js" alt="Next.js" />
   </a>
+  <br/>
+  <br/>
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDGuedz%2Fokto-agentic-trader%2Ftree%2Fmain%2Fweb">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+  </a>
 </div>
 
 <br />
 
 ![Arquiteto Abissal - Cover](assets/okto-cover-arquiteto-abissal.png)
 > *A hyper-realistic biomechanical octopus floating in a dark digital void... The predator of the mempool.*
+> *🏆 Proudly built for the BNB Chain OpenClaw Hackathon 2026.*
 
 ---
 

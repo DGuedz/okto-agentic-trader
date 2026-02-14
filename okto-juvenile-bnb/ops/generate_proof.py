@@ -58,21 +58,23 @@ def generate_execution_proof():
         df = pd.DataFrame(records)
         
         # 3. Fetch On-Chain Deposits (Proof of Funding)
-        # print("[AUDIT] FETCHING ON-CHAIN DEPOSITS...")
-        # try:
-        #     deposits = exchange.fetch_deposits(code="USDT", limit=5)
-        #     deposit_logs = []
-        #     for d in deposits:
-        #         deposit_logs.append({
-        #             "TX_HASH": d['txid'],
-        #             "AMOUNT": d['amount'],
-        #             "CURRENCY": d['currency'],
-        #             "STATUS": d['status'],
-        #             "TIMESTAMP": datetime.fromtimestamp(d['timestamp']/1000).strftime('%Y-%m-%d %H:%M:%S')
-        #         })
-        # except Exception as e:
-        #     print(f"[WARNING] COULD NOT FETCH DEPOSITS: {str(e)}")
-        deposit_logs = []
+        print("[AUDIT] FETCHING ON-CHAIN DEPOSITS...")
+        try:
+            # Fetch recent deposits to get TX HASH
+            deposits = exchange.fetch_deposits(limit=5)
+            deposit_logs = []
+            if deposits:
+                for d in deposits:
+                    deposit_logs.append({
+                        "TX_HASH": d['txid'],
+                        "AMOUNT": d['amount'],
+                        "CURRENCY": d['currency'],
+                        "STATUS": d['status'],
+                        "TIMESTAMP": datetime.fromtimestamp(d['timestamp']/1000).strftime('%Y-%m-%d %H:%M:%S')
+                    })
+        except Exception as e:
+            print(f"[WARNING] COULD NOT FETCH DEPOSITS: {str(e)}")
+            deposit_logs = []
 
         # 4. Generate Markdown Report
         report_path = "proof_of_efficiency/trade_execution_audit.md"

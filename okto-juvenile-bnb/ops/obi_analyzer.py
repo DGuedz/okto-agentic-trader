@@ -66,8 +66,16 @@ def analyze_obi(symbol="BNB/USDT", depth=20):
         print(f"🧱 BUY WALL:  {max_bid[1]:.2f} BNB @ ${max_bid[0]:.2f}")
         print(f"🧱 SELL WALL: {max_ask[1]:.2f} BNB @ ${max_ask[0]:.2f}")
         
+        return {
+            "obi": obi,
+            "status": status,
+            "sell_wall_price": max_ask[0],
+            "buy_wall_price": max_bid[0]
+        }
+        
     except Exception as e:
         print(colored(f"❌ Error reading book: {str(e)}", "red"))
+        return None
 
 if __name__ == "__main__":
     analyze_obi()

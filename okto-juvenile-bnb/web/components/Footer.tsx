@@ -9,6 +9,8 @@ export default function Footer() {
               Sovereign Agentic Trading Infrastructure.
               <br />
               Headless, spec-driven, and auditable by design.
+              <br />
+              <span className="text-accent-amber-400 text-xs mt-2 block">Built for BNB Chain OpenClaw Hackathon 2026.</span>
             </p>
           </div>
           <div className="flex gap-8 text-sm text-text-muted">

@@ -79,21 +79,68 @@ def main():
     # MARKET SCAN
     print("-" * 60)
     if market_data["success"]:
+        # Unpack Data
+        price = market_data['price']
+        rsi_val = market_data['rsi']
+        atr_val = market_data['atr']
+        bb = market_data['bb']
+        vwap_val = market_data['vwap']
+        funding_val = market_data['funding']
+        delta_val = market_data['delta']
+        
+        # Display Prices
         print(f"{'[SCAN] BNB/USDT PRICE':.<{LABEL_WIDTH}} " + 
               colored(f"${market_data['price']:.2f}", "white", attrs=['bold']))
-              
-        rsi_val = market_data['rsi']
+        
+        # RSI Display
         rsi_color = "green" if rsi_val < 30 else "red" if rsi_val > 70 else "white"
         print(f"{'[INDICATOR] RSI (14)':.<{LABEL_WIDTH}} " + 
               colored(f"{rsi_val:.2f}", rsi_color, attrs=['bold']))
-        
-        if rsi_val < 30:
-             print(f"{'[DECISION] AI SIGNAL':.<{LABEL_WIDTH}} " + 
-              colored("BUY OPPORTUNITY DETECTED", "green", attrs=['bold']))
-        else:
-             print(f"{'[DECISION] AI SIGNAL':.<{LABEL_WIDTH}} " + 
-              colored("WAITING FOR DIP", "white"))
+              
+        # BB Display
+        bb_pos = "INSIDE"
+        bb_color = "white"
+        if price <= bb['lower']: 
+            bb_pos = "LOWER BAND TOUCH"
+            bb_color = "green"
+        elif price >= bb['upper']:
+            bb_pos = "UPPER BAND TOUCH"
+            bb_color = "red"
+            
+        print(f"{'[INDICATOR] BOLLINGER':.<{LABEL_WIDTH}} " + 
+              colored(bb_pos, bb_color))
 
+        # VWAP Display
+        vwap_status = "ABOVE (BULL)" if price > vwap_val else "BELOW (BEAR)"
+        vwap_color = "green" if price > vwap_val else "red"
+        print(f"{'[INDICATOR] VWAP TREND':.<{LABEL_WIDTH}} " + 
+              colored(vwap_status, vwap_color))
+              
+        # Delta Display
+        delta_status = "AGGRESSIVE BUYING" if delta_val > 0 else "AGGRESSIVE SELLING"
+        delta_color = "green" if delta_val > 0 else "red"
+        print(f"{'[INDICATOR] VOLUME DELTA':.<{LABEL_WIDTH}} " + 
+              colored(delta_status, delta_color))
+
+        # Funding Display
+        fund_color = "red" if abs(funding_val) > 0.01 else "white"
+        print(f"{'[DATA] FUNDING RATE':.<{LABEL_WIDTH}} " + 
+              colored(f"{funding_val*100:.4f}%", fund_color))
+
+        # SMART GRID LOGIC (AUTO-TRAP)
+        print("="*60)
+        print(colored("🕸️  ACTIVATING SMART GRID SYSTEM...", "cyan"))
+        
+        # 1. Clear old traps (stale orders)
+        scalper.cancel_all_open_orders()
+        
+        # 2. Set new traps
+        # Check if we already have a position
+        # For simplicity in this demo, we assume we want to enter or re-enter
+        # Real logic would check `exchange.fetch_positions()` first
+        
+        scalper.setup_smart_grid()
+        
     else:
          print(f"{'[SCAN] MARKET DATA':.<{LABEL_WIDTH}} " + 
               colored("UNAVAILABLE", "red"))

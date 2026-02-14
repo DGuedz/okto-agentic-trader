@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 
 from ops.aster_monitor import AsterMonitor # Import Hidden Order Logic
 
+from ops.obi_analyzer import analyze_obi
+
 class ScalpTentacle:
     def __init__(self):
         # Load Env explicitly
@@ -52,6 +54,81 @@ class ScalpTentacle:
                 print(f"[ERROR] COULD NOT SET LEVERAGE: {str(e)}")
 
         
+    def cancel_all_open_orders(self):
+        """Cancels all open orders to clear the board for new grid"""
+        try:
+            print("[GRID] CLEARING OLD ORDERS...")
+            self.exchange.cancel_all_orders(self.symbol)
+            return True
+        except Exception as e:
+            print(f"[WARNING] COULD NOT CANCEL ORDERS: {str(e)}")
+            return False
+
+    def setup_smart_grid(self, amount_usd=15):
+        """
+        Places LIMIT orders (Maker) based on technical analysis.
+        - Entry: Buy Limit @ Support (Bollinger Lower / OBI Wall)
+        - Target: Sell Limit @ Resistance (Bollinger Upper / OBI Wall)
+        """
+        if self.mode == "READ_ONLY": return False
+
+        try:
+            # 1. Analyze Market
+            ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=100)
+            current_price = ohlcv[-1][4]
+            bb = self.calculate_bollinger_bands(ohlcv)
+            obi_data = analyze_obi(self.symbol)
+            
+            # 2. Determine Smart Entry Price (Buy Limit)
+            # Strategy: Buy at Bollinger Lower Band OR Buy Wall, whichever is higher (closer to price)
+            # But ensure it's below current price to be a Limit Order
+            
+            # Default to BB Lower
+            entry_price = bb['lower']
+            
+            # If OBI Buy Wall is solid and above BB Lower (but below price), use it as stronger support
+            if obi_data and obi_data['buy_wall_price'] > entry_price and obi_data['buy_wall_price'] < current_price:
+                entry_price = obi_data['buy_wall_price'] * 1.0001 # Just above wall
+                print(colored(f"🛡️ ENTRY SUPPORT FOUND (OBI): ${entry_price:.2f}", "cyan"))
+            else:
+                print(colored(f"📉 ENTRY SUPPORT FOUND (BB): ${entry_price:.2f}", "cyan"))
+
+            # Calculate Amount
+            balance = self.exchange.fetch_balance()
+            usdt_free = balance['USDT']['free']
+            margin_to_use = usdt_free * 0.95 
+            position_size_usd = margin_to_use * self.leverage
+            amount_bnb = float(f"{position_size_usd / entry_price:.2f}")
+
+            # 3. Place Limit Buy Order (The Trap)
+            print(f"[GRID] SETTING TRAP | BUY LIMIT @ ${entry_price:.2f} | AMT: {amount_bnb} BNB")
+            entry_order = self.exchange.create_order(
+                symbol=self.symbol,
+                type='LIMIT',
+                side='buy',
+                amount=amount_bnb,
+                price=entry_price,
+                params={'timeInForce': 'GTC'} # Good Till Cancel
+            )
+            
+            # 4. Pre-calculate Exit (Take Profit) for display
+            # We can't place the Sell Limit until we have the position (on some modes), 
+            # but we can plan it.
+            target_price = bb['upper']
+            if obi_data and obi_data['sell_wall_price'] < target_price and obi_data['sell_wall_price'] > current_price:
+                target_price = obi_data['sell_wall_price'] * 0.999 # Just below wall
+            
+            roi_pct = ((target_price - entry_price) / entry_price) * 100 * self.leverage
+            
+            print(colored(f"🎯 PRE-SET TARGET: ${target_price:.2f} (Est. ROI: {roi_pct:.2f}%)", "green"))
+            print(colored("✅ SMART GRID DEPLOYED. WAITING FOR PRICE EXECUTION.", "green", attrs=['bold']))
+            
+            return {"success": True, "entry": entry_price, "target": target_price}
+
+        except Exception as e:
+            print(f"[ERROR] GRID SETUP FAILED: {str(e)}")
+            return {"success": False, "error": str(e)}
+
     def execute_buy(self, amount_usd=15):
         """Executes a Market Buy Order (LONG)"""
         if self.mode == "READ_ONLY":
@@ -100,20 +177,144 @@ class ScalpTentacle:
                  order = {"id": "hidden_order_batch", "amount": amount_bnb} # Simulated response
             else:
                 # Standard Execution for small orders
+                # Execute MARKET BUY
                 order = self.exchange.create_market_buy_order(self.symbol, amount_bnb)
-            
-            # 3. Set Stop Loss (Safety Net) - 1.5% below entry
+                
+                # 3. Set OCO (One-Cancels-Other) like Safety Orders
+                
+                # VOLATILITY CALCULATION (Dynamic Risk)
+                # Fetch ATR to adjust SL/TP based on market noise
+                ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=50)
+                atr = self.calculate_atr(ohlcv)
+                
+                # Dynamic Bands: 
+                # SL = 2.5x ATR (Give room to breathe)
+                # TP = 4.0x ATR (Capture the swing)
+                
+                sl_dist = atr * 2.5
+                tp_dist = atr * 4.0
+                
+                sl_price = float(f"{price - sl_dist:.2f}")
+                
+                # TAKE PROFIT STRATEGY (SMART OBI + VOLATILITY)
+                # Analyze Order Book to find resistance
+                obi_data = analyze_obi(self.symbol)
+                
+                if obi_data and obi_data['sell_wall_price'] > price:
+                    # Smart Exit: Place TP just before the big Sell Wall
+                    smart_tp = float(f"{obi_data['sell_wall_price'] * 0.999:.2f}")
+                    
+                    # If Smart TP is within volatility range (reachable), use it
+                    if smart_tp < (price + tp_dist) and smart_tp > price:
+                         tp_price = smart_tp
+                         print(colored(f"🎯 OPTIMIZED TP (OBI WALL): ${tp_price}", "cyan"))
+                    else:
+                         tp_price = float(f"{price + tp_dist:.2f}")
+                         print(colored(f"🌊 VOLATILITY TP (ATR): ${tp_price}", "blue"))
+                else:
+                    # Default Volatility Target
+                    tp_price = float(f"{price + tp_dist:.2f}")
+                    print(colored(f"🌊 VOLATILITY TP (ATR): ${tp_price}", "blue"))
 
-            sl_price = price * 0.985
+                print(f"[RISK] DYNAMIC ATR: {atr:.4f} | SL: ${sl_price} | TP: ${tp_price}")
 
-            # Binance Futures requires SL as a separate order usually, or via params.
-            # For simplicity in this v1, we just open the position. 
-            # Ideally we would place a STOP_MARKET order immediately.
+                try:
+                    # Place STOP LOSS Market Order
+                    self.exchange.create_order(
+                        symbol=self.symbol,
+                        type='STOP_MARKET',
+                        side='sell',
+                        amount=amount_bnb,
+                        params={'stopPrice': sl_price, 'reduceOnly': True}
+                    )
+                    
+                    # Place TAKE PROFIT Market Order
+                    self.exchange.create_order(
+                        symbol=self.symbol,
+                        type='TAKE_PROFIT_MARKET',
+                        side='sell',
+                        amount=amount_bnb,
+                        params={'stopPrice': tp_price, 'reduceOnly': True}
+                    )
+                    print(colored("✅ SAFETY NET DEPLOYED (SL/TP)", "green"))
+                    
+                except Exception as e:
+                    print(colored(f"⚠️ COULD NOT SET SL/TP: {str(e)}", "yellow"))
             
             return {"success": True, "order": order, "price": price}
             
         except Exception as e:
             print(f"[ERROR] LONG EXECUTION FAILED: {str(e)}")
+            return {"success": False, "error": str(e)}
+
+    def execute_short(self, amount_usd=15):
+        """Executes a Market Sell Order (SHORT)"""
+        if self.mode == "READ_ONLY": return False
+
+        try:
+            ticker = self.exchange.fetch_ticker(self.symbol)
+            price = ticker['last']
+            
+            balance = self.exchange.fetch_balance()
+            usdt_free = balance['USDT']['free']
+            
+            if usdt_free < 2:
+                print("[WARNING] INSUFFICIENT USDT MARGIN FOR SHORT")
+                return False
+
+            margin_to_use = usdt_free * 0.95 
+            position_size_usd = margin_to_use * self.leverage
+            amount_bnb = position_size_usd / price
+            amount_bnb = float(f"{amount_bnb:.2f}")
+
+            print(f"[EXECUTION] OPENING SHORT (5x) | AMOUNT: {amount_bnb} BNB | PRICE: ${price}")
+            
+            # Execute MARKET SELL (SHORT)
+            order = self.exchange.create_market_sell_order(self.symbol, amount_bnb)
+            
+            # SET SAFETY NET (Inverse of Long)
+            # STOP LOSS: 1.5% Above Entry (Risk)
+            sl_price = float(f"{price * 1.015:.2f}")
+            
+            # TAKE PROFIT: Smart OBI or Default -3% (Reward)
+            obi_data = analyze_obi(self.symbol)
+            if obi_data and obi_data['buy_wall_price'] < price:
+                smart_tp = float(f"{obi_data['buy_wall_price'] * 1.001:.2f}") # Just above Buy Wall
+                if smart_tp < price * 0.995: # At least 0.5% profit
+                    tp_price = smart_tp
+                    print(colored(f"🎯 OPTIMIZED TP SET ABOVE SUPPORT: ${tp_price}", "cyan"))
+                else:
+                    tp_price = float(f"{price * 0.97:.2f}")
+            else:
+                tp_price = float(f"{price * 0.97:.2f}")
+
+            print(f"[RISK] SETTING STOPS | SL: ${sl_price} | TP: ${tp_price}")
+
+            try:
+                # Place STOP LOSS (BUY STOP)
+                self.exchange.create_order(
+                    symbol=self.symbol,
+                    type='STOP_MARKET',
+                    side='buy',
+                    amount=amount_bnb,
+                    params={'stopPrice': sl_price, 'reduceOnly': True}
+                )
+                # Place TAKE PROFIT (BUY LIMIT/MARKET)
+                self.exchange.create_order(
+                    symbol=self.symbol,
+                    type='TAKE_PROFIT_MARKET',
+                    side='buy',
+                    amount=amount_bnb,
+                    params={'stopPrice': tp_price, 'reduceOnly': True}
+                )
+                print(colored("✅ SHORT SAFETY NET DEPLOYED", "green"))
+            except Exception as e:
+                print(colored(f"⚠️ COULD NOT SET SHORT SL/TP: {str(e)}", "yellow"))
+
+            return {"success": True, "order": order, "price": price}
+
+        except Exception as e:
+            print(f"[ERROR] SHORT EXECUTION FAILED: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def execute_sell(self):
@@ -147,6 +348,81 @@ class ScalpTentacle:
 
 
         
+    def calculate_volume_delta(self, ohlcv):
+        """
+        Estimates HFT Volume Delta (Aggression).
+        Positive = Buyers are aggressive (Taking liquidity).
+        Negative = Sellers are aggressive (Dumping).
+        """
+        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        
+        # Simple estimation: If Close > Open, assume Buy Vol. Else Sell Vol.
+        # For HFT precision, we would need tick data, but this is a solid 1m proxy.
+        df['delta'] = df.apply(lambda x: x['volume'] if x['close'] >= x['open'] else -x['volume'], axis=1)
+        
+        # Sum last 3 candles for immediate momentum
+        recent_delta = df['delta'].tail(3).sum()
+        return recent_delta
+
+    def calculate_bollinger_bands(self, ohlcv, period=20, std_dev=2):
+        """Calculates Bollinger Bands (Upper, Middle, Lower)"""
+        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        
+        df['sma'] = df['close'].rolling(window=period).mean()
+        df['std'] = df['close'].rolling(window=period).std()
+        
+        df['upper_band'] = df['sma'] + (df['std'] * std_dev)
+        df['lower_band'] = df['sma'] - (df['std'] * std_dev)
+        
+        return {
+            "upper": df['upper_band'].iloc[-1],
+            "middle": df['sma'].iloc[-1],
+            "lower": df['lower_band'].iloc[-1]
+        }
+
+    def calculate_vwap(self, ohlcv):
+        """
+        Calculates VWAP (Volume Weighted Average Price).
+        Institutional 'Fair Price' benchmark.
+        """
+        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        
+        # Typical Price = (High + Low + Close) / 3
+        df['typical_price'] = (df['high'] + df['low'] + df['close']) / 3
+        df['pv'] = df['typical_price'] * df['volume']
+        
+        # Cumulative VWAP (Rolling window to simulate session)
+        df['cum_pv'] = df['pv'].rolling(window=50).sum()
+        df['cum_vol'] = df['volume'].rolling(window=50).sum()
+        
+        df['vwap'] = df['cum_pv'] / df['cum_vol']
+        
+        return df['vwap'].iloc[-1]
+
+    def get_funding_rate(self):
+        """Fetches current funding rate (Sentiment Indicator)"""
+        try:
+            funding = self.exchange.fetch_funding_rate(self.symbol)
+            return funding['fundingRate']
+        except:
+            return 0.0
+
+    def calculate_atr(self, ohlcv, period=14):
+        """Calculates Average True Range (Volatility)"""
+        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        
+        # True Range Calculation
+        df['h-l'] = df['high'] - df['low']
+        df['h-pc'] = abs(df['high'] - df['close'].shift(1))
+        df['l-pc'] = abs(df['low'] - df['close'].shift(1))
+        
+        df['tr'] = df[['h-l', 'h-pc', 'l-pc']].max(axis=1)
+        
+        # Simple Moving Average of TR
+        df['atr'] = df['tr'].rolling(window=period).mean()
+        
+        return df['atr'].iloc[-1]
+
     def calculate_rsi(self, ohlcv, period=14):
         """Standard RSI 14 calculation"""
         df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
@@ -164,14 +440,27 @@ class ScalpTentacle:
         """
         try:
             # Fetch OHLCV (1m candles for scalping)
-            ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=20)
+            ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=100) # Increased for VWAP
             current_price = ohlcv[-1][4]
             rsi = self.calculate_rsi(ohlcv)
+            atr = self.calculate_atr(ohlcv)
+            bb = self.calculate_bollinger_bands(ohlcv)
+            vwap = self.calculate_vwap(ohlcv)
+            funding_rate = self.get_funding_rate()
+            volume_delta = self.calculate_volume_delta(ohlcv)
+            
+            volatility_percent = (atr / current_price) * 100
             
             return {
                 "success": True,
                 "price": current_price,
                 "rsi": rsi,
+                "atr": atr,
+                "bb": bb,
+                "vwap": vwap,
+                "funding": funding_rate,
+                "delta": volume_delta,
+                "volatility": volatility_percent,
                 "symbol": self.symbol
             }
         except Exception as e:

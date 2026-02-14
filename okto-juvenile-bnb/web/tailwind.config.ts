@@ -59,6 +59,31 @@ const config: Config = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-15px) scale(1.02)' },
+        },
+        undulate: {
+          '0%, 100%': { transform: 'translateY(0) scale(1) rotate(0deg)' },
+          '25%': { transform: 'translateY(-10px) scale(1.02) rotate(1deg)' },
+          '75%': { transform: 'translateY(5px) scale(0.98) rotate(-1deg)' },
+        },
+        biolumPulse: {
+          '0%, 100%': { opacity: '0.8', filter: 'brightness(1)' },
+          '50%': { opacity: '1', filter: 'brightness(1.3) hue-rotate(15deg)' },
+        },
+        pulseSlow: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.7' },
+        }
+      },
+      animation: {
+        float: 'float 8s ease-in-out infinite',
+        undulate: 'undulate 10s ease-in-out infinite',
+        biolum: 'biolumPulse 4s ease-in-out infinite',
+        pulseSlow: 'pulseSlow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
     },
   },
   plugins: [],
