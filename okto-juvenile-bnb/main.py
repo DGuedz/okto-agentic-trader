@@ -48,6 +48,7 @@ def main():
          print(f"{'[SPEED] HIGH FREQUENCY LINK':.<{LABEL_WIDTH}} " + 
           colored("ESTABLISHED", "yellow", attrs=['bold']))
 
+
     # GAS STATUS
     gas_status = "OPTIMAL" if is_safe else "HIGH COST"
     gas_color = "green" if is_safe else "yellow"

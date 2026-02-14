@@ -38,4 +38,5 @@ If you find a bug, please open an issue describing:
 - What actually happened.
 - Steps to reproduce the issue.
 
-Let's build the future of autonomous DeFi trading together! 🚀
+Let's build the future of autonomous DeFi trading together!
+
