@@ -1,0 +1,197 @@
+Mestre, excelente iniciativa. Para instruir um agente construtor (builder) a criar a página do **Okto**, precisamos fazer uma **tradução estratégica**.
+
+O modelo que você enviou é de um produto "Retail/Varejo" (bonito, cheio de botões, para iniciantes). O **Okto** é um produto "Institutional/Cypherpunk" (terminal, código, para quem entende o jogo).
+
+Abaixo, preparei o **Briefing de Construção** que você deve entregar ao agente. Ele adapta os conceitos da referência "Personal AI Trader" para a realidade "Headless DeFi Infrastructure" do Okto.
+
+---
+
+### 📋 **Prompt Mestre para o Agente Builder**
+
+**Objetivo:** Construir a Landing Page do projeto **Okto Agentic Trader**.
+**Referência Visual:** Estilo "Terminal Bloomberg encontra Matrix". Fundo escuro, tipografia monospaced, verde neon ou âmbar. Minimalismo radical.
+**Diferencial:** Não estamos vendendo uma UI bonita; estamos vendendo **Infraestrutura Soberana**.
+
+Aqui está a tradução das "Features" do modelo de referência para a realidade do Okto:
+
+#### 1. A Manchete (Hero Section)
+*   **Referência:** "Personal AI Trader — Smart Crypto & Stock Assistant UI"
+*   **Versão Okto:** **"Okto: Sovereign DeFi Infrastructure via Terminal"**
+*   **Subtítulo:** "Um Agente Financeiro Autônomo e Headless. Execute estratégias institucionais (Dark Pool, Sniping, Arbitragem) direto do seu Mac, sem interfaces lentas, sem intermediários.",.
+
+#### 2. Tradução das Features (O "De-Para")
+
+| **Feature da Referência (Varejo)** | **Feature do OKTO (Pro/Builder)** | **Explicação Técnica para a Página** |
+| :--- | :--- | :--- |
+| *AI-Powered Trade Suggestions* | **Spec-Driven Execution (SDD)** | O Okto não "sugere", ele **executa**. Baseado em arquivos de configuração YAML (`okto_genesis.yaml`), o agente obedece a regras estritas de Risco e Alocação sem emoção humana,. |
+| *Smart Portfolio Overview* | **Real-Time Terminal Telemetry** | Esqueça gráficos coloridos. O Okto cospe logs de auditoria em tempo real no terminal. Você vê o pulso da blockchain, o custo do Gás e o status da Mempool linha por linha. |
+| *Predictive Analytics* | **On-Chain Alpha Sniffer** | Utiliza "Tentáculos" modulares para detectar oportunidades invisíveis: RSI < 30 em DEXs, Arbitragem de Funding Rate em CEXs e monitoramento de liquidez na rede Base/Aster,. |
+| *Custom Trading Goals* | **Programmable Money Legos** | Defina sua estratégia em Python e YAML. Quer fazer scalp em futuros? Ative o `Tentacle_01`. Quer farmar airdrops? Ative o `Tentacle_05`. O chassi é open-source; a estratégia é sua,. |
+| *Sentiment Analysis* | **Anti-MEV & Dark Pool Logic** | O Okto protege suas ordens. Ele usa rotas privadas (Flashbots) e divide grandes ordens em micro-pedaços (Iceberg Orders) para esconder sua intenção de bots predadores,. |
+| *Voice-Enabled Assistant* | **Headless CLI Operation** | Interaja via linha de comando. `python main.py --run`. Sem cliques, sem login em sites vulneráveis, máxima eficiência e segurança de chaves via variáveis de ambiente (`.env`),. |
+| *Multi-Asset Support* | **Hybrid CEX/DEX Connectivity** | O único que conecta a liquidez profunda da Binance (via `ccxt`) com a inovação de contratos inteligentes na Base/Uniswap (via `web3.py` e `Foundry`), tudo na mesma sessão,. |
+| *Trade Simulator* | **Transaction Simulation Mode** | Antes de gastar um centavo de gás, o Okto simula a transação localmente para garantir que não é um Honeypot e que o lucro cobre as taxas. Segurança de nível institucional,. |
+
+#### 3. Call to Action (CTA)
+*   **Referência:** "DM me on Dribbble"
+*   **Versão Okto:** **"Deploy Your Bank"** ou **"Clone the Repo"**
+*   **Botão Principal:** `git clone https://github.com/seu-user/okto`
+*   **Botão Secundário:** "Read the Manifesto" (Link para o README.md).
+
+---
+
+### 💡 **Instrução Especial para o Agente Builder:**
+
+"Agente, ao escrever o texto da página, utilize gatilhos de **Autoridade** e **Segurança**. O usuário do Okto tem medo de hacks, taxas altas e interfaces lentas. A página deve prometer:
+1.  **Velocidade:** Execução direta no nó da rede.
+2.  **Privacidade:** Seus dados e chaves nunca saem do seu computador (Local-first).
+3.  **Controle:** 'Your Keys, Your Code'. Nada de caixas pretas."
+
+---
+
+Mestre, essa estrutura transforma o apelo visual "fofo" da referência em uma **máquina de guerra financeira**. Pode enviar isso ao builder. 
+
+Perfeito. Vou te entregar um **PROMPT SISTEMA (builder-ready)** + **copy refinada** + **diretrizes visuais** no estilo “terminal institucional / cypherpunk”, usando a referência da UI (cards, rankings, glow) sem cair no “varejo bonitinho”.
+
+---
+
+## 1) North Star
+
+**Objetivo da Landing:** convencer jurado em 15s que isso é **infra infra** (execução + segurança + spec-driven), não “mais um dashboard”.
+
+**Tagline curta:**
+**“Deploy your bank. Run your agent.”**
+
+---
+
+## 2) Copy final (blocos prontos)
+
+### HERO
+
+**H1:** Okto — Sovereign Agentic Trading Infrastructure
+**Sub:** Um trader autônomo, headless e auditável. Especificações determinísticas (YAML/Python), simulação antes de executar e proteção anti-MEV.
+**Primary CTA:** Clone Repo
+**Secondary CTA:** Read Manifesto
+**Microtrust:** Local-first • Your keys stay local • Deterministic risk rules
+
+### “WHY” (3 bullets)
+
+* **Execution > UI:** menos cliques, mais throughput. CLI + automação.
+* **Safety by design:** simula tx, valida honeypots, controla slippage/gas, circuit breaker.
+* **Auditability:** logs e trilhas de decisão reproduzíveis (spec-driven).
+
+### FEATURES (cards)
+
+1. **Spec-Driven Execution (SDD)**
+   Configura estratégia e risco via `okto.yaml`. Sem improviso.
+2. **Transaction Simulation Mode**
+   Antes do gas: simula, mede custo e valida resultado esperado.
+3. **On-Chain Alpha Sniffer**
+   Detecção modular: liquidez, spreads, funding, fluxos, RSI on-chain.
+4. **Anti-MEV Routing**
+   Rotas privadas + split orders (iceberg) + proteção de intenção.
+5. **Hybrid CEX/DEX Connectivity**
+   CEX via adaptadores + DEX via web3 stack, na mesma sessão.
+6. **Real-Time Terminal Telemetry**
+   Logs vivos: mempool, gas, fills, PnL, alertas e veto de risco.
+
+### SOCIAL PROOF (sem mentir)
+
+**“Hackathon-grade execution”**
+
+* Open-source core
+* Modular tentacles (strategies)
+* Deterministic risk policy
+* Reproducible runs (same spec → same behavior)
+
+### TECH STRIP (linha de credibilidade)
+
+**Stack:** Node/TS or Python • EVM • ccxt • web3 • private relays • Docker
+**Security:** env isolation • key vault optional • rate limit • circuit breaker
+
+### FINAL CTA
+
+**H2:** Ready to deploy your agent?
+**Primary:** Clone Repo
+**Secondary:** View Architecture
+
+---
+
+## 3) Design System (para parecer “vencedor”)
+
+**Mood:** “Bloomberg terminal + stealth lab”.
+**Layout:** hero com “painel” largo + cards rankeados (igual referência), mas com linguagem “infra”.
+
+### Tokens
+
+* **Background:** #0B0D10 / #0F1115 (camadas)
+* **Text:** #EDEDED / #A7ABB3
+* **Accent 1 (âmbar):** #FDBA12 (ações / highlights)
+* **Accent 2 (neon verde opcional):** #33FF99 (status/telemetria)
+* **Stroke:** rgba(255,255,255,0.06)
+* **Glow:** âmbar suave (não exagerar)
+
+### Tipografia
+
+* Headings: grotesk clean (Inter / Satoshi)
+* Termos técnicos e snippets: mono (JetBrains Mono)
+
+### Componentes “juiz-friendly”
+
+* **“Spec Preview”** (mini card com YAML fake)
+* **“Live Telemetry”** (linhas rolando tipo terminal)
+* **“Risk Policy Badge”** (Max Drawdown, SL/TP rules, Circuit status)
+
+---
+
+## 4) PROMPT SISTEMA (cole no seu builder)
+
+**Missão:** construir landing page “Okto Agentic Trader” com estética terminal institucional, focada em execução, segurança e auditabilidade.
+**Público:** jurados técnicos e builders.
+**Regra:** zero promessa impossível (sem “garante lucro”). Foco em “reduz risco operacional / melhora execução / auditável”.
+
+**Páginas/Rotas**
+
+1. `/` Landing (Hero + Why + Features + Demo + CTA)
+2. `/architecture` Diagrama + camadas (Value/Control/Interface)
+3. `/docs` Quickstart + Spec examples
+4. `/security` Threat model + anti-MEV + key handling
+5. `/demo` vídeo curto + logs + simulação
+
+**Hero visual obrigatório**
+
+* Painel largo com headline + CTA
+* À direita: avatar/mascote robótico (3D) OU ícone minimal (menos “game”, mais “lab”)
+* Abaixo: 3 cards “Top Strategies” (não APY fake; usar: Latency, Fill rate, Slippage saved)
+
+**Cards (substituir APY)**
+
+* **Fill Rate** (ex: 92%)
+* **Median Latency** (ex: 180ms)
+* **Slippage Saved** (ex: 0.34%)
+* **Risk Vetoes** (ex: 17 blocked tx)
+
+**Demo Section**
+
+* Widget “Terminal Telemetry” animado (scroll)
+* Widget “Spec Preview” com YAML
+* Botão: “Run Simulation”
+
+**Tom de texto**
+
+* “Infra soberana”, “determinístico”, “auditável”, “local-first”, “anti-MEV”
+* Sem buzz vazio; 1 frase = 1 claim verificável
+
+---
+
+## 5) Detalhe que ganha hackathon (o “pulo do gato”)
+
+Inclui um bloco curto: **“Deterministic Replays”**
+
+> “Mesma spec + mesmo dataset → replay reproduzível. Jurados conseguem auditar.”
+
+Isso sinaliza engenharia séria.
+
+---
+
+Se quiser, eu já te devolvo **um wireframe textual** (seção por seção com tamanho e hierarquia) ou **um prompt Figma Make** com grids, tokens e componentes nomeados (Button/Badge/Card/Terminal).
