@@ -33,6 +33,13 @@ python main.py
 - **Connectivity:** CCXT (CEX), Web3.py (On-Chain)
 - **Risk Management:** Isolated Margin, Hard-Stop Protocols
 
+## AUDIT & VERIFICATION
+
+Proof of efficiency, including trade logs and on-chain funding verification, can be found in the [proof_of_efficiency](./proof_of_efficiency/) directory.
+
+- [Trade Execution Audit](./proof_of_efficiency/trade_execution_audit.md)
+
 ## LICENSE
 
 MIT License. See LICENSE file for details.
+

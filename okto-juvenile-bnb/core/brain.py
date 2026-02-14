@@ -8,8 +8,9 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from ops.scalp_rsi import ScalpTentacle
+from ops.aster_monitor import AsterMonitor
 from ops.obi_analyzer import analyze_obi
-from ops.aster_monitor import AsterMonitor # New Module
+from ops.capital_rotation import CapitalManager # New Capital Rotation Logic
 
 def autonomous_brain():
     print("\n[SYSTEM] OKTO AGENTIC ASSISTANT TRADER: INITIALIZED")
@@ -19,8 +20,13 @@ def autonomous_brain():
     # Initialize Modules
     scalper = ScalpTentacle()
     aster_mon = AsterMonitor() # Initialize Aster
+    capital_mgr = CapitalManager() # Initialize Capital Manager
+    
+    # Init Capital Baseline
+    capital_mgr.initialize_balance()
     
     cycle_count = 0
+
     
     while True:
         try:
@@ -35,6 +41,20 @@ def autonomous_brain():
                 # aster_mon.check_aster_health(scalper.exchange) 
                 # (Commented out until Spot/Futures hybrid connection is fully implemented)
                 print("[ASTER] ASTER/USDT: MONITORING LIQUIDITY POOLS & HIDDEN ORDERS...")
+                
+                # 3. Capital Rotation (Every 10 cycles - Check for Profits)
+                print("[CAPITAL] CHECKING FOR HARVESTABLE PROFITS (BINANCE -> ASTER)...")
+                rotation_status = capital_mgr.scan_for_rotation()
+                
+                if rotation_status.get("status") == "ROTATION_SIGNAL":
+                    amount = rotation_status.get("amount", 0)
+                    print(f"[CAPITAL] >>> SIGNAL: {rotation_status.get('msg')}")
+                    print(f"[CAPITAL] >>> ACTION: INITIATING BRIDGE TO ASTER PROTOCOL...")
+                    # Simulate bridge execution for demo
+                    tx = capital_mgr.execute_rotation(amount, "0xVAULT_ADDRESS")
+                    print(f"[CAPITAL] >>> BRIDGE STATUS: {tx['status']} | TXID: {tx['tx_hash']}")
+                else:
+                    print(f"[CAPITAL] STATUS: {rotation_status.get('status')} ({rotation_status.get('msg')})")
             
             cycle_count += 1
             time.sleep(3) # High Frequency Pace
