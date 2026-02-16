@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKTO | Headless Liquidity Node</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { mono: ['"JetBrains Mono"', 'monospace'] },
+                    colors: {
+                        bg: { 1: '#0B0E11' },
+                        accent: { amber: { 400: '#F3BA2F' }, neon: { 400: '#F3BA2F' } },
+                        text: { primary: '#EAECEF', secondary: '#A3A3A3' },
+                        border: { subtle: '#262626' }
+                    }
+                }
+            }
+        }
+
+        // WALLET GATE LOGIC (SIMULATED)
+        function checkWalletStatus() {
+            const isConnected = localStorage.getItem('okto_wallet_connected') === 'true';
+            updateUI(isConnected);
+        }
+
+        function connectWallet() {
+            const btn = document.getElementById('connect-btn');
+            btn.innerText = "INITIALIZING...";
+            btn.classList.add("opacity-50", "cursor-wait");
+            
+            setTimeout(() => {
+                localStorage.setItem('okto_wallet_connected', 'true');
+                updateUI(true);
+                alert("SESSION INITIALIZED. ACCESS GRANTED.");
+            }, 1500);
+        }
+
+        function updateUI(isConnected) {
+            const btn = document.getElementById('connect-btn');
+            const navDocs = document.getElementById('nav-docs');
+            const navArch = document.getElementById('nav-arch');
+            const navBlog = document.getElementById('nav-blog');
+            
+            if (isConnected) {
+                btn.innerText = "0x71C...9A2 [ACTIVE]";
+                btn.classList.remove("hover:bg-[#F3BA2F]", "hover:text-black", "text-[#F3BA2F]");
+                btn.classList.add("bg-[#F3BA2F]/20", "text-[#F3BA2F]", "cursor-default");
+                btn.onclick = null; // Disable click
+                
+                // Unlock Nav
+                [navDocs, navArch, navBlog].forEach(el => {
+                    el.classList.remove("opacity-30", "cursor-not-allowed");
+                    el.classList.add("hover:text-[#F3BA2F]");
+                    el.onclick = null; // Remove blocker
+                });
+            } else {
+                btn.innerText = "Initialize_Session";
+                btn.onclick = connectWallet;
+                
+                // Lock Nav
+                [navDocs, navArch, navBlog].forEach(el => {
+                    el.classList.add("opacity-30", "cursor-not-allowed");
+                    el.classList.remove("hover:text-[#F3BA2F]");
+                    el.onclick = (e) => {
+                        e.preventDefault();
+                        alert("ACCESS DENIED. \n\nSecurity Protocol: Active\nRequirement: Initialize Session (Connect Wallet)");
+                    };
+                });
+            }
+        }
+
+        // DEPLOY NODE ACTION (COPY COMMAND)
+        function copyInstallCommand() {
+            const cmd = "git clone https://github.com/DGuedz/okto-agentic-trader.git && cd okto && ./install.sh";
+            navigator.clipboard.writeText(cmd).then(() => {
+                const btn = document.getElementById('deploy-btn');
+                const originalText = btn.innerText;
+                
+                btn.innerText = "> CMD COPIED TO CLIPBOARD";
+                btn.classList.remove("bg-[#F3BA2F]", "text-[#0B0E11]");
+                btn.classList.add("bg-green-500", "text-black", "border-green-500");
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.add("bg-[#F3BA2F]", "text-[#0B0E11]");
+                    btn.classList.remove("bg-green-500", "text-black", "border-green-500");
+                }, 2500);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', checkWalletStatus);
+    </script>
+    <style>
+        body { background-color: #0B0E11; color: #EAECEF; font-family: 'JetBrains Mono', monospace; }
+        .glow-text { text-shadow: 0 0 10px rgba(243, 186, 47, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0B0E11]">
+
+    <!-- COMMAND DECK HEADER -->
+    <header class="border-b border-[#F3BA2F]/20 bg-[#0B0E11]/90 backdrop-blur-xl sticky top-0 z-50">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-[#F3BA2F] rounded-sm shadow-[0_0_10px_#F3BA2F] flex items-center justify-center">
+                    <img src="/assets/okto-logo-final.png" alt="Okto" class="w-6 h-6 object-contain opacity-90">
+                </div>
+                <span class="text-white text-xl font-bold tracking-tighter">Okto</span>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm text-gray-400">
+                <a id="nav-docs" href="docs.html" class="transition-colors"><span class="text-[#F3BA2F]/50">[/]</span> DOCS</a>
+                <a id="nav-arch" href="architecture.html" class="transition-colors"><span class="text-[#F3BA2F]/50">[/]</span> ARCHITECT_CHANNEL</a>
+                <a id="nav-blog" href="blog.html" class="transition-colors"><span class="text-[#F3BA2F]/50">[/]</span> INTEL_BLOG</a>
+            </nav>
+            <div class="flex items-center gap-6">
+                <div class="hidden lg:block text-[10px] text-[#F3BA2F]/70 font-bold leading-tight text-right">
+                    <div>LATENCY: 14ms</div>
+                    <div>GAS: 0.05 GWEI</div>
+                </div>
+                <button id="connect-btn" class="border border-[#F3BA2F] text-[#F3BA2F] px-4 py-2 text-xs hover:bg-[#F3BA2F] hover:text-black transition-all uppercase tracking-widest font-bold shadow-[0_0_10px_rgba(243,186,47,0.2)]">
+                    Initialize_Session
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="container mx-auto px-6 py-20 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 border border-[#F3BA2F]/30 rounded-full text-[#F3BA2F] text-xs bg-[#F3BA2F]/10 tracking-widest">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            v1.1 STABLE • BNB CHAIN
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+            Turn your IDE into a <br />
+            <span class="text-[#F3BA2F] glow-text">Liquidity Node</span>.
+        </h1>
+        <p class="text-xl text-text-secondary max-w-2xl mx-auto mb-10">
+            While you code, OKTO farms. The first Headless Liquidity Protocol designed for the AI-Augmented Developer.
+        </p>
+        <div class="flex justify-center gap-4">
+            <button id="deploy-btn" onclick="copyInstallCommand()" class="px-8 py-3 bg-[#F3BA2F] text-[#0B0E11] font-bold rounded-sm hover:brightness-110 transition-all shadow-[0_0_20px_rgba(243,186,47,0.4)] uppercase tracking-wider min-w-[200px] flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Deploy Node
+            </button>
+            <a href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" target="_blank" class="px-8 py-3 border border-border-subtle bg-white/5 rounded-sm hover:bg-white/10 transition-all uppercase tracking-wider text-sm flex items-center gap-2">
+                <span>View on BscScan</span>
+                <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="container mx-auto px-6 py-16 grid md:grid-cols-3 gap-6">
+        <div class="p-6 border border-border-subtle rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all group">
+            <h3 class="font-bold text-[#F3BA2F] mb-3 flex items-center gap-3">
+                <div class="p-2 bg-[#F3BA2F]/10 rounded-lg group-hover:bg-[#F3BA2F]/20 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                Idle Capital = Waste
+            </h3>
+            <p class="text-sm text-text-secondary leading-relaxed">Your dev wallet sits dormant while you code. Okto puts that capital to work automatically in audited vaults.</p>
+        </div>
+        <div class="p-6 border border-border-subtle rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all group">
+            <h3 class="font-bold text-[#F3BA2F] mb-3 flex items-center gap-3">
+                <div class="p-2 bg-[#F3BA2F]/10 rounded-lg group-hover:bg-[#F3BA2F]/20 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                Headless Liquidity
+            </h3>
+            <p class="text-sm text-text-secondary leading-relaxed">No UI. No dashboards. Just pure yield logs streamed directly to your local terminal session.</p>
+        </div>
+        <div class="p-6 border border-border-subtle rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all group">
+            <h3 class="font-bold text-[#F3BA2F] mb-3 flex items-center gap-3">
+                <div class="p-2 bg-[#F3BA2F]/10 rounded-lg group-hover:bg-[#F3BA2F]/20 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                Code-to-Yield
+            </h3>
+            <p class="text-sm text-text-secondary leading-relaxed">You commit code. Okto farms. Automatic profit bridging to Aster DEX based on your git activity.</p>
+        </div>
+    </section>
+
+    <!-- TERMINAL DEMO & SAFETY HUD -->
+    <section class="container mx-auto px-6 py-10">
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- TERMINAL (2/3 width) -->
+            <div class="md:col-span-2 bg-[#0F0F0F] border border-border-subtle rounded-lg p-4 font-mono text-sm shadow-2xl overflow-hidden relative min-h-[320px]">
+                <div class="flex gap-2 mb-4 border-b border-white/10 pb-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-2 text-xs text-white/30">okto-node — -zsh — 80x24</span>
+                </div>
+                
+                <!-- DYNAMIC TERMINAL CONTENT -->
+                <div id="terminal-content" class="text-[#F3BA2F] space-y-1 font-mono text-xs md:text-sm h-[240px] overflow-y-auto custom-scrollbar">
+                    <!-- Content will be injected by JS -->
+                </div>
+            </div>
+
+            <!-- SAFETY HUD (1/3 width) - NEW COMPONENT VISUALIZATION -->
+            <div class="md:col-span-1 space-y-4">
+                <!-- RISK MODULE -->
+                <div class="bg-[#0B0E11] border border-border-subtle rounded-lg p-4 font-mono shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-[#F3BA2F]/5 rounded-bl-full -mr-4 -mt-4"></div>
+                    
+                    <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                        <h3 class="text-xs font-bold text-white/50 uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            Safety Rails
+                        </h3>
+                        <span class="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded border border-green-500/20 animate-pulse">
+                            ARMED
+                        </span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Stat 1 -->
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-white/40">Max Drawdown</span>
+                            <span class="text-xs font-bold text-white">2.5% <span class="text-white/20">/ Session</span></span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-400 w-[10%]"></div>
+                        </div>
+
+                        <!-- Stat 2 -->
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-xs text-white/40">Gas Ceiling</span>
+                            <span class="text-xs font-bold text-blue-400">5 Gwei</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-400 w-[40%]"></div>
+                        </div>
+
+                        <!-- Stat 3 -->
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-xs text-white/40">Slippage Guard</span>
+                            <span class="text-xs font-bold text-[#F3BA2F]">0.5% Auto</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-[#F3BA2F] w-[20%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE PNL MODULE -->
+                <div class="bg-[#0B0E11] border border-border-subtle rounded-lg p-4 font-mono shadow-lg flex flex-col justify-center items-center py-8">
+                    <div class="text-xs text-white/40 uppercase tracking-widest mb-2">Session PnL</div>
+                    <div class="text-4xl font-bold text-green-400 flex items-baseline gap-1">
+                        <span class="text-lg opacity-50">+</span>$14.20
+                    </div>
+                    <div class="text-[10px] text-white/30 mt-2">Target: $50.00</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // TERMINAL SIMULATION LOGIC
+        const terminalLines = [
+            { text: "[INIT] Loading specs/genesis.yaml... OK", color: "text-blue-400", delay: 500 },
+            { text: "[INIT] Connecting to Safety Rails... CONNECTED (ChainID: 56)", color: "text-blue-400", delay: 800 },
+            { text: "--------------------------------------------------", color: "text-white/50", delay: 100 },
+            { text: "[MONITOR] DETECTING IDLE COMPUTE RESOURCES...", color: "text-yellow-400", delay: 1200 },
+            { text: ">> IDLE STATE CONFIRMED. INITIATING SCALP SEQUENCE.", color: "text-[#F3BA2F]", delay: 800 },
+            { text: "[EXEC] PLACING BUY ORDER | LIMIT @ $635.20 | SIZE: 0.5 BNB", color: "text-magenta-400", delay: 1500 },
+            { text: "✅ ORDER FILLED: 0x8a7...3b2", color: "text-green-400", delay: 600 },
+            { text: "💰 [SCALPER] PROFIT CAPTURED: +$4.20", color: "text-cyan-400", delay: 1000 },
+            { text: "🌉 [BRIDGE] MOVING PROFIT ($10.00) TO ASTER VAULT...", color: "text-purple-400", delay: 1200 },
+            { text: "🌾 [FARM] STAKING COMPLETE. APY: 18.5%", color: "text-white", delay: 800 },
+            { text: "[SLEEP] Waiting for next opportunity...", color: "text-white/30", delay: 2000 }
+        ];
+
+        async function runTerminalLoop() {
+            const container = document.getElementById('terminal-content');
+            if (!container) return;
+
+            while (true) { // Infinite Loop
+                container.innerHTML = ''; // Clear terminal
+                
+                for (const line of terminalLines) {
+                    const p = document.createElement('p');
+                    p.className = line.color;
+                    
+                    // Typing effect
+                    container.appendChild(p);
+                    if (line.text.startsWith("-")) {
+                        p.innerText = line.text; // Instant render for separators
+                    } else {
+                        // Type writer effect
+                        p.innerText = "> ";
+                        await typeText(p, line.text, 20); 
+                    }
+                    
+                    // Auto scroll to bottom
+                    container.scrollTop = container.scrollHeight;
+                    
+                    // Wait before next line
+                    await new Promise(r => setTimeout(r, line.delay));
+                }
+                
+                // Pause at end before restarting
+                await new Promise(r => setTimeout(r, 3000));
+            }
+        }
+
+        function typeText(element, text, speed) {
+            return new Promise(resolve => {
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.innerText += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        // Start terminal when visible
+        document.addEventListener('DOMContentLoaded', () => {
+            runTerminalLoop();
+        });
+    </script>
+
+    <!-- METRICS -->
+    <section class="container mx-auto px-6 py-16">
+        <h2 class="text-xl font-bold mb-8 text-white/80 flex items-center gap-2">
+            <span class="w-2 h-2 bg-[#F3BA2F] rounded-full animate-pulse"></span>
+            LIVE NODE STATUS <span class="text-xs font-normal text-white/30 ml-2">(Simulated)</span>
+        </h2>
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="p-4 border border-border-subtle rounded bg-white/5 hover:border-[#F3BA2F]/30 transition-colors">
+                <div class="text-xs text-text-secondary uppercase mb-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#F3BA2F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Yield Farmed
+                </div>
+                <div class="text-2xl font-bold text-[#F3BA2F]">0.05 ASTER</div>
+            </div>
+            <div class="p-4 border border-border-subtle rounded bg-white/5 hover:border-blue-400/30 transition-colors">
+                <div class="text-xs text-text-secondary uppercase mb-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Gas Efficiency
+                </div>
+                <div class="text-2xl font-bold text-blue-400">0.05 Gwei</div>
+            </div>
+            <div class="p-4 border border-border-subtle rounded bg-white/5 hover:border-white/30 transition-colors">
+                <div class="text-xs text-text-secondary uppercase mb-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Uptime
+                </div>
+                <div class="text-2xl font-bold text-white">99.9%</div>
+            </div>
+            <div class="p-4 border border-border-subtle rounded bg-white/5 hover:border-yellow-400/30 transition-colors">
+                <div class="text-xs text-text-secondary uppercase mb-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    Security Checks
+                </div>
+                <div class="text-2xl font-bold text-yellow-400">142 Passed</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 py-10 text-center text-white/30 text-sm">
+        <p>Built for OpenClaw Hackathon 2026 • No Tokens. Just Yield.</p>
+    </footer>
+
+</body>
+</html>

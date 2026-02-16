@@ -53,7 +53,7 @@ const config: Config = {
         mono: ["var(--font-jetbrains-mono)"],
       },
       boxShadow: {
-        glowAmber: "0 0 30px rgba(253,186,18,0.22)",
+        glowAmber: "0 0 30px rgba(243,186,47,0.22)",
         glowNeon: "0 0 26px rgba(51,255,153,0.18)",
       },
       backgroundImage: {

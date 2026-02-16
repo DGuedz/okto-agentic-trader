@@ -15,6 +15,8 @@ class ScalpTentacle:
         # Load Env explicitly
         load_dotenv("config/.env")
         
+        self.HACKATHON_MODE = True # 🚨 SURVIVAL MODE: HIGH WIN RATE PRIORITY
+        
         # Initialize Exchange Connection (Binance)
         api_key = os.getenv("BINANCE_API_KEY")
         secret = os.getenv("BINANCE_SECRET")
@@ -64,11 +66,15 @@ class ScalpTentacle:
             print(f"[WARNING] COULD NOT CANCEL ORDERS: {str(e)}")
             return False
 
-    def setup_smart_grid(self, amount_usd=15):
+    def setup_smart_grid(self, amount_usd=15, phase="SEED"):
         """
         Places LIMIT orders (Maker) based on technical analysis.
         - Entry: Buy Limit @ Support (Bollinger Lower / OBI Wall)
         - Target: Sell Limit @ Resistance (Bollinger Upper / OBI Wall)
+        
+        PHASE ADJUSTMENTS:
+        - SEED: Ultra-Conservative. Only enters at DEEP support (OBI Wall required).
+        - ALPHA+: More flexible, uses BB Lower as fallback.
         """
         if self.mode == "READ_ONLY": return False
 
@@ -80,25 +86,77 @@ class ScalpTentacle:
             obi_data = analyze_obi(self.symbol)
             
             # 2. Determine Smart Entry Price (Buy Limit)
-            # Strategy: Buy at Bollinger Lower Band OR Buy Wall, whichever is higher (closer to price)
-            # But ensure it's below current price to be a Limit Order
-            
-            # Default to BB Lower
             entry_price = bb['lower']
             
-            # If OBI Buy Wall is solid and above BB Lower (but below price), use it as stronger support
-            if obi_data and obi_data['buy_wall_price'] > entry_price and obi_data['buy_wall_price'] < current_price:
-                entry_price = obi_data['buy_wall_price'] * 1.0001 # Just above wall
-                print(colored(f"🛡️ ENTRY SUPPORT FOUND (OBI): ${entry_price:.2f}", "cyan"))
+            # 🚨 VOLATILITY GUARD (ATR CHECK)
+            ohlcv_atr = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=50)
+            current_atr = self.calculate_atr(ohlcv_atr)
+            
+            # If ATR is too high (Panic Mode) or too low (Dead Market), ADJUST
+            if current_atr > 1.5: # Extremely Volatile
+                 print(colored(f"⚠️ HIGH VOLATILITY DETECTED (ATR: {current_atr:.2f}). REDUCING LEVERAGE.", "yellow"))
+                 self.leverage = 2 # Safety Mode
+            elif current_atr < 0.1: # Dead Market
+                 print(colored(f"💤 LOW VOLATILITY (ATR: {current_atr:.2f}). WAITING FOR VOLUME.", "blue"))
+                 if self.HACKATHON_MODE:
+                     return {"success": False, "error": "LOW_VOLATILITY"}
+            
+            # CHOPPY MARKET FILTER (ADX SIMULATION)
+            # If high volatility but no direction (sideways chop), avoid getting shredded.
+            # Simple heuristic: If BB Bandwidth is wide but price is bouncing inside without OBI trend.
+            bb_width = (bb['upper'] - bb['lower']) / bb['middle']
+            if bb_width > 0.02 and abs(obi_data['obi']) < 0.1:
+                print(colored(f"🌊 CHOPPY WATERS DETECTED (Wide Bands + No Trend). SKIPPING.", "magenta"))
+                return {"success": False, "error": "CHOPPY_MARKET"}
+
+            # SEED GRADUATION STRATEGY (PHASE LOGIC)
+            if phase == "SEED" or self.HACKATHON_MODE:
+                # STRICT MODE: Only trust OBI Walls or very deep BB deviations
+                
+                # 🚨 ANTI-RANDOMNESS PROTOCOL (User Directive)
+                # "Entrar em uma operação sem olhar o livro de ordens é um erro matemático."
+                if self.HACKATHON_MODE:
+                    if not obi_data or obi_data['obi'] < 0.1: # Must have positive imbalance for LONG
+                        print(colored("🛑 [SURVIVAL] ENTRY BLOCKED: INSUFFICIENT BUY PRESSURE (OBI < 0.1)", "red", attrs=['bold']))
+                        return {"success": False, "error": "OBI_BLOCK"}
+                
+                if obi_data and obi_data['buy_wall_price'] < current_price:
+                     # Use OBI wall as primary truth
+                     entry_price = obi_data['buy_wall_price'] * 1.0001
+                     print(colored(f"🛡️ [SURVIVAL] ENTRY LOCKED TO OBI WALL: ${entry_price:.2f}", "cyan", attrs=['bold']))
+                else:
+                    if self.HACKATHON_MODE:
+                         print(colored("🛑 [SURVIVAL] ENTRY BLOCKED: NO LIQUIDITY WALL FOUND", "red", attrs=['bold']))
+                         return {"success": False, "error": "NO_WALL_BLOCK"}
+                    
+                    # If no OBI wall, lower the BB entry to ensure safety (Lower Band - 0.5% in Survival)
+                    discount = 0.995 if self.HACKATHON_MODE else 0.999
+                    entry_price = bb['lower'] * discount
+                    print(colored(f"🛡️ [SURVIVAL] DEEPENING ENTRY TO: ${entry_price:.2f} (Discount: {discount})", "yellow"))
             else:
-                print(colored(f"📉 ENTRY SUPPORT FOUND (BB): ${entry_price:.2f}", "cyan"))
+                # ALPHA/BETA MODE: Standard Logic
+                if obi_data and obi_data['buy_wall_price'] > entry_price and obi_data['buy_wall_price'] < current_price:
+                    entry_price = obi_data['buy_wall_price'] * 1.0001
+                    print(colored(f"🛡️ ENTRY SUPPORT FOUND (OBI): ${entry_price:.2f}", "cyan"))
+                else:
+                    print(colored(f"📉 ENTRY SUPPORT FOUND (BB): ${entry_price:.2f}", "cyan"))
 
             # Calculate Amount
             balance = self.exchange.fetch_balance()
             usdt_free = balance['USDT']['free']
-            margin_to_use = usdt_free * 0.95 
+            
+            # DYNAMIC LEVERAGE ALLOCATION
+            # In High Volatility, use less margin
+            margin_risk_ratio = 0.50 if current_atr > 1.0 else 0.95
+            
+            margin_to_use = usdt_free * margin_risk_ratio 
             position_size_usd = margin_to_use * self.leverage
             amount_bnb = float(f"{position_size_usd / entry_price:.2f}")
+            
+            # FORCE MINIMUM SIZE FOR BINANCE (0.01 BNB)
+            if amount_bnb < 0.01:
+                print(colored(f"⚠️  AJUSTANDO TAMANHO MÍNIMO: {amount_bnb} -> 0.01 BNB", "yellow"))
+                amount_bnb = 0.01
 
             # 3. Place Limit Buy Order (The Trap)
             print(f"[GRID] SETTING TRAP | BUY LIMIT @ ${entry_price:.2f} | AMT: {amount_bnb} BNB")
@@ -111,17 +169,25 @@ class ScalpTentacle:
                 params={'timeInForce': 'GTC'} # Good Till Cancel
             )
             
-            # 4. Pre-calculate Exit (Take Profit) for display
-            # We can't place the Sell Limit until we have the position (on some modes), 
-            # but we can plan it.
+            # 4. Pre-calculate Exit (Take Profit)
             target_price = bb['upper']
+            
+            # SEED GRADUATION: Take profit earlier to secure small wins (Scalp Mode)
+            if phase == "SEED" or self.HACKATHON_MODE:
+                 # Target Middle Band instead of Upper for higher probability
+                 target_price = (bb['upper'] + bb['middle']) / 2
+                 if self.HACKATHON_MODE:
+                     target_price = bb['middle'] # Even safer: Mean Reversion only
+                     print(colored(f"🎯 [SURVIVAL] TARGET LOCKED TO MID-BAND: ${target_price:.2f}", "magenta"))
+                 else:
+                     print(colored(f"🎯 [SEED PROTOCOL] TARGET ADJUSTED TO MID-UPPER BAND: ${target_price:.2f}", "magenta"))
+
             if obi_data and obi_data['sell_wall_price'] < target_price and obi_data['sell_wall_price'] > current_price:
                 target_price = obi_data['sell_wall_price'] * 0.999 # Just below wall
             
             roi_pct = ((target_price - entry_price) / entry_price) * 100 * self.leverage
-            
             print(colored(f"🎯 PRE-SET TARGET: ${target_price:.2f} (Est. ROI: {roi_pct:.2f}%)", "green"))
-            print(colored("✅ SMART GRID DEPLOYED. WAITING FOR PRICE EXECUTION.", "green", attrs=['bold']))
+            print(colored(f"✅ SMART GRID DEPLOYED. WAITING FOR PRICE EXECUTION ({phase} MODE).", "green", attrs=['bold']))
             
             return {"success": True, "entry": entry_price, "target": target_price}
 
@@ -163,10 +229,14 @@ class ScalpTentacle:
 
             print(f"[EXECUTION] OPENING LONG (5x) | AMOUNT: {amount_bnb} BNB | PRICE: ${price}")
             
-            # 2. Execute Order (Pro Mode: Dark Pool Split)
-            # If trade size is > 1 BNB (simulated threshold), split it.
-            if amount_bnb > 1.0:
-                 print(f"[DARK POOL] SPLITTING ORDER | TOTAL: {amount_bnb} BNB")
+            # 2. Execute Order (Pro Mode: Dark Pool Split & MEV Protection)
+            # Calculate Slippage Risk
+            is_risky, estimated_slippage = self.aster.check_slippage_risk(amount_bnb, price)
+            
+            # If trade size is > 1 BNB OR High Slippage Risk, split it.
+            if amount_bnb > 1.0 or is_risky:
+                 reason = "SIZE > 1.0" if amount_bnb > 1.0 else "MEV RISK"
+                 print(f"[DARK POOL] SPLITTING ORDER ({reason}) | TOTAL: {amount_bnb} BNB")
                  chunks = self.aster.simulate_dark_pool_split(amount_bnb)
                  
                  for chunk in chunks:
@@ -191,8 +261,14 @@ class ScalpTentacle:
                 # SL = 2.5x ATR (Give room to breathe)
                 # TP = 4.0x ATR (Capture the swing)
                 
-                sl_dist = atr * 2.5
-                tp_dist = atr * 4.0
+                if self.HACKATHON_MODE:
+                    # TIGHTER STOPS FOR SURVIVAL
+                    sl_dist = atr * 1.5
+                    tp_dist = atr * 2.0
+                    print(colored("🚨 HACKATHON MODE: TIGHTER SL/TP (1.5x/2.0x ATR)", "yellow"))
+                else:
+                    sl_dist = atr * 2.5
+                    tp_dist = atr * 4.0
                 
                 sl_price = float(f"{price - sl_dist:.2f}")
                 
@@ -434,37 +510,67 @@ class ScalpTentacle:
         df['rsi'] = 100 - (100 / (1 + rs))
         return df['rsi'].iloc[-1]
 
-    def scan_market(self):
+    def scan_market(self, phase="SEED"):
         """
-        Fetches market data and returns RSI + Market Status
+        Main Loop for Tentacle 01
+        1. Fetch Prices
+        2. Calc RSI, BB, Volume Delta
+        3. Determine Entry/Exit
         """
         try:
-            # Fetch OHLCV (1m candles for scalping)
-            ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=100) # Increased for VWAP
-            current_price = ohlcv[-1][4]
-            rsi = self.calculate_rsi(ohlcv)
-            atr = self.calculate_atr(ohlcv)
+            # Fetch OHLCV
+            ohlcv = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=100)
+            
+            # --- CALCULATION BLOCK START ---
+            df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+            
+            # RSI
+            delta = df['close'].diff()
+            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+            rs = gain / loss
+            rsi = 100 - (100 / (1 + rs))
+            current_rsi = rsi.iloc[-1]
+            
+            # BB
             bb = self.calculate_bollinger_bands(ohlcv)
-            vwap = self.calculate_vwap(ohlcv)
-            funding_rate = self.get_funding_rate()
-            volume_delta = self.calculate_volume_delta(ohlcv)
             
-            volatility_percent = (atr / current_price) * 100
+            # VWAP
+            df['vwap'] = (df['volume'] * (df['high'] + df['low'] + df['close']) / 3).cumsum() / df['volume'].cumsum()
+            current_vwap = df['vwap'].iloc[-1]
             
+            # Funding
+            try:
+                funding = self.exchange.fetch_funding_rate(self.symbol)
+                funding_rate = funding['fundingRate']
+            except:
+                funding_rate = 0.0
+                
+            # Delta
+            # Simple approx: Up candle vol - Down candle vol
+            current_delta = 0
+            if df['close'].iloc[-1] > df['open'].iloc[-1]:
+                current_delta = df['volume'].iloc[-1]
+            else:
+                current_delta = -df['volume'].iloc[-1]
+                
+            # ATR (for volatility)
+            atr = self.calculate_atr(ohlcv)
+            
+            # --- CALCULATION BLOCK END ---
+
             return {
                 "success": True,
-                "price": current_price,
-                "rsi": rsi,
-                "atr": atr,
+                "price": df['close'].iloc[-1],
+                "rsi": current_rsi,
                 "bb": bb,
-                "vwap": vwap,
+                "vwap": current_vwap,
                 "funding": funding_rate,
-                "delta": volume_delta,
-                "volatility": volatility_percent,
-                "symbol": self.symbol
+                "delta": current_delta,
+                "atr": atr,
+                "phase": phase # Return phase for debugging
             }
+
         except Exception as e:
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            print(f"[ERROR] SCAN FAILED: {str(e)}")
+            return {"success": False, "error": str(e)}

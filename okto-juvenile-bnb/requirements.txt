@@ -4,3 +4,5 @@ python-dotenv
 keyring
 pandas
 termcolor
+pyyaml
+pyyaml

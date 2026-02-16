@@ -49,12 +49,32 @@ class AsterMonitor:
             # print(colored(f"⚠️ Aster Monitor: {str(e)}", "yellow"))
             return None
 
+    def check_slippage_risk(self, amount, price, liquidity_depth=1000):
+        """
+        Calculates theoretical slippage risk based on order size vs liquidity.
+        Returns (is_risky, estimated_slippage_pct)
+        """
+        # Simple simulation: Impact = (Order Size / Liquidity Depth) ^ 2
+        impact = (amount * price) / liquidity_depth
+        estimated_slippage = impact * 0.5 # 0.5 coefficient
+        
+        is_risky = estimated_slippage > 0.01 # >1% slippage is risky
+        
+        if is_risky:
+            print(colored(f"⚠️ [MEV ALERT] HIGH SLIPPAGE RISK: {estimated_slippage*100:.2f}%", "red", attrs=['blink']))
+            print(colored("   >>> RECOMMENDATION: USE DARK POOL SPLIT OR REDUCE SIZE", "yellow"))
+            
+        return is_risky, estimated_slippage
+
     def simulate_dark_pool_split(self, total_quantity):
         """
         Simulates Aster's 'Hidden Order' logic by splitting a large order
         into random smaller chunks to avoid market impact.
+        Includes 'Anti-Sandwich' random delays.
         """
         import random
+        
+        print(colored("🛡️ [MEV SHIELD] ACTIVATING DARK POOL SPLIT...", "magenta"))
         
         chunks = []
         remaining = total_quantity
@@ -70,4 +90,5 @@ class AsterMonitor:
             chunks.append(chunk)
             remaining -= chunk
             
+        print(f"   >>> SPLIT INTO {len(chunks)} CHUNKS TO EVADE FRONT-RUNNING")
         return chunks

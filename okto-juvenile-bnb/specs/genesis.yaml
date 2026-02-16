@@ -1,0 +1,11 @@
+version: 1.1
+econ_rules:
+  format: YAML_ONLY
+  diff_mode: TRUE
+  token_limit_per_req: 2000
+
+safety_thresholds:
+  max_slippage: 0.005 # 0.5% (Anti-MEV)
+  gas_multiplier: 1.1 # 10% buffer above base
+  min_balance_reserve: 0.002 # BNB/ETH Reserve
+  max_gas: 10 # Gwei (Limit for BSC)

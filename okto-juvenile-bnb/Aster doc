@@ -1,0 +1,77 @@
+# Aster code
+
+### 1: What's aster code&#x20;
+
+Aster code is an ecosystem for brokers, providing brokers with a more efficient method to collect builder fees. It integrates a dedicated workflow that enables builders to receive commissions directly when users trade through their custom interfaces. Builders can claim builder fees from the builder center page. Become a Builder to unlock real-time monitoring of your performance data and earnings!
+
+### &#x20;2: How Aster code work
+
+To become a builder and start earning fees, follow these steps:
+
+· Create an Account: Register using your Web3 wallet address.
+
+· Deposit the required default amount : 100 Aster into your Aster perps account. The builder must hold at least 100 Aster in the perps wallet during the whole process.\
+\
+· Build your own UI and link the UI with Aster code entrance, you can find the API demo code on the below Aster code API instruction.
+
+· Invite users to trade via your UI page. Users will need to complete both Agent approval and Builder fee approval first when they try to trade via the builder's page.\
+\
+How to check the builder fee details:\
+Refer to [Aster code](https://www.asterdex.com/en/aster-code) page then click “builder center” to get the overview builder fee details and claim your builder fee.
+
+### &#x20;3: Why use Aster code?
+
+· Fee Collection: Builders can reliably earn a builder fee for executed trades(ADL and liquidation orders won’t count builder fee).
+
+· Transparent User Consent: Users explicitly approve both the broker (agent) and the maximum builder fee rate.\
+\
+· Automated Rewards: Once an order is filled and validated, builder fees are recorded automatically per day.
+
+· Integration: The flow fits into existing trading steps—users approve the builder and agent during the “Enable Trading” process.
+
+### 4:Aster code API&#x20;
+
+API document: <https://asterdex.github.io/aster-api-website/asterCode/integration-flow/><br>
+
+<br>
+
+# API
+
+The Aster Pro API allows you to connect your account and operate securely using API keys.
+
+#### 1. Create your API key
+
+Before using the API, you’ll need to generate an API key from your account. You can configure IP whitelisting and permissions (read or write access) for added control.
+
+&#x20;→ [How to create an API key](https://docs.asterdex.com/product/asterex-pro/api/how-to-create-api)
+
+#### 2. Explore the API documentation
+
+Once you have a key, you can begin making authenticated requests. The API documentation includes request formats, parameters, and response examples.
+
+→ [View API documentation](https://docs.asterdex.com/product/asterex-pro/api/api-document)
+# How to create an API
+
+1\. Go to [API management](https://www.asterdex.com/en/api-management) and connect your wallet. Then, click \[Create API].
+
+<figure><img src="https://4068247257-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FWhSHuKmgnGREbVb12PK2%2Fuploads%2Fowf1h0db8limUqi4sV29%2F%E6%88%AA%E5%B1%8F2025-04-02%2014.45.27.png?alt=media&#x26;token=8c490f4f-c3ff-436b-b012-63c146d98270" alt=""><figcaption></figcaption></figure>
+
+2\. Enter your preferred label for the API key you want to create, then click \[Create API].
+
+<figure><img src="https://4068247257-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FWhSHuKmgnGREbVb12PK2%2Fuploads%2FsBgfWDruopgoKdBpVouV%2F%E6%88%AA%E5%B1%8F2025-04-02%2014.46.44.png?alt=media&#x26;token=8cf8b99b-017a-438c-80f1-363984f421e3" alt=""><figcaption></figcaption></figure>
+
+3\. After creation, you’ll receive the API key and secret key. Click the “copy” icon to copy them and store them in a secure location.
+
+<figure><img src="https://4068247257-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FWhSHuKmgnGREbVb12PK2%2Fuploads%2F5UbZBpB5XDJWn57qK74i%2F%E6%88%AA%E5%B1%8F2025-04-02%2014.47.31.png?alt=media&#x26;token=031b2882-7e87-4fdf-944f-d459f8e6a318" alt=""><figcaption></figcaption></figure>
+
+**Note:**&#x20;
+
+* The secret key is only visible when the API key is first created. After that, it will be masked and cannot be viewed again.
+* Be sure to copy and store the secret key securely right after creating it.
+* If you lose your secret key, you’ll need to delete the API key and create a new one.
+* Do not share your API key or secret key with anyone to avoid potential losses.
+* It’s recommended to bind your API key to a fixed IP address to enhance account security.
+* You can view and manage your API keys in [API management](https://www.asterdex.com/en/api-management).
+* Each account can create up to 30 API keys.
+
+<br>

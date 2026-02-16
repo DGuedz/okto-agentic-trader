@@ -1,0 +1,44 @@
+# --- SILENT FORTRESS PROTOCOL ---
+# Block all secrets, logs, and sensitive data.
+
+# 1. Credentials & Secrets (CRITICAL)
+.env
+config/.env
+*.key
+*.pem
+*.p12
+*.json  # Block JSON by default, whitelist specific configs if needed
+!package.json
+!tsconfig.json
+!web/package.json
+!web/tsconfig.json
+!web/next.config.js
+!web/tailwind.config.ts
+!web/postcss.config.js
+
+# 2. Logs & History
+logs/
+*.log
+.DS_Store
+bash_history
+.bash_history
+.zsh_history
+
+# 3. Cache & Build Artifacts
+__pycache__/
+*.pyc
+build/
+dist/
+node_modules/
+.next/
+venv/
+.venv/
+
+# 4. OS & IDE
+.vscode/
+.idea/
+.trae/
+
+# 5. User Data
+user_data/
+backups/

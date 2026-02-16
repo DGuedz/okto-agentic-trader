@@ -195,3 +195,207 @@ Isso sinaliza engenharia séria.
 ---
 
 Se quiser, eu já te devolvo **um wireframe textual** (seção por seção com tamanho e hierarquia) ou **um prompt Figma Make** com grids, tokens e componentes nomeados (Button/Badge/Card/Terminal).
+Abaixo vai um design.json (tokens) pronto pra Figma Tokens / Token Studio (ou pra virar tailwind.config depois). Mantive o kit “terminal institucional” (dark + âmbar + neon opcional), com tipografia, radius, spacing, shadows e componentes-base.
+
+{
+  "$metadata": {
+    "name": "okto-terminal-v1",
+    "description": "Okto landing — Institutional Terminal + Cypherpunk. Dark UI, amber primary, optional neon status.",
+    "version": "1.0.0"
+  },
+  "color": {
+    "bg": {
+      "0": { "value": "#0B0D10" },
+      "1": { "value": "#0F1115" },
+      "2": { "value": "#13161D" },
+      "glass": { "value": "rgba(255,255,255,0.04)" }
+    },
+    "surface": {
+      "card": { "value": "#12141A" },
+      "cardHover": { "value": "#171A22" },
+      "panel": { "value": "#0E1016" }
+    },
+    "text": {
+      "primary": { "value": "#EDEDED" },
+      "secondary": { "value": "#A7ABB3" },
+      "muted": { "value": "#7B808A" },
+      "inverse": { "value": "#0B0D10" }
+    },
+    "border": {
+      "subtle": { "value": "rgba(255,255,255,0.06)" },
+      "default": { "value": "rgba(255,255,255,0.10)" },
+      "strong": { "value": "rgba(255,255,255,0.16)" }
+    },
+    "accent": {
+      "amber": {
+        "50": { "value": "#FFF6D6" },
+        "100": { "value": "#FFE9A3" },
+        "200": { "value": "#FFDD70" },
+        "300": { "value": "#FFD04A" },
+        "400": { "value": "#FDBA12" },
+        "500": { "value": "#E7A600" },
+        "600": { "value": "#B78100" }
+      },
+      "neon": {
+        "400": { "value": "#33FF99" },
+        "500": { "value": "#12E07C" }
+      }
+    },
+    "state": {
+      "success": { "value": "#33FF99" },
+      "warning": { "value": "#FDBA12" },
+      "danger": { "value": "#FF4D4D" },
+      "info": { "value": "#6EA8FF" }
+    }
+  },
+  "font": {
+    "family": {
+      "sans": { "value": "Inter" },
+      "mono": { "value": "JetBrains Mono" }
+    },
+    "weight": {
+      "regular": { "value": "400" },
+      "medium": { "value": "500" },
+      "semibold": { "value": "600" },
+      "bold": { "value": "700" }
+    },
+    "size": {
+      "xs": { "value": "12px" },
+      "sm": { "value": "14px" },
+      "md": { "value": "16px" },
+      "lg": { "value": "18px" },
+      "xl": { "value": "20px" },
+      "2xl": { "value": "24px" },
+      "3xl": { "value": "32px" },
+      "4xl": { "value": "40px" },
+      "5xl": { "value": "56px" }
+    },
+    "lineHeight": {
+      "tight": { "value": "1.1" },
+      "snug": { "value": "1.25" },
+      "normal": { "value": "1.5" },
+      "relaxed": { "value": "1.65" }
+    },
+    "letterSpacing": {
+      "tight": { "value": "-0.02em" },
+      "normal": { "value": "0em" },
+      "wide": { "value": "0.02em" }
+    }
+  },
+  "radius": {
+    "xs": { "value": "6px" },
+    "sm": { "value": "10px" },
+    "md": { "value": "14px" },
+    "lg": { "value": "18px" },
+    "xl": { "value": "24px" },
+    "pill": { "value": "999px" }
+  },
+  "space": {
+    "0": { "value": "0px" },
+    "1": { "value": "4px" },
+    "2": { "value": "8px" },
+    "3": { "value": "12px" },
+    "4": { "value": "16px" },
+    "5": { "value": "20px" },
+    "6": { "value": "24px" },
+    "7": { "value": "32px" },
+    "8": { "value": "40px" },
+    "9": { "value": "48px" },
+    "10": { "value": "64px" }
+  },
+  "shadow": {
+    "sm": { "value": "0 8px 20px rgba(0,0,0,0.35)" },
+    "md": { "value": "0 14px 40px rgba(0,0,0,0.45)" },
+    "lg": { "value": "0 22px 70px rgba(0,0,0,0.55)" },
+    "glowAmber": { "value": "0 0 30px rgba(253,186,18,0.22)" },
+    "glowNeon": { "value": "0 0 26px rgba(51,255,153,0.18)" }
+  },
+  "blur": {
+    "glass": { "value": "14px" }
+  },
+  "grid": {
+    "container": {
+      "max": { "value": "1200px" },
+      "padding": { "value": "24px" }
+    },
+    "columns": {
+      "desktop": { "value": "12" },
+      "tablet": { "value": "8" },
+      "mobile": { "value": "4" }
+    },
+    "gutter": {
+      "desktop": { "value": "24px" },
+      "tablet": { "value": "16px" },
+      "mobile": { "value": "12px" }
+    }
+  },
+  "component": {
+    "button": {
+      "primary": {
+        "bg": { "value": "{color.accent.amber.400}" },
+        "text": { "value": "{color.text.inverse}" },
+        "border": { "value": "rgba(0,0,0,0.25)" },
+        "shadow": { "value": "{shadow.glowAmber}" },
+        "radius": { "value": "{radius.pill}" },
+        "paddingX": { "value": "18px" },
+        "paddingY": { "value": "12px" }
+      },
+      "secondary": {
+        "bg": { "value": "rgba(255,255,255,0.04)" },
+        "text": { "value": "{color.text.primary}" },
+        "border": { "value": "{color.border.default}" },
+        "shadow": { "value": "{shadow.sm}" },
+        "radius": { "value": "{radius.pill}" },
+        "paddingX": { "value": "18px" },
+        "paddingY": { "value": "12px" }
+      }
+    },
+    "card": {
+      "base": {
+        "bg": { "value": "{color.surface.card}" },
+        "border": { "value": "{color.border.subtle}" },
+        "radius": { "value": "{radius.lg}" },
+        "shadow": { "value": "{shadow.sm}" },
+        "padding": { "value": "20px" }
+      },
+      "hover": {
+        "bg": { "value": "{color.surface.cardHover}" },
+        "shadow": { "value": "{shadow.md}" },
+        "border": { "value": "{color.border.default}" }
+      }
+    },
+    "badge": {
+      "base": {
+        "bg": { "value": "rgba(253,186,18,0.12)" },
+        "text": { "value": "{color.accent.amber.400}" },
+        "border": { "value": "rgba(253,186,18,0.22)" },
+        "radius": { "value": "{radius.pill}" },
+        "paddingX": { "value": "10px" },
+        "paddingY": { "value": "6px" }
+      },
+      "statusSuccess": {
+        "bg": { "value": "rgba(51,255,153,0.10)" },
+        "text": { "value": "{color.state.success}" },
+        "border": { "value": "rgba(51,255,153,0.18)" }
+      }
+    },
+    "terminal": {
+      "panel": {
+        "bg": { "value": "{color.surface.panel}" },
+        "border": { "value": "{color.border.subtle}" },
+        "radius": { "value": "{radius.lg}" },
+        "shadow": { "value": "{shadow.lg}" }
+      },
+      "line": {
+        "fontFamily": { "value": "{font.family.mono}" },
+        "fontSize": { "value": "{font.size.sm}" },
+        "text": { "value": "{color.text.secondary}" }
+      },
+      "prompt": {
+        "text": { "value": "{color.accent.neon.400}" }
+      }
+    }
+  }
+}
+
+Se você quiser, eu também gero a versão compatível com Tailwind (tailwind.config.ts + CSS variables) a partir desses tokens.

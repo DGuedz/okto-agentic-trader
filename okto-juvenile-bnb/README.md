@@ -40,6 +40,9 @@ Okto doesn't just guess. It uses a **"Confluence Supreme"** logic engine that on
 
 ## 📦 INSTALLATION & USAGE
 
+### 1. Agent Core (Python)
+The brain of the operation. Handles execution logic and strategy.
+
 ```bash
 # Clone the repository
 git clone https://github.com/okto-agent/okto-juvenile-bnb.git
@@ -51,6 +54,34 @@ pip install -r requirements.txt
 # Run the Autonomous Agent
 python3 main.py
 ```
+
+### 2. Command Deck UI (Next.js)
+The visual interface for monitoring the agent's performance.
+
+```bash
+cd web
+
+# Install UI Dependencies
+npm install
+
+# Start Development Server
+npm run dev
+# Access at http://localhost:3000
+```
+
+## 🎨 UI/UX DESIGN SYSTEM (BNB CHAIN)
+
+Okto follows the **BNB Chain Design Guidelines** for professional dApp interfaces.
+
+- **Primary Color:** `#F3BA2F` (BNB Yellow)
+- **Background:** `#0B0E11` (Deep Space / Binance Dark)
+- **Typography:** `Inter` / `JetBrains Mono`
+- **Components:** 
+  - `OrderBook`: Real-time depth visualization.
+  - `LiquidityMap`: On-chain flow analysis.
+  - `WalletConnect`: Secure Web3 auth (Wagmi + Viem).
+
+> **Note:** The UI uses Tailwind CSS for styling, adhering to the "Headless" aesthetic while maintaining brand consistency with the BSC ecosystem.
 
 ---
 
