@@ -46,6 +46,15 @@ class ScalpTentacle:
         self.exchange = ccxt.binance(config)
         self.symbol = "BNB/USDT"
         self.leverage = 5
+        self.metrics = {
+            "orders": 0,
+            "errors": 0,
+            "slippage_bps": [],
+            "latency_ms": [],
+            "last_order": None,
+            "last_entry": None,
+            "last_target": None
+        }
         
         # Set Leverage
         if self.mode == "LIVE_TRADING":
@@ -54,6 +63,49 @@ class ScalpTentacle:
                 print(f"[SYSTEM] LEVERAGE SET TO {self.leverage}x")
             except Exception as e:
                 print(f"[ERROR] COULD NOT SET LEVERAGE: {str(e)}")
+
+    def record_order(self, order, requested_price, side, started_at):
+        if not order:
+            self.metrics["errors"] += 1
+            return
+        self.metrics["orders"] += 1
+        filled_price = order.get("average") if isinstance(order, dict) else None
+        if not filled_price:
+            filled_price = order.get("price") if isinstance(order, dict) else None
+        if not filled_price:
+            filled_price = requested_price
+        if requested_price and filled_price:
+            try:
+                slippage_bps = abs((filled_price - requested_price) / requested_price) * 10000
+                self.metrics["slippage_bps"].append(slippage_bps)
+            except Exception:
+                self.metrics["errors"] += 1
+        if started_at:
+            latency_ms = int((time.time() - started_at) * 1000)
+            self.metrics["latency_ms"].append(latency_ms)
+        if isinstance(order, dict):
+            self.metrics["last_order"] = {
+                "id": order.get("id"),
+                "side": side,
+                "requested": requested_price,
+                "filled": filled_price,
+                "timestamp": order.get("timestamp")
+            }
+
+    def get_metrics_snapshot(self):
+        slippage = self.metrics["slippage_bps"]
+        latency = self.metrics["latency_ms"]
+        avg_slippage = sum(slippage) / len(slippage) if slippage else 0
+        avg_latency = sum(latency) / len(latency) if latency else 0
+        return {
+            "orders": self.metrics["orders"],
+            "errors": self.metrics["errors"],
+            "avg_slippage_bps": avg_slippage,
+            "avg_latency_ms": avg_latency,
+            "last_order": self.metrics["last_order"],
+            "last_entry": self.metrics["last_entry"],
+            "last_target": self.metrics["last_target"]
+        }
 
         
     def cancel_all_open_orders(self):
@@ -160,6 +212,7 @@ class ScalpTentacle:
 
             # 3. Place Limit Buy Order (The Trap)
             print(f"[GRID] SETTING TRAP | BUY LIMIT @ ${entry_price:.2f} | AMT: {amount_bnb} BNB")
+            start_ts = time.time()
             entry_order = self.exchange.create_order(
                 symbol=self.symbol,
                 type='LIMIT',
@@ -168,6 +221,8 @@ class ScalpTentacle:
                 price=entry_price,
                 params={'timeInForce': 'GTC'} # Good Till Cancel
             )
+            self.record_order(entry_order, entry_price, "buy", start_ts)
+            self.metrics["last_entry"] = entry_price
             
             # 4. Pre-calculate Exit (Take Profit)
             target_price = bb['upper']
@@ -188,6 +243,7 @@ class ScalpTentacle:
             roi_pct = ((target_price - entry_price) / entry_price) * 100 * self.leverage
             print(colored(f"🎯 PRE-SET TARGET: ${target_price:.2f} (Est. ROI: {roi_pct:.2f}%)", "green"))
             print(colored(f"✅ SMART GRID DEPLOYED. WAITING FOR PRICE EXECUTION ({phase} MODE).", "green", attrs=['bold']))
+            self.metrics["last_target"] = target_price
             
             return {"success": True, "entry": entry_price, "target": target_price}
 
@@ -228,6 +284,7 @@ class ScalpTentacle:
             amount_bnb = float(f"{amount_bnb:.2f}")
 
             print(f"[EXECUTION] OPENING LONG (5x) | AMOUNT: {amount_bnb} BNB | PRICE: ${price}")
+            start_ts = time.time()
             
             # 2. Execute Order (Pro Mode: Dark Pool Split & MEV Protection)
             # Calculate Slippage Risk
@@ -235,20 +292,22 @@ class ScalpTentacle:
             
             # If trade size is > 1 BNB OR High Slippage Risk, split it.
             if amount_bnb > 1.0 or is_risky:
-                 reason = "SIZE > 1.0" if amount_bnb > 1.0 else "MEV RISK"
-                 print(f"[DARK POOL] SPLITTING ORDER ({reason}) | TOTAL: {amount_bnb} BNB")
-                 chunks = self.aster.simulate_dark_pool_split(amount_bnb)
-                 
-                 for chunk in chunks:
-                     print(f"   >>> [HIDDEN] EXECUTING CHUNK: {chunk} BNB")
-                     self.exchange.create_market_buy_order(self.symbol, chunk)
-                     time.sleep(0.2) # Anti-front-run delay
-                 
-                 order = {"id": "hidden_order_batch", "amount": amount_bnb} # Simulated response
+                reason = "SIZE > 1.0" if amount_bnb > 1.0 else "MEV RISK"
+                print(f"[DARK POOL] SPLITTING ORDER ({reason}) | TOTAL: {amount_bnb} BNB")
+                chunks = self.aster.simulate_dark_pool_split(amount_bnb)
+                
+                for chunk in chunks:
+                    print(f"   >>> [HIDDEN] EXECUTING CHUNK: {chunk} BNB")
+                    self.exchange.create_market_buy_order(self.symbol, chunk)
+                    time.sleep(0.2) # Anti-front-run delay
+                
+                order = {"id": "hidden_order_batch", "amount": amount_bnb} # Simulated response
+                self.record_order(order, price, "buy", start_ts)
             else:
                 # Standard Execution for small orders
                 # Execute MARKET BUY
                 order = self.exchange.create_market_buy_order(self.symbol, amount_bnb)
+                self.record_order(order, price, "buy", start_ts)
                 
                 # 3. Set OCO (One-Cancels-Other) like Safety Orders
                 
@@ -346,7 +405,9 @@ class ScalpTentacle:
             print(f"[EXECUTION] OPENING SHORT (5x) | AMOUNT: {amount_bnb} BNB | PRICE: ${price}")
             
             # Execute MARKET SELL (SHORT)
+            start_ts = time.time()
             order = self.exchange.create_market_sell_order(self.symbol, amount_bnb)
+            self.record_order(order, price, "sell", start_ts)
             
             # SET SAFETY NET (Inverse of Long)
             # STOP LOSS: 1.5% Above Entry (Risk)
@@ -412,7 +473,10 @@ class ScalpTentacle:
             if amt > 0:
                 print(f"[EXECUTION] CLOSING LONG | AMOUNT: {amt} BNB")
                 # To close a LONG, we SELL
+                start_ts = time.time()
                 order = self.exchange.create_market_sell_order(self.symbol, amt)
+                requested_price = order.get("price") if isinstance(order, dict) else None
+                self.record_order(order, requested_price, "sell", start_ts)
                 return {"success": True, "order": order}
             else:
                 print("[WARNING] NO LONG POSITION DETECTED")

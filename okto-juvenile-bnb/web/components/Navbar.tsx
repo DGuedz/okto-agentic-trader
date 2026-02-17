@@ -8,10 +8,10 @@ export default function Navbar() {
         
         {/* LOGO: COMMAND HOSTNAME */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 bg-[#F3BA2F] rounded-sm shadow-[0_0_10px_#F3BA2F] flex items-center justify-center">
-             <img src="/assets/okto-logo-final.png" alt="Okto" className="w-6 h-6 object-contain opacity-90" />
+          <div className="w-10 h-10 bg-[#F3BA2F] rounded shadow-[0_0_20px_rgba(243,186,47,0.4)] flex items-center justify-center group-hover:shadow-[0_0_30px_rgba(243,186,47,0.6)] transition-all duration-300">
+             <img src="/assets/okto-logo-final.png" alt="Okto" className="w-7 h-7 object-contain" />
           </div>
-          <span className="text-white text-xl font-bold tracking-tighter group-hover:text-[#F3BA2F] transition-colors">
+          <span className="text-white text-2xl font-bold tracking-tighter group-hover:text-[#F3BA2F] transition-colors">
             Okto
           </span>
         </Link>

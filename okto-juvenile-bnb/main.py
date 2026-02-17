@@ -191,6 +191,12 @@ def main():
                 
                 # Pass Phase to setup_smart_grid to adjust aggressiveness
                 scalper.setup_smart_grid(phase=current_phase)
+                if loop_count % 5 == 0:
+                    metrics = scalper.get_metrics_snapshot()
+                    print(colored(f"[METRICS] ORDERS: {metrics['orders']} | ERRORS: {metrics['errors']} | SLIPPAGE_AVG: {metrics['avg_slippage_bps']:.2f} bps | LATENCY_AVG: {metrics['avg_latency_ms']:.0f} ms", "cyan"))
+                    if metrics["last_order"]:
+                        last = metrics["last_order"]
+                        print(colored(f"[METRICS] LAST ORDER: {last.get('side')} | REQ: {last.get('requested')} | FILL: {last.get('filled')}", "cyan"))
                 
             else:
                  print(f"{'[SCAN] MARKET DATA':.<{LABEL_WIDTH}} " + 

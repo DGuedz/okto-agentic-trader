@@ -12,6 +12,12 @@ class CapitalManager:
         self.secret = os.getenv("BINANCE_SECRET")
         self.target_profit_threshold = 5.0 # Minimum profit to trigger rotation (USDT)
         self.initial_balance = None # Will be set on first run
+        self.metrics = {
+            "rotation_attempts": 0,
+            "rotation_amounts": [],
+            "last_rotation": None,
+            "last_profit": 0
+        }
         
         # Connect to Binance Spot (for withdrawals)
         if self.api_key:
@@ -56,6 +62,7 @@ class CapitalManager:
             
             # 2. Logic: Calculate Net Profit (High Water Mark)
             net_profit = current_usdt - self.initial_balance
+            self.metrics["last_profit"] = net_profit
             
             if net_profit > self.target_profit_threshold:
                 return {
@@ -93,7 +100,16 @@ class CapitalManager:
         # Real execution would be:
         # self.exchange.withdraw('USDT', amount, target_address, tag=None, params={'network': 'BSC'})
         
-        return {
+        self.metrics["rotation_attempts"] += 1
+        self.metrics["rotation_amounts"].append(amount)
+        rotation = {
             "tx_hash": "0xSIMULATED_HASH_FOR_DEMO_" + os.urandom(4).hex(),
             "status": "QUEUED_FOR_BRIDGE"
         }
+        self.metrics["last_rotation"] = {
+            "target": target_address,
+            "amount": amount,
+            "status": rotation["status"],
+            "tx_hash": rotation["tx_hash"]
+        }
+        return rotation

@@ -94,6 +94,23 @@ Okto follows the **BNB Chain Design Guidelines** for professional dApp interface
 
 ---
 
+## ✅ PROOF-OF-EXECUTION (ON-CHAIN VERIFICATION)
+
+Required for **BNB Chain Good Vibes Only: OpenClaw Edition** hackathon submission.
+
+| Metric | Value |
+| :--- | :--- |
+| **Network** | BNB Smart Chain Testnet (ChainID: 97) |
+| **Contract (OktoProof)** | [`0x2a7F7FF2eF8Cf6948D445310B5e09Be5774EFffC`](https://testnet.bscscan.com/address/0x2a7F7FF2eF8Cf6948D445310B5e09Be5774EFffC) |
+| **Tx Hash (Commit)** | [`0xa59722a64950b6a97c7e986450876e8e1dca2b7063f468eed97510b343f0f5b1`](https://testnet.bscscan.com/tx/0xa59722a64950b6a97c7e986450876e8e1dca2b7063f468eed97510b343f0f5b1) |
+| **Run ID** | `0xa303ece179351865be958c0b86c6300c2c5c53209fc96599fde9e903c80c1c12` |
+| **Report Hash** | `0x9f4a01d29f2c1b2180dcdd343c1aa4990fc9e19697df8f8e9b42990800624467` |
+| **Tag** | `BINANCE->ASTER:dryrun:v1` |
+
+> **Note:** The `OktoProof` contract logs execution metadata on-chain to ensure auditability and immutability of agent actions.
+
+---
+
 ## 📄 LICENSE
 
 MIT License. Built for the **BNB Chain OpenClaw Hackathon 2026**.

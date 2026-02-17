@@ -31,14 +31,14 @@ export default function OrderBook() {
     price: 642.50 + (i * 0.5),
     size: Math.random() * 2,
     total: Math.random() * 10,
-    type: 'ask'
+    type: 'ask' as const
   })).reverse();
 
   const bids: Order[] = Array.from({ length: 8 }, (_, i) => ({
     price: 642.40 - (i * 0.5),
     size: Math.random() * 2,
     total: Math.random() * 10,
-    type: 'bid'
+    type: 'bid' as const
   }));
 
   const maxTotal = Math.max(...[...asks, ...bids].map(o => o.total));

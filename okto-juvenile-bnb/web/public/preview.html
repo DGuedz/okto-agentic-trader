@@ -105,11 +105,11 @@
     <!-- COMMAND DECK HEADER -->
     <header class="border-b border-[#F3BA2F]/20 bg-[#0B0E11]/90 backdrop-blur-xl sticky top-0 z-50">
         <div class="container mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-[#F3BA2F] rounded-sm shadow-[0_0_10px_#F3BA2F] flex items-center justify-center">
-                    <img src="/assets/okto-logo-final.png" alt="Okto" class="w-6 h-6 object-contain opacity-90">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 bg-[#F3BA2F] rounded shadow-[0_0_20px_rgba(243,186,47,0.4)] flex items-center justify-center group-hover:shadow-[0_0_30px_rgba(243,186,47,0.6)] transition-all duration-300">
+                    <img src="assets/okto-logo-final.png" alt="Okto" class="w-7 h-7 object-contain">
                 </div>
-                <span class="text-white text-xl font-bold tracking-tighter">Okto</span>
+                <span class="text-white text-2xl font-bold tracking-tighter">Okto</span>
             </div>
             <nav class="hidden md:flex gap-8 text-sm text-gray-400">
                 <a id="nav-docs" href="docs.html" class="transition-colors"><span class="text-[#F3BA2F]/50">[/]</span> DOCS</a>
@@ -142,13 +142,13 @@
             While you code, OKTO farms. The first Headless Liquidity Protocol designed for the AI-Augmented Developer.
         </p>
         <div class="flex justify-center gap-4">
-            <button id="deploy-btn" onclick="copyInstallCommand()" class="px-8 py-3 bg-[#F3BA2F] text-[#0B0E11] font-bold rounded-sm hover:brightness-110 transition-all shadow-[0_0_20px_rgba(243,186,47,0.4)] uppercase tracking-wider min-w-[200px] flex items-center justify-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <button id="deploy-btn" onclick="copyInstallCommand()" class="px-8 py-3 bg-[#F3BA2F] text-[#0B0E11] font-bold rounded-sm hover:brightness-110 transition-all shadow-[0_0_20px_rgba(243,186,47,0.4)] uppercase tracking-wider min-w-[200px] flex items-center justify-center gap-2 group">
+                <svg class="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Deploy Node
             </button>
-            <a href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" target="_blank" class="px-8 py-3 border border-border-subtle bg-white/5 rounded-sm hover:bg-white/10 transition-all uppercase tracking-wider text-sm flex items-center gap-2">
+            <a href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" target="_blank" class="px-8 py-3 border border-border-subtle bg-white/5 rounded-sm hover:bg-white/10 transition-all uppercase tracking-wider text-sm flex items-center gap-2 group">
                 <span>View on BscScan</span>
-                <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                <svg class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
             </a>
         </div>
     </section>
@@ -158,7 +158,7 @@
         <div class="p-6 border border-border-subtle rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all group">
             <h3 class="font-bold text-[#F3BA2F] mb-3 flex items-center gap-3">
                 <div class="p-2 bg-[#F3BA2F]/10 rounded-lg group-hover:bg-[#F3BA2F]/20 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
                 Idle Capital = Waste
             </h3>
@@ -176,7 +176,7 @@
         <div class="p-6 border border-border-subtle rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all group">
             <h3 class="font-bold text-[#F3BA2F] mb-3 flex items-center gap-3">
                 <div class="p-2 bg-[#F3BA2F]/10 rounded-lg group-hover:bg-[#F3BA2F]/20 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                 </div>
                 Code-to-Yield
             </h3>

@@ -31,20 +31,20 @@ export default function BlogPage() {
                   The greatest lie told to retail traders is that you need a website to transact. 
               </p>
               <p>
-                  While your browser struggles to render a "Swap" button and your MetaMask extension lags under the weight of a cluttered DOM, a headless script has already read the mempool, calculated the arbitrage, and bribed the validator. In the Dark Forest of DeFi, the User Interface (UI) is not a feature—it is a liability.
+                  While your browser struggles to render a &quot;Swap&quot; button and your MetaMask extension lags under the weight of a cluttered DOM, a headless script has already read the mempool, calculated the arbitrage, and bribed the validator. In the Dark Forest of DeFi, the User Interface (UI) is not a feature—it is a liability.
               </p>
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Latency of the Visual</h2>
               <p>
-                  Traditional dApps are designed for "Users"—a term that, in finance, often becomes synonymous with "Liquidity." By the time you click "Confirm," the opportunity has vanished. UIs introduce friction, invite phishing via malicious front-ends, and blind you to the raw state of the blockchain. To win in the current market, you must stop being a User and start being an Operator.
+                  Traditional dApps are designed for &quot;Users&quot;—a term that, in finance, often becomes synonymous with &quot;Liquidity.&quot; By the time you click &quot;Confirm,&quot; the opportunity has vanished. UIs introduce friction, invite phishing via malicious front-ends, and blind you to the raw state of the blockchain. To win in the current market, you must stop being a User and start being an Operator.
               </p>
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">Introducing OKTO: Spec-Driven Sovereignty</h2>
               <p>
-                  We are entering the era of Headless Finance. This is the philosophy behind OKTO, the first Headless Liquidity Node designed to live where developers live: the IDE. Inspired by the institutional precision of BlackRock’s BUIDL and the raw efficiency of MEV infrastructure, OKTO strips away the "black box" of modern DeFi.
+                  We are entering the era of Headless Finance. This is the philosophy behind OKTO, the first Headless Liquidity Node designed to live where developers live: the IDE. Inspired by the institutional precision of BlackRock’s BUIDL and the raw efficiency of MEV infrastructure, OKTO strips away the &quot;black box&quot; of modern DeFi.
               </p>
               <p>
-                  We operate via <strong>Spec-Driven DevOps (SDD)</strong>. You don't "hope" for a fill; you define your logic in a <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">genesis.yaml</code> file. You don't "react" to price action; you execute directly on the node via private RPCs, simulating every state change locally before broadcasting to the network. This is institutional-grade execution democratized for the individual developer.
+                  We operate via <strong>Spec-Driven DevOps (SDD)</strong>. You don&apos;t &quot;hope&quot; for a fill; you define your logic in a <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">genesis.yaml</code> file. You don&apos;t &quot;react&quot; to price action; you execute directly on the node via private RPCs, simulating every state change locally before broadcasting to the network. This is institutional-grade execution democratized for the individual developer.
               </p>
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Power of the Node</h2>

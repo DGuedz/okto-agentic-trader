@@ -3,6 +3,8 @@
 
 # 1. Credentials & Secrets (CRITICAL)
 .env
+.env.local
+web/.env.local
 config/.env
 *.key
 *.pem

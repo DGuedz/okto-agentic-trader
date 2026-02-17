@@ -7,9 +7,9 @@ export default function TerminalWidget() {
         <pre className="text-text-secondary overflow-x-auto">
           <code>
             <span className="text-accent-amber-400">strategy:</span><br/>
-            &nbsp;&nbsp;name: "bnb_scalp_v1"<br/>
-            &nbsp;&nbsp;assets: ["BNB/USDT"]<br/>
-            &nbsp;&nbsp;interval: "1m"<br/>
+            &nbsp;&nbsp;name: &quot;bnb_scalp_v1&quot;<br/>
+            &nbsp;&nbsp;assets: [&quot;BNB/USDT&quot;]<br/>
+            &nbsp;&nbsp;interval: &quot;1m&quot;<br/>
             <br/>
             <span className="text-accent-amber-400">risk_manager:</span><br/>
             &nbsp;&nbsp;max_drawdown: 5.0%<br/>
@@ -18,8 +18,8 @@ export default function TerminalWidget() {
             &nbsp;&nbsp;leverage: 5x<br/>
             <br/>
             <span className="text-accent-amber-400">modules:</span><br/>
-            &nbsp;&nbsp;- "anti_mev"<br/>
-            &nbsp;&nbsp;- "capital_rotation"<br/>
+            &nbsp;&nbsp;- &quot;anti_mev&quot;<br/>
+            &nbsp;&nbsp;- &quot;capital_rotation&quot;<br/>
           </code>
         </pre>
       </div>

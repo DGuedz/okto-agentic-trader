@@ -13,14 +13,26 @@ export default function Footer() {
               <span className="text-accent-amber-400 text-xs mt-2 block">Built for BNB Chain OpenClaw Hackathon 2026.</span>
             </p>
           </div>
-          <div className="flex gap-8 text-sm text-text-muted">
-            <a href="#" className="hover:text-accent-amber-400 transition-colors">Manifesto</a>
-            <a href="#" className="hover:text-accent-amber-400 transition-colors">GitHub</a>
-            <a href="#" className="hover:text-accent-amber-400 transition-colors">Docs</a>
+          <div className="flex flex-wrap gap-6 text-sm text-text-muted">
+            <a href="/docs#usage" className="hover:text-accent-amber-400 transition-colors">Use Protocol</a>
+            <a href="/docs#license" className="hover:text-accent-amber-400 transition-colors">License</a>
+            <a href="/architecture" className="hover:text-accent-amber-400 transition-colors">Architecture</a>
+            <a href="/blog" className="hover:text-accent-amber-400 transition-colors">Manifesto</a>
+            <a href="/demo" className="hover:text-accent-amber-400 transition-colors">Demo</a>
+            <a href="https://github.com/DGuedz/okto-agentic-trader" className="hover:text-accent-amber-400 transition-colors">GitHub</a>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-border-subtle flex justify-between items-center text-xs text-text-muted font-mono">
-          <p>Okto Agentic System © 2026</p>
+        <div className="mt-12 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-start md:items-center gap-6 text-xs text-text-muted font-mono">
+          <div className="space-y-2">
+            <p>OKTO — Sovereign Agentic Trading Infrastructure © 2026 (DGuedz / Double Green)</p>
+            <p>
+              <a href="https://okto-agentic-trader.vercel.app" className="hover:text-accent-amber-400 transition-colors">Source</a>
+              <span className="mx-2">•</span>
+              <a href="https://x.com/dg_doublegreen" className="hover:text-accent-amber-400 transition-colors">Creator</a>
+              <span className="mx-2">•</span>
+              <a href="https://creativecommons.org/licenses/by/4.0/" className="hover:text-accent-amber-400 transition-colors">CC BY 4.0</a>
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-accent-neon-400 animate-pulse"></span>
             SYSTEM: ONLINE

@@ -40,7 +40,7 @@ export default function WalletGate({ children }: { children: React.ReactNode }) 
         </div>
         <h1 className="text-3xl font-bold mb-4">RESTRICTED ACCESS</h1>
         <p className="text-white/50 mb-8 max-w-md">
-          Security Protocol Active. You must initialize a session to access this node's internal documentation and architecture.
+          Security Protocol Active. You must initialize a session to access this node&apos;s internal documentation and architecture.
         </p>
         
         <div className="flex flex-col items-center gap-4">

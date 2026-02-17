@@ -40,7 +40,7 @@ export default function SafetyHUD() {
             <CheckCircle2 size={14} />
             VERIFIED
           </div>
-          <div class="text-[10px] text-text-muted mt-1">Pool &gt; $500k Locked</div>
+          <div className="text-[10px] text-text-muted mt-1">Pool &gt; $500k Locked</div>
         </div>
 
         {/* Module 3: Gas Ceiling */}
