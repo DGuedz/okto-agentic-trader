@@ -30,6 +30,8 @@ bash_history
 # 3. Cache & Build Artifacts
 __pycache__/
 *.pyc
+artifacts/
+cache/
 build/
 dist/
 node_modules/
@@ -52,3 +54,4 @@ proof_of_efficiency/
 state.json
 plan.json
 web/Untitled-1
+public/assets/
