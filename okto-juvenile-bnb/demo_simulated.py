@@ -1,81 +1,56 @@
-#!/usr/bin/env python3
-"""
-DEMO SIMULADA - Para vídeo de demonstração
-Simula uma operação completa sem usar API real
-"""
-
 import time
 import random
-from termcolor import colored
 
-def simulated_demo():
-    print("🎬 INICIANDO DEMO SIMULADA PARA VÍDEO")
-    print("=" * 55)
-    print("📱 CONECTANDO À BINANCE FUTURES...")
-    time.sleep(1)
+def simulate_growth(initial_capital, target_profit, leverage, trades_per_day):
+    capital = initial_capital
+    profit_accumulated = 0.0
+    win_rate = 0.65  # Conservador para scalp
+    avg_win = 0.004  # 0.4% por trade (com alavancagem 5x = 2% ROE)
+    avg_loss = 0.002 # 0.2% stop loss curto
     
-    # Simular análise de mercado
-    print("\n📊 ANALISANDO MERCADO BNB/USDT")
-    time.sleep(1)
+    print(f"\n🚀 SIMULAÇÃO DE SCALP: ${initial_capital:.2f} -> +${target_profit:.2f}")
+    print(f"⚙️  Config: {leverage}x Leverage | {trades_per_day} trades/dia")
+    print("-" * 50)
     
-    current_price = 630.50 + random.uniform(-2, 2)
-    print(f"   • Preço Atual: ${current_price:.2f}")
-    print(f"   • RSI: {random.randint(45, 65)}")
-    print(f"   • Volume: {random.randint(1000, 5000)} BNB")
-    print(f"   • Tendência: ALTA 🐂")
-    
-    time.sleep(1)
-    print("\n🎯 IDENTIFICANDO OPORTUNIDADE DE ENTRADA")
-    print("   • OBI: Pressão compradora forte")
-    print("   • Bollinger: Preço próximo à banda inferior")
-    print("   • Setup: HIGH PROBABILITY")
-    
-    time.sleep(1)
-    print("\n🚀 EXECUTANDO ORDEM DE COMPRA")
-    print("   • Tipo: MARKET BUY")
-    print("   • Par: BNB/USDT")
-    print("   • Tamanho: 0.05 BNB")
-    print("   • Alavancagem: 5x")
-    
-    # Simular execução
-    for i in range(3):
-        print(f"   • Processando{'.' * (i+1)}")
-        time.sleep(0.5)
-    
-    entry_price = current_price + random.uniform(0.1, 0.5)
-    print(colored(f"\n✅ ORDEM EXECUTADA - ENTRY: ${entry_price:.2f}", 'green'))
-    print(f"   • Custo: ${entry_price * 0.05:.2f} USDT")
-    print(f"   • Posição: LONG BNB")
-    
-    time.sleep(2)
-    print("\n📈 MONITORANDO POSIÇÃO...")
-    
-    # Simular movimento de preço
-    for i in range(5):
-        price_move = entry_price + random.uniform(1, 3)
-        pnl = (price_move - entry_price) * 0.05 * 5  # 5x leverage
-        print(f"   • Preço: ${price_move:.2f} | PnL: ${pnl:.2f}")
-        time.sleep(1)
-    
-    # Simular fechamento
-    exit_price = entry_price + random.uniform(2, 4)
-    final_pnl = (exit_price - entry_price) * 0.05 * 5
-    
-    print(f"\n🎯 ATINGINDO TARGET...")
-    time.sleep(1)
-    print(colored(f"✅ FECHANDO POSIÇÃO - EXIT: ${exit_price:.2f}", 'green'))
-    print(colored(f"💰 LUCRO: ${final_pnl:.2f} USDT", 'green', attrs=['bold']))
-    
-    print(f"\n📊 ESTATÍSTICAS DA OPERAÇÃO:")
-    print(f"   • Entry: ${entry_price:.2f}")
-    print(f"   • Exit: ${exit_price:.2f}")
-    print(f"   • Movimento: +{(exit_price - entry_price):.2f} ({((exit_price - entry_price)/entry_price*100):.2f}%)")
-    print(f"   • PnL: ${final_pnl:.2f} USDT")
-    print(f"   • ROI: {(final_pnl/(entry_price*0.05)*100):.1f}%")
-    
-    time.sleep(1)
-    print("\n🎬 DEMO SIMULADA CONCLUÍDA - PRONTO PARA GRAVAÇÃO!")
-    print("💡 Use este vídeo para demonstrar a lógica de execução do Okto")
+    days = 0
+    while profit_accumulated < target_profit:
+        days += 1
+        daily_pnl = 0
+        
+        print(f"\n📅 DIA {days}:")
+        for i in range(trades_per_day):
+            is_win = random.random() < win_rate
+            trade_size = capital * 0.95 # Usa 95% do capital livre
+            
+            if is_win:
+                pnl = trade_size * avg_win * leverage
+                result = "✅ WIN "
+            else:
+                pnl = -trade_size * avg_loss * leverage
+                result = "❌ LOSS"
+                
+            daily_pnl += pnl
+            profit_accumulated += pnl
+            
+            # Simula composição ou saque parcial (aqui mantemos fixo pra simplificar meta)
+            # capital += pnl 
+            
+            print(f"   Trade {i+1}: {result} | PnL: ${pnl:.4f}")
+            
+            if profit_accumulated >= target_profit:
+                break
+                
+        print(f"   💰 Saldo do Dia: ${daily_pnl:.4f} | Total Acumulado: ${profit_accumulated:.4f}")
+        
+        if days > 30: # Safety break
+            print("\n⚠️ Meta não atingida em 30 dias (ajustar estratégia).")
+            break
+            
+    print("-" * 50)
+    print(f"🏁 RESULTADO FINAL:")
+    print(f"   Tempo necessário: {days} dias")
+    print(f"   Lucro Total: ${profit_accumulated:.2f}")
+    print(f"   Novo Saldo: ${initial_capital + profit_accumulated:.2f}")
 
-if __name__ == "__main__":
-    simulated_demo()
+# Cenário 1: Conservador (3 trades/dia, 5x)
+simulate_growth(11.21, 3.79, 5, 3) # Meta: Chegar a $15 (+$3.79)
