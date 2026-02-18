@@ -3,11 +3,70 @@ import time
 import random
 import argparse
 import sys
+import math
+try:
+    import market_diagnostic
+except ImportError:
+    # Fallback if running from root
+    try:
+        from ops import market_diagnostic
+    except ImportError:
+        print("⚠️  Warning: market_diagnostic module not found. Using defaults.")
+        market_diagnostic = None
+
+def calculate_dynamic_grids(upper, lower, min_step_pct=0.062, atr_pct=None):
+    """
+    Calcula número ótimo de grids baseado no step mínimo lucrativo e volatilidade.
+    """
+    range_pct = ((upper - lower) / lower) * 100
+    
+    # Se tivermos ATR, o step ideal deve ser próximo ou maior que o ATR
+    # para evitar execuções excessivas em ruído de microestrutura
+    target_step_pct = min_step_pct
+    if atr_pct:
+        print(f"📊 Volatility (ATR): {atr_pct:.3f}% | Fee Threshold: {min_step_pct:.3f}%")
+        target_step_pct = max(min_step_pct, atr_pct * 0.5) # 50% do ATR como step mínimo
+        
+    max_grids = int(range_pct / target_step_pct)
+    return max(2, max_grids) # Pelo menos 2 grids
 
 def run_grid(symbol, lower, upper, grids, capital=11.21, fee_tier=0.0002):
-    print(f"🕸️  GRID LOOP: {symbol} | ${lower} - ${upper} | {grids} Grids")
+    print(f"🕸️  GRID LOOP: {symbol} | ${lower} - ${upper}")
     print(f"💰 Capital: ${capital:.2f} | Mode: Maker (Limit Orders)")
     
+    # 0. Diagnóstico de Mercado
+    atr_pct = None
+    if market_diagnostic:
+        try:
+            print("🔍 Diagnosing Market Conditions...")
+            data = market_diagnostic.fetch_market_data(symbol)
+            if data:
+                atr_pct = data.get('atr_pct')
+                rsi = data.get('rsi')
+                price = data.get('price')
+                print(f"   👉 Price: ${price} | RSI: {rsi} | ATR: {atr_pct}%")
+                
+                # Trend Warning
+                if rsi > 70:
+                    print("   ⚠️  OVERBOUGHT (RSI > 70). Risk of pullback.")
+                elif rsi < 30:
+                    print("   ⚠️  OVERSOLD (RSI < 30). Risk of bounce.")
+                    
+                # Se o preço atual estiver fora do range, ajustar?
+                # Por enquanto, apenas avisar
+                if price < lower or price > upper:
+                    print(f"   🚨 PRICE ${price} IS OUTSIDE GRID RANGE [${lower} - ${upper}]")
+        except Exception as e:
+            print(f"   ⚠️  Diagnostic failed: {e}")
+
+    # 1. Otimização Dinâmica de Grids (Volatility Adjusted)
+    # Se o usuário não forçou um número de grids, calculamos o ideal
+    if grids == 0:
+        grids = calculate_dynamic_grids(upper, lower, atr_pct=atr_pct)
+        print(f"🧠 AI: Calculated optimal grids = {grids} (based on Volatility & Fees)")
+    else:
+        print(f"🔧 Manual Override: {grids} Grids")
+
     # Kill-Switch Buffers (0.25%)
     kill_upper = upper * 1.0025
     kill_lower = lower * 0.9975
@@ -55,7 +114,7 @@ def run_grid(symbol, lower, upper, grids, capital=11.21, fee_tier=0.0002):
     
     print("-" * 50)
     print(f"🟢 BUY LIMITS: {sorted(list(buy_orders))}")
-    print(f"�� SELL LIMITS: {sorted(list(sell_orders))}")
+    print(f"🔴 SELL LIMITS: {sorted(list(sell_orders))}")
     print("-" * 50)
     
     # Loop de Simulação (10 ticks)
@@ -142,7 +201,8 @@ if __name__ == "__main__":
     parser.add_argument("--symbol", default="BNB/USDT")
     parser.add_argument("--lower", type=float, default=617.55)
     parser.add_argument("--upper", type=float, default=619.45)
-    parser.add_argument("--grids", type=int, default=4) # Reduzido para 4 para garantir step > fee
+    # Se grids for 0, o script calcula automaticamente
+    parser.add_argument("--grids", type=int, default=0) 
     args = parser.parse_args()
     
     run_grid(args.symbol, args.lower, args.upper, args.grids)

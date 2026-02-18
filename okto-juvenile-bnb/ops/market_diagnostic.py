@@ -47,10 +47,14 @@ def fetch_market_data(symbol='BNB/USDT'):
             "timestamp": int(time.time())
         }
         
-        print(json.dumps(market_state))
+        # If running as script, print JSON for piping. If imported, return dict.
+        if __name__ == "__main__":
+            print(json.dumps(market_state))
+        return market_state
             
     except Exception as e:
-        print(json.dumps({"error": str(e)}))
+        if __name__ == "__main__":
+            print(json.dumps({"error": str(e)}))
         sys.exit(1)
 
 if __name__ == "__main__":
