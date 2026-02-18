@@ -20,13 +20,16 @@ def parse_jsonl_last(path):
     return json.loads(lines[-1])
 
 def fetch_live_state(symbol):
+    load_dotenv(".secure_env/okto.env")
     load_dotenv("config/.env")
     api_key = os.getenv("BINANCE_API_KEY")
     secret = os.getenv("BINANCE_SECRET")
     if not api_key or not secret:
         raise RuntimeError("missing BINANCE_API_KEY/BINANCE_SECRET")
 
-    ex = ccxt.binance(
+    # Use USD-M futures client to avoid spot wallet endpoints on restricted keys.
+    ex_class = getattr(ccxt, "binanceusdm", ccxt.binance)
+    ex = ex_class(
         {
             "apiKey": api_key,
             "secret": secret,
@@ -35,10 +38,27 @@ def fetch_live_state(symbol):
         }
     )
 
-    bal = ex.fetch_balance()
-    usdt_free = float(bal.get("USDT", {}).get("free", 0.0))
-    open_orders = ex.fetch_open_orders(symbol)
-    pos = ex.fetch_positions([symbol])
+    errors = []
+    # Prefer futures balance; some keys do not have broad wallet scope.
+    usdt_free = 0.0
+    try:
+        bal = ex.fetch_balance({"type": "future"})
+        usdt_free = float(bal.get("USDT", {}).get("free", 0.0))
+    except Exception as e:
+        # Keep checks running even if balance endpoint is restricted.
+        errors.append(f"balance_unavailable: {str(e)}")
+        usdt_free = 0.0
+    open_orders = []
+    try:
+        open_orders = ex.fetch_open_orders(symbol)
+    except Exception as e:
+        errors.append(f"open_orders_unavailable: {str(e)}")
+
+    pos = []
+    try:
+        pos = ex.fetch_positions([symbol])
+    except Exception as e:
+        errors.append(f"positions_unavailable: {str(e)}")
     contracts = 0.0
     unrealized = 0.0
     side = "flat"
@@ -55,6 +75,7 @@ def fetch_live_state(symbol):
         "position_contracts": contracts,
         "position_side": side,
         "unrealized_pnl": unrealized,
+        "errors": errors,
     }
 
 def classify(metrics, live_state, error_warn, error_crit, min_open_orders):
@@ -82,6 +103,9 @@ def classify(metrics, live_state, error_warn, error_crit, min_open_orders):
         reasons.append(f"est_net_cycle_pnl_usd={net_cycle:.6f} < 0")
 
     if live_state is not None:
+        if live_state.get("errors"):
+            status = "YELLOW" if status == "GREEN" else status
+            reasons.append("live_state partial: one or more private endpoints unavailable")
         if live_state["open_orders"] < min_open_orders:
             status = "YELLOW" if status == "GREEN" else status
             reasons.append(

@@ -9,7 +9,7 @@ config/.env
 *.key
 *.pem
 *.p12
-*.json  # Block JSON by default, whitelist specific configs if needed
+*.json
 !package.json
 !tsconfig.json
 !web/package.json
@@ -17,6 +17,7 @@ config/.env
 !web/next.config.js
 !web/tailwind.config.ts
 !web/postcss.config.js
+!config/.env.example
 
 # 2. Logs & History
 logs/
@@ -44,3 +45,10 @@ venv/
 # 5. User Data
 user_data/
 backups/
+
+# 6. Local secure and runtime artifacts
+.secure_env/
+proof_of_efficiency/
+state.json
+plan.json
+web/Untitled-1
