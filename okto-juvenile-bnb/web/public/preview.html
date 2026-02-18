@@ -28,15 +28,36 @@
             updateUI(isConnected);
         }
 
+        function handleHeroAction() {
+            const isConnected = localStorage.getItem('okto_wallet_connected') === 'true';
+            if (isConnected) {
+                copyInstallCommand();
+            } else {
+                connectWallet();
+            }
+        }
+
         function connectWallet() {
             const btn = document.getElementById('connect-btn');
-            btn.innerText = "INITIALIZING...";
-            btn.classList.add("opacity-50", "cursor-wait");
+            const heroBtn = document.getElementById('deploy-btn');
+            const heroText = document.getElementById('deploy-text');
+            
+            // Visual Feedback on Top Nav
+            if(btn) {
+                btn.innerText = "INITIALIZING...";
+                btn.classList.add("opacity-50", "cursor-wait");
+            }
+
+            // Visual Feedback on Hero Button
+            if(heroBtn) {
+                heroText.innerText = "AUTHORIZING...";
+                heroBtn.classList.add("opacity-50", "cursor-wait");
+            }
             
             setTimeout(() => {
                 localStorage.setItem('okto_wallet_connected', 'true');
                 updateUI(true);
-                alert("SESSION INITIALIZED. ACCESS GRANTED.");
+                // alert("SESSION INITIALIZED. ACCESS GRANTED."); // Removed alert for smoother UX
             }, 1500);
         }
 
@@ -46,30 +67,59 @@
             const navArch = document.getElementById('nav-arch');
             const navBlog = document.getElementById('nav-blog');
             
+            // Hero Button Logic
+            const heroBtn = document.getElementById('deploy-btn');
+            const heroText = document.getElementById('deploy-text');
+
             if (isConnected) {
-                btn.innerText = "0x71C...9A2 [ACTIVE]";
-                btn.classList.remove("hover:bg-[#F3BA2F]", "hover:text-black", "text-[#F3BA2F]");
-                btn.classList.add("bg-[#F3BA2F]/20", "text-[#F3BA2F]", "cursor-default");
-                btn.onclick = null; // Disable click
+                // Top Nav Update
+                if(btn) {
+                    btn.innerText = "0x71C...9A2 [ACTIVE]";
+                    btn.classList.remove("hover:bg-[#F3BA2F]", "hover:text-black", "text-[#F3BA2F]");
+                    btn.classList.add("bg-[#F3BA2F]/20", "text-[#F3BA2F]", "cursor-default");
+                    btn.onclick = null;
+                }
                 
+                // Hero Button Update
+                if(heroBtn) {
+                    heroText.innerText = "Deploy Node";
+                    heroBtn.classList.remove("bg-[#F3BA2F]/10", "text-[#F3BA2F]", "opacity-50", "cursor-wait");
+                    heroBtn.classList.add("bg-[#F3BA2F]", "text-[#0B0E11]");
+                }
+
                 // Unlock Nav
                 [navDocs, navArch, navBlog].forEach(el => {
-                    el.classList.remove("opacity-30", "cursor-not-allowed");
-                    el.classList.add("hover:text-[#F3BA2F]");
-                    el.onclick = null; // Remove blocker
+                    if(el) {
+                        el.classList.remove("opacity-30", "cursor-not-allowed");
+                        el.classList.add("hover:text-[#F3BA2F]");
+                        el.onclick = null;
+                    }
                 });
             } else {
-                btn.innerText = "Initialize_Session";
-                btn.onclick = connectWallet;
+                // Top Nav Reset
+                if(btn) {
+                    btn.innerText = "Initialize_Session";
+                    btn.onclick = connectWallet;
+                    btn.classList.remove("opacity-50", "cursor-wait");
+                }
+
+                // Hero Button Reset
+                if(heroBtn) {
+                    heroText.innerText = "Connect to Deploy";
+                    heroBtn.classList.remove("bg-[#F3BA2F]", "text-[#0B0E11]", "opacity-50", "cursor-wait");
+                    heroBtn.classList.add("bg-[#F3BA2F]/10", "text-[#F3BA2F]");
+                }
                 
                 // Lock Nav
                 [navDocs, navArch, navBlog].forEach(el => {
-                    el.classList.add("opacity-30", "cursor-not-allowed");
-                    el.classList.remove("hover:text-[#F3BA2F]");
-                    el.onclick = (e) => {
-                        e.preventDefault();
-                        alert("ACCESS DENIED. \n\nSecurity Protocol: Active\nRequirement: Initialize Session (Connect Wallet)");
-                    };
+                    if(el) {
+                        el.classList.add("opacity-30", "cursor-not-allowed");
+                        el.classList.remove("hover:text-[#F3BA2F]");
+                        el.onclick = (e) => {
+                            e.preventDefault();
+                            alert("ACCESS DENIED. \n\nSecurity Protocol: Active\nRequirement: Initialize Session (Connect Wallet)");
+                        };
+                    }
                 });
             }
         }
@@ -79,14 +129,15 @@
             const cmd = "git clone https://github.com/DGuedz/okto-agentic-trader.git && cd okto && ./install.sh";
             navigator.clipboard.writeText(cmd).then(() => {
                 const btn = document.getElementById('deploy-btn');
-                const originalText = btn.innerText;
+                const text = document.getElementById('deploy-text');
+                const originalText = text.innerText;
                 
-                btn.innerText = "> CMD COPIED TO CLIPBOARD";
+                text.innerText = "> CMD COPIED";
                 btn.classList.remove("bg-[#F3BA2F]", "text-[#0B0E11]");
                 btn.classList.add("bg-green-500", "text-black", "border-green-500");
                 
                 setTimeout(() => {
-                    btn.innerText = originalText;
+                    text.innerText = originalText;
                     btn.classList.add("bg-[#F3BA2F]", "text-[#0B0E11]");
                     btn.classList.remove("bg-green-500", "text-black", "border-green-500");
                 }, 2500);
@@ -129,27 +180,83 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="container mx-auto px-6 py-20 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 border border-[#F3BA2F]/30 rounded-full text-[#F3BA2F] text-xs bg-[#F3BA2F]/10 tracking-widest">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            v1.1 STABLE • BNB CHAIN
-        </div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-            Turn your IDE into a <br />
-            <span class="text-[#F3BA2F] glow-text">Liquidity Node</span>.
-        </h1>
-        <p class="text-xl text-text-secondary max-w-2xl mx-auto mb-10">
-            While you code, OKTO farms. The first Headless Liquidity Protocol designed for the AI-Augmented Developer.
-        </p>
-        <div class="flex justify-center gap-4">
-            <button id="deploy-btn" onclick="copyInstallCommand()" class="px-8 py-3 bg-[#F3BA2F] text-[#0B0E11] font-bold rounded-sm hover:brightness-110 transition-all shadow-[0_0_20px_rgba(243,186,47,0.4)] uppercase tracking-wider min-w-[200px] flex items-center justify-center gap-2 group">
-                <svg class="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                Deploy Node
-            </button>
-            <a href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" target="_blank" class="px-8 py-3 border border-border-subtle bg-white/5 rounded-sm hover:bg-white/10 transition-all uppercase tracking-wider text-sm flex items-center gap-2 group">
-                <span>View on BscScan</span>
-                <svg class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-            </a>
+    <section class="container mx-auto px-6 py-10 md:py-20">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- LEFT COLUMN: COPY & ACTIONS -->
+            <div class="text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 border border-[#F3BA2F]/30 rounded-full text-[#F3BA2F] text-xs bg-[#F3BA2F]/10 tracking-widest">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    v1.1 STABLE • BNB CHAIN
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
+                    Turn your IDE into a <br />
+                    <span class="text-[#F3BA2F] glow-text">Liquidity Node</span>.
+                </h1>
+                <p class="text-lg text-text-secondary mb-8 leading-relaxed max-w-lg">
+                    While you code, OKTO farms. The first Headless Liquidity Protocol designed for the AI-Augmented Developer.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <!-- MAIN ACTION BUTTON (WALLET GATED) -->
+                    <button id="deploy-btn" onclick="handleHeroAction()" class="px-8 py-4 bg-[#F3BA2F]/10 text-[#F3BA2F] border border-[#F3BA2F] font-bold rounded-sm hover:bg-[#F3BA2F] hover:text-[#0B0E11] transition-all shadow-[0_0_20px_rgba(243,186,47,0.1)] hover:shadow-[0_0_30px_rgba(243,186,47,0.4)] uppercase tracking-wider flex items-center justify-center gap-3 group w-full sm:w-auto">
+                        <svg id="deploy-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <span id="deploy-text">Connect to Deploy</span>
+                    </button>
+                    
+                    <a href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" target="_blank" class="px-8 py-4 border border-border-subtle bg-white/5 rounded-sm hover:bg-white/10 transition-all uppercase tracking-wider text-sm flex items-center justify-center gap-2 group w-full sm:w-auto">
+                        <span>View on BscScan</span>
+                        <svg class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+                
+                <div class="mt-6 flex items-center gap-4 text-xs text-text-secondary opacity-60">
+                    <div class="flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        <span>Audited</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path></svg>
+                        <span>Non-Custodial</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: LIVE TERMINAL -->
+            <div class="relative group">
+                <!-- Glow Effect -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-[#F3BA2F] to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                
+                <div class="relative bg-[#0F0F0F] border border-border-subtle rounded-lg p-4 font-mono text-sm shadow-2xl overflow-hidden min-h-[400px] flex flex-col">
+                    <!-- Window Controls -->
+                    <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-white/30">okto-node — live session</span>
+                    </div>
+
+                    <!-- HUD OVERLAY (Integrated) -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <div class="bg-white/5 p-2 rounded border border-white/5">
+                            <div class="text-[10px] text-white/40 uppercase">PNL (Session)</div>
+                            <div class="text-green-400 font-bold text-sm">+$14.20</div>
+                        </div>
+                        <div class="bg-white/5 p-2 rounded border border-white/5">
+                            <div class="text-[10px] text-white/40 uppercase">Safety</div>
+                            <div class="text-[#F3BA2F] font-bold text-sm animate-pulse">ARMED</div>
+                        </div>
+                    </div>
+
+                    <!-- TERMINAL CONTENT -->
+                    <div id="terminal-content" class="text-[#F3BA2F] space-y-1 font-mono text-xs md:text-sm flex-1 overflow-y-auto custom-scrollbar p-2 bg-black/20 rounded">
+                        <!-- Content injected by JS -->
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
