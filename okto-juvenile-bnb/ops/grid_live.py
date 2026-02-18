@@ -456,7 +456,7 @@ class GridExecutor:
                                 price = info['price']
                                 qty = info['amount']
                                 
-                                print(colored(f"✅ ORDER FILLED: {side.upper()} @ ${price}", "green"))
+                                print(colored(f"[SUCCESS] ORDER FILLED: {side.upper()} @ ${price}", "green"))
                                 
                                 # Track Fill & Fees
                                 # Approximate PnL if it's a closing trade (Sell in Long Grid)
@@ -481,7 +481,7 @@ class GridExecutor:
                                     self.place_limit_order('buy', buy_price, qty)
                                     
                             elif status == 'canceled':
-                                print(colored(f"⚠️ Order {oid} CANCELED. Removing from tracker.", "yellow"))
+                                print(colored(f"[WARN] Order {oid} CANCELED. Removing from tracker.", "yellow"))
                                 self.active_grid.pop(oid)
                                 
                         except Exception as e:
@@ -546,8 +546,8 @@ if __name__ == "__main__":
         bot.auto_configure()
     
     if not args.live:
-        print(colored("⚠️  DRY-RUN MODE. NO REAL ORDERS WILL BE PLACED.", "yellow"))
-        print(colored("    Use --live to broadcast to Binance.", "yellow"))
+        print(colored("[WARN] DRY-RUN MODE. NO REAL ORDERS WILL BE PLACED.", "yellow"))
+        print(colored("       Use --live to broadcast to Binance.", "yellow"))
 
     bot.cancel_all()
     run_result = bot.place_initial_grid()
