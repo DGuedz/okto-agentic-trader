@@ -1,0 +1,6 @@
+# Keep root repository focused on the hackathon deliverable.
+/*
+!/README.md
+!/.gitignore
+!/okto-juvenile-bnb/
+!/okto-juvenile-bnb/**
