@@ -19,6 +19,7 @@ config/.env
 !web/postcss.config.js
 !config/.env.example
 !web/public/intel_items.json
+!web/design-system.json
 
 # 2. Logs & History
 logs/

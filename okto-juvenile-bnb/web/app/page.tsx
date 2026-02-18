@@ -1,4 +1,5 @@
 import IntelClient from "@/components/IntelClient";
+import HeadlessTopologySection from "@/components/HeadlessTopologySection";
 
 export default function Home() {
   return (
@@ -37,6 +38,8 @@ $ python3 ops/grid_live.py --auto-regime
       <p className="mt-4 text-sm text-zinc-500">
         Evidence-linked. Explorer-first. No profit promises.
       </p>
+
+      <HeadlessTopologySection />
 
       <div className="mt-10">
         <IntelClient />

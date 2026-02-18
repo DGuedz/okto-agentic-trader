@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "name": "OKTO Dark Terminal DS",
+    "version": "1.0.0",
+    "notes": "Tokens for dark terminal-first UI with amber + neon accents. No financial promises."
+  },
+  "colors": {
+    "bg": {
+      "base": "#070A0D",
+      "surface": "#0B0F14",
+      "elevated": "#0E131A",
+      "glass": "rgba(15, 18, 24, 0.55)"
+    },
+    "border": {
+      "subtle": "rgba(255,255,255,0.08)",
+      "default": "rgba(255,255,255,0.12)",
+      "strong": "rgba(255,255,255,0.18)"
+    },
+    "text": {
+      "primary": "#E8EEF7",
+      "secondary": "rgba(232,238,247,0.72)",
+      "muted": "rgba(232,238,247,0.52)",
+      "disabled": "rgba(232,238,247,0.32)",
+      "mono": "#D9E2EE"
+    },
+    "accent": {
+      "amber": "#F6C356",
+      "amberSoft": "rgba(246,195,86,0.25)",
+      "blue": "#4AA3FF",
+      "green": "#49E2A1",
+      "purple": "#B57BFF",
+      "red": "#FF4D4D"
+    }
+  },
+  "components": {
+    "nodeCore": {
+      "size": "320px",
+      "ringWidth": "3px",
+      "ringColor": "#F6C356",
+      "label": "OKTO NODE",
+      "badge": "v1.1 STABLE"
+    },
+    "tentacle": {
+      "strokeWidth": 2.2,
+      "glowOpacity": 0.22
+    }
+  },
+  "copy": {
+    "topologyTitle": "The Headless Topology",
+    "cards": {
+      "genesis": "Spec defines the laws. No UI drift. Pure intent.",
+      "market": "Evidence-sourced signals from BNB Chain RPC.",
+      "intel": "Evidence-linked events. Generates policy-ready diffs.",
+      "exec": "Guardrailed actions with audit receipts."
+    },
+    "disclaimer": "Evidence-linked only. No profit promises."
+  }
+}
