@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "mode": "preview",
+    "network": "BNB Chain (BSC)",
+    "updated_at": "2026-02-18T00:00:00Z",
+    "disclaimer": "Evidence-linked signals only. No profit promises. Policies are neutral diffs."
+  },
+  "strip": [
+    {
+      "id": "dex_volume_24h",
+      "label": "DEX Volume (24h)",
+      "value": "Preview",
+      "delta": "",
+      "hint": "On-chain aggregates"
+    },
+    {
+      "id": "network_fees_24h",
+      "label": "Network Fees (24h)",
+      "value": "Preview",
+      "delta": "",
+      "hint": "Blocks + receipts"
+    },
+    {
+      "id": "new_pools_24h",
+      "label": "New Pools (24h)",
+      "value": "Preview",
+      "delta": "",
+      "hint": "Factory events"
+    },
+    {
+      "id": "router_activity",
+      "label": "Router Activity",
+      "value": "Preview",
+      "delta": "",
+      "hint": "Call frequency"
+    },
+    {
+      "id": "stable_flows",
+      "label": "Stable Flows",
+      "value": "Preview",
+      "delta": "",
+      "hint": "Transfer events"
+    },
+    {
+      "id": "risk_alerts",
+      "label": "Risk Alerts",
+      "value": "Preview",
+      "delta": "",
+      "hint": "Heuristic flags"
+    }
+  ],
+  "board": [
+    {
+      "id": "item_001",
+      "title": "Protocol parameter update detected",
+      "tag": "Parameter Change",
+      "risk": "Medium",
+      "timestamp": "2026-02-18T00:00:00Z",
+      "summary": "A verified contract emitted an administrative event consistent with a config update.",
+      "evidence": [
+        {
+          "label": "Tx",
+          "type": "tx",
+          "value": "0xYOUR_TX_HASH"
+        },
+        {
+          "label": "Contract",
+          "type": "address",
+          "value": "0xYOUR_CONTRACT"
+        }
+      ],
+      "policy_patch": {
+        "allowlist_add": [
+          "0xYOUR_CONTRACT"
+        ],
+        "budgets": {
+          "max_fee_native": "0.0003",
+          "max_slippage_bps": 50
+        },
+        "guards": {
+          "simulation_first": true,
+          "circuit_breaker": {
+            "max_failures": 3,
+            "window_minutes": 60,
+            "cooldown_minutes": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "item_002",
+      "title": "New contract deployment observed",
+      "tag": "New Listing",
+      "risk": "High",
+      "timestamp": "2026-02-18T00:00:00Z",
+      "summary": "A new contract was created and received initial interactions. Treat as high risk until verified.",
+      "evidence": [
+        {
+          "label": "Tx",
+          "type": "tx",
+          "value": "0xYOUR_TX_HASH"
+        },
+        {
+          "label": "Creator",
+          "type": "address",
+          "value": "0xCREATOR"
+        }
+      ],
+      "policy_patch": {
+        "allowlist_add": [],
+        "budgets": {
+          "max_fee_native": "0.0002",
+          "max_slippage_bps": 30
+        },
+        "guards": {
+          "simulation_first": true,
+          "circuit_breaker": {
+            "max_failures": 2,
+            "window_minutes": 30,
+            "cooldown_minutes": 120
+          }
+        }
+      }
+    },
+    {
+      "id": "item_003",
+      "title": "Fee regime shift window",
+      "tag": "Network",
+      "risk": "Low",
+      "timestamp": "2026-02-18T00:00:00Z",
+      "summary": "Network fee conditions deviated from recent baseline. Enforce stricter fee ceilings.",
+      "evidence": [
+        {
+          "label": "Block",
+          "type": "block",
+          "value": "00000000"
+        }
+      ],
+      "policy_patch": {
+        "allowlist_add": [],
+        "budgets": {
+          "max_fee_native": "0.00015",
+          "max_slippage_bps": 20
+        },
+        "guards": {
+          "simulation_first": true,
+          "circuit_breaker": {
+            "max_failures": 3,
+            "window_minutes": 60,
+            "cooldown_minutes": 60
+          }
+        }
+      }
+    }
+  ]
+}
