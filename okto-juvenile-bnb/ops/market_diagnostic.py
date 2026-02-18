@@ -4,6 +4,10 @@ import numpy as np
 import json
 import time
 import sys
+import os
+
+
+DEFAULT_CACHE_PATH = "proof_of_efficiency/market_snapshot.json"
 
 def fetch_market_data(symbol='BNB/USDT'):
     try:
@@ -46,6 +50,14 @@ def fetch_market_data(symbol='BNB/USDT'):
             "spread_pct": round(spread, 4),
             "timestamp": int(time.time())
         }
+
+        try:
+            os.makedirs(os.path.dirname(DEFAULT_CACHE_PATH), exist_ok=True)
+            with open(DEFAULT_CACHE_PATH, "w", encoding="utf-8") as f:
+                json.dump(market_state, f)
+        except Exception:
+            # Cache write failures must not break market reads.
+            pass
         
         # If running as script, print JSON for piping. If imported, return dict.
         if __name__ == "__main__":
@@ -55,7 +67,29 @@ def fetch_market_data(symbol='BNB/USDT'):
     except Exception as e:
         if __name__ == "__main__":
             print(json.dumps({"error": str(e)}))
-        sys.exit(1)
+            sys.exit(1)
+        return None
+
+
+def load_cached_market_data(symbol='BNB/USDT', max_age_sec=1800):
+    try:
+        if not os.path.exists(DEFAULT_CACHE_PATH):
+            return None
+        with open(DEFAULT_CACHE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if data.get("symbol") != symbol:
+            return None
+        ts = int(data.get("timestamp", 0))
+        if ts <= 0:
+            return None
+        age = int(time.time()) - ts
+        if age > max_age_sec:
+            return None
+        data["cache_age_sec"] = age
+        data["source"] = "cache"
+        return data
+    except Exception:
+        return None
 
 if __name__ == "__main__":
     fetch_market_data()

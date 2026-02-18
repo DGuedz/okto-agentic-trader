@@ -1,58 +1,94 @@
-# OKTO AGENTIC ASSISTANT
+# OKTO — Sovereign Agentic Trading Infrastructure
 ### Autonomous DeFi Execution Environment for BNB Chain
+
+<div align="center">
+  <img src="web/public/assets/okto-logo-terminal-operator.png" alt="OKTO Logo" width="120" />
+  <br />
+  <br />
+  <a href="https://okto-agentic-trader.vercel.app">
+    <img src="https://img.shields.io/badge/LIVE_DEMO-Click_Here-33FF99?style=for-the-badge&logo=vercel&logoColor=black" alt="Live Demo" />
+  </a>
+  <a href="https://testnet.bscscan.com/address/0x2a7F7FF2eF8Cf6948D445310B5e09Be5774EFffC">
+    <img src="https://img.shields.io/badge/On--Chain_Proof-Verified-F3BA2F?style=for-the-badge&logo=binance&logoColor=black" alt="On-Chain Proof" />
+  </a>
+</div>
 
 **Status:** LIVE | **Category:** AI Agent / DeFi | **License:** MIT
 
-Okto is an autonomous High-Frequency Trading (HFT) agent designed to bridge the gap between institutional strategies and Decentralized Finance (DeFi) on the **BNB Chain**.
+Okto is a "headless" AI agent designed for High-Frequency Trading (HFT) and Dark Pool routing on the **BNB Chain**.
 
-It operates as a **"Headless" execution layer**, enabling institutional-grade strategies like **Dark Pool routing** (Iceberg Orders), **Volatility Scalping** (RSI + Bollinger + ATR), and **Institutional Sentiment Analysis** (VWAP + Funding Rate).
-
----
-
-## 🚀 CORE FEATURES (HFT ENGINE)
-
-### 1. 🧠 Autonomous Trading Brain (RSI + Bollinger + Delta)
-Okto doesn't just guess. It uses a **"Confluence Supreme"** logic engine that only executes when multiple on-chain vectors align:
-- **Price Action:** RSI Oversold/Overbought (<30/>70) + Bollinger Band touches.
-- **Volume Delta:** Confirms aggression (Buyers vs Sellers) before entering.
-- **Volatility (ATR):** Dynamically adjusts Stop Loss and Take Profit targets based on market noise.
-
-### 2. 🛡️ Smart Grid & Dark Pool Execution
-- **Dark Pool Logic:** Splits large orders into micro-chunks to hide intent from predatory MEV bots.
-- **Smart Grid:** Instead of market buying, Okto places **Limit Orders (Maker)** at calculated support levels (Order Book Imbalance Walls), reducing fees and improving entry prices.
-
-### 3. 🧭 Institutional Compass (On-Chain Sentiment)
-- **VWAP Trend:** Tracks if the "smart money" is buying or selling.
-- **Funding Rate Monitor:** Detects over-leveraged markets to anticipate squeezes.
-- **OBI (Order Book Imbalance):** Reads the depth of the book to predict short-term price walls.
+It solves the "PvP execution" problem in DeFi by enabling institutional-grade strategies (Iceberg Orders, Volatility Scalping, and Sentiment Analysis) through a terminal-first autonomous agent.
 
 ---
 
-## 🛠️ TECH STACK
+## HACKATHON SUBMISSION (JUDGES START HERE)
 
-- **Language:** Python 3.14 (Core Logic)
-- **Blockchain:** BNB Chain (BSC)
-- **Connectivity:** CCXT (CEX), Web3.py (On-Chain)
-- **Analysis:** Pandas, NumPy (Financial Data Processing)
-- **Security:** Local Environment Execution (Non-Custodial Logic)
+**Event:** Good Vibes Only: OpenClaw Edition (BNB Chain)
+**Track:** Agent (AI Agent × Onchain Actions)
+
+### 1. On-Chain Proof (Required)
+We have deployed a Proof-of-Execution contract to **BNB Smart Chain Testnet** to log agent actions immutably.
+
+| Asset | Value | Link |
+| :--- | :--- | :--- |
+| **Contract** | `OktoProof` | [View on BscScan](https://testnet.bscscan.com/address/0x2a7F7FF2eF8Cf6948D445310B5e09Be5774EFffC) |
+| **Transaction** | `Commit Hash` | [View Transaction](https://testnet.bscscan.com/tx/0xa59722a64950b6a97c7e986450876e8e1dca2b7063f468eed97510b343f0f5b1) |
+| **Network** | BSC Testnet (97) | - |
+
+### 2. Reproducibility & Demo
+*   **Live App:** [https://okto-agentic-trader.vercel.app](https://okto-agentic-trader.vercel.app) (Command Deck UI)
+*   **GitHub Repo:** [https://github.com/DGuedz/okto-agentic-trader](https://github.com/DGuedz/okto-agentic-trader) (Public)
+*   **Video Demo:** [Watch on YouTube](https://youtu.be/zCZ38Joy97U)
+
+### 3. AI Implementation
+Okto uses a **Headless Spec-Driven Design** where the "Brain" (Python) uses:
+*   **Regime Detection:** ML-lite logic (OBI + RSI + ATR) to classify market states (Bull/Bear/Range).
+*   **Confluence Engine:** Multi-vector decision making before any on-chain action.
 
 ---
 
-## 📦 INSTALLATION & USAGE
+## CORE FEATURES (HFT ENGINE)
+
+**Autonomous Execution:** No manual clicks. You define the strategy; the agent executes 24/7.
+
+**Dark Pool Logic:** Splits large orders into micro-chunks to hide intent from predatory MEV bots.
+
+**Smart Grid:** Instead of market buying, Okto places **Limit Orders (Maker)** at calculated support levels (Order Book Imbalance Walls), reducing fees and improving entry prices.
+
+**Sentiment Analysis Engine:** Analyzes on-chain volume variance and funding rates to predict short-term volatility.
+
+---
+
+---
+
+## TECH STACK
+
+- **AI/Logic:** Python 3.14 (AsyncIO, Pandas, NumPy)
+- **Blockchain:** Hardhat, Web3.py, BNB Chain
+- **Interface:** Command Line Priority (Terminal) + Next.js Dashboard (Monitoring)
+
+---
+
+## INSTALLATION & REPRODUCTION
+
+### Prerequisites
+*   Python 3.10+
+*   Node.js 18+
+*   Binance Testnet API Keys (for Live Mode)
 
 ### 1. Agent Core (Python)
 The brain of the operation. Handles execution logic and strategy.
 
 ```bash
 # Clone the repository
-git clone https://github.com/okto-agent/okto-juvenile-bnb.git
-cd okto-juvenile-bnb
+git clone https://github.com/DGuedz/okto-agentic-trader.git
+cd okto-agentic-trader
 
 # Install Dependencies
 pip install -r requirements.txt
 
-# Run the Autonomous Agent
-python3 main.py
+# Run the Autonomous Agent (Simulation Mode)
+python3 ops/grid_live.py --auto-regime
 ```
 
 ### 2. Command Deck UI (Next.js)
@@ -69,7 +105,7 @@ npm run dev
 # Access at http://localhost:3000
 ```
 
-## 🎨 UI/UX DESIGN SYSTEM (BNB CHAIN)
+## UI/UX DESIGN SYSTEM (BNB CHAIN)
 
 Okto follows the **BNB Chain Design Guidelines** for professional dApp interfaces.
 
@@ -85,7 +121,7 @@ Okto follows the **BNB Chain Design Guidelines** for professional dApp interface
 
 ---
 
-## 🏆 HACKATHON TRACKS & TAGS
+## HACKATHON TRACKS & TAGS
 
 - **BNB Chain:** Native support for BSC execution.
 - **AI Agent:** Fully autonomous decision-making engine.
@@ -111,6 +147,6 @@ Required for **BNB Chain Good Vibes Only: OpenClaw Edition** hackathon submissio
 
 ---
 
-## 📄 LICENSE
+## LICENSE
 
 MIT License. Built for the **BNB Chain OpenClaw Hackathon 2026**.
