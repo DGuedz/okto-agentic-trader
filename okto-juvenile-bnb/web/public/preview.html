@@ -325,107 +325,74 @@
         </div>
     </section>
 
-    <!-- TERMINAL DEMO & NETWORK HUD -->
-    <section class="container mx-auto px-6 py-10">
-        <div class="grid md:grid-cols-3 gap-6">
-            <!-- TERMINAL (2/3 width) -->
-            <div class="md:col-span-2 bg-[#0F0F0F] border border-border-subtle rounded-lg p-4 font-mono text-sm shadow-2xl overflow-hidden relative min-h-[350px] flex flex-col">
-                <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-                    <div class="flex gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <span class="text-xs text-white/30 tracking-wider">root@okto-node:~/strategies/bnb-grid#</span>
+    <!-- SYSTEM TOPOLOGY & NETWORK STATUS -->
+    <section class="container mx-auto px-6 py-20">
+        <h2 class="text-3xl font-bold text-center mb-16 tracking-tight">
+            The <span class="text-[#F3BA2F]">Headless</span> Topology
+        </h2>
+        
+        <div class="grid lg:grid-cols-3 gap-8 items-center">
+            
+            <!-- LEFT: INPUTS -->
+            <div class="space-y-6">
+                <div class="bg-[#0F0F0F] border border-border-subtle p-6 rounded-lg relative group hover:border-[#F3BA2F]/30 transition-all">
+                    <div class="absolute -right-3 top-1/2 w-3 h-[1px] bg-[#F3BA2F]/30 hidden lg:block"></div>
+                    <h3 class="text-[#F3BA2F] font-bold mb-2 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        Genesis Spec
+                    </h3>
+                    <p class="text-xs text-text-secondary">Your `genesis.yaml` defines the laws. No UI drift. No manual errors. Pure intent.</p>
                 </div>
                 
-                <!-- DYNAMIC TERMINAL CONTENT -->
-                <div id="terminal-content" class="text-[#F3BA2F] space-y-1 font-mono text-xs md:text-sm flex-1 overflow-y-auto custom-scrollbar p-2 bg-black/20 rounded">
-                    <!-- Content will be injected by JS -->
+                <div class="bg-[#0F0F0F] border border-border-subtle p-6 rounded-lg relative group hover:border-[#F3BA2F]/30 transition-all">
+                    <div class="absolute -right-3 top-1/2 w-3 h-[1px] bg-[#F3BA2F]/30 hidden lg:block"></div>
+                    <h3 class="text-blue-400 font-bold mb-2 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Market Data
+                    </h3>
+                    <p class="text-xs text-text-secondary">Real-time feed from Binance/BNB Chain RPC. Latency: <span class="text-green-400">14ms</span>.</p>
                 </div>
             </div>
 
-            <!-- NETWORK VITALITY MONITOR (1/3 width) -->
-            <div class="md:col-span-1 space-y-4">
+            <!-- CENTER: THE NODE (Visual Core) -->
+            <div class="relative flex justify-center py-10 lg:py-0">
+                <!-- Pulse Effect Background -->
+                <div class="absolute inset-0 bg-[#F3BA2F]/5 rounded-full blur-3xl animate-pulse"></div>
                 
-                <!-- NETWORK PULSE CARD -->
-                <div class="bg-[#0B0E11] border border-border-subtle rounded-lg p-4 font-mono shadow-lg">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold text-white/50 uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                            BNB Chain Pulse
-                        </h3>
-                        <span class="text-[10px] text-white/30">Mainnet</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <div class="text-[10px] text-white/30 uppercase">Block Height</div>
-                            <div class="text-sm font-bold text-white font-mono" id="sim-block">36,492,105</div>
-                        </div>
-                        <div>
-                            <div class="text-[10px] text-white/30 uppercase">Gas Price</div>
-                            <div class="text-sm font-bold text-blue-400 font-mono">3.01 Gwei</div>
-                        </div>
-                        <div>
-                            <div class="text-[10px] text-white/30 uppercase">Network TPS</div>
-                            <div class="text-sm font-bold text-[#F3BA2F] font-mono">2,140</div>
-                        </div>
-                        <div>
-                            <div class="text-[10px] text-white/30 uppercase">Latency</div>
-                            <div class="text-sm font-bold text-green-400 font-mono">14ms</div>
-                        </div>
+                <div class="relative w-64 h-64 bg-[#0B0E11] border-2 border-[#F3BA2F] rounded-full flex flex-col items-center justify-center shadow-[0_0_50px_rgba(243,186,47,0.2)] z-10">
+                    <img src="assets/okto-logo-final.png" alt="Okto Core" class="w-20 h-20 mb-4 animate-bounce-slow object-contain">
+                    <div class="text-xl font-bold text-white tracking-widest">OKTO NODE</div>
+                    <div class="text-[10px] text-[#F3BA2F] mt-1 bg-[#F3BA2F]/10 px-2 py-1 rounded">V1.1 STABLE</div>
+                    
+                    <!-- Orbiting Satellites -->
+                    <div class="absolute w-full h-full animate-spin-slow">
+                        <div class="absolute top-0 left-1/2 -ml-2 -mt-2 w-4 h-4 bg-blue-500 rounded-full shadow-[0_0_10px_#3B82F6]"></div>
+                        <div class="absolute bottom-0 left-1/2 -ml-2 -mb-2 w-4 h-4 bg-green-500 rounded-full shadow-[0_0_10px_#22C55E]"></div>
                     </div>
                 </div>
-
-                <!-- ACTIVE VAULTS CARD -->
-                <div class="bg-[#0B0E11] border border-border-subtle rounded-lg p-4 font-mono shadow-lg relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-[#F3BA2F]/5 rounded-bl-full -mr-4 -mt-4"></div>
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold text-white/50 uppercase tracking-widest">Active Vaults</h3>
-                        <span class="text-[10px] bg-[#F3BA2F]/10 text-[#F3BA2F] px-2 py-0.5 rounded border border-[#F3BA2F]/20">AUTO-COMPOUND</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
-                            <div class="flex items-center gap-2">
-                                <div class="w-1 h-8 bg-blue-500 rounded-full"></div>
-                                <div>
-                                    <div class="text-xs font-bold text-white">Aster Farmer</div>
-                                    <div class="text-[10px] text-white/30">BNB-USDT LP</div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-xs font-bold text-green-400">+18.4% APY</div>
-                                <div class="text-[10px] text-white/30">$4,250 TVL</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <div class="w-1 h-8 bg-[#F3BA2F] rounded-full"></div>
-                                <div>
-                                    <div class="text-xs font-bold text-white">Grid Scalper</div>
-                                    <div class="text-[10px] text-white/30">Neutral Strategy</div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-xs font-bold text-green-400">+0.6% / Session</div>
-                                <div class="text-[10px] text-white/30">Active Orders: 12</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECURITY STATUS -->
-                <div class="bg-[#0B0E11] border border-border-subtle rounded-lg p-3 font-mono shadow-lg flex justify-between items-center">
-                    <div class="text-xs text-white/40 uppercase tracking-widest flex items-center gap-2">
-                        <svg class="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        Security Layer
-                    </div>
-                    <div class="text-[10px] font-bold text-green-400 bg-green-500/10 px-2 py-1 rounded border border-green-500/20">
-                        MEV PROTECTION: ACTIVE
-                    </div>
-                </div>
-
             </div>
+
+            <!-- RIGHT: OUTPUTS -->
+            <div class="space-y-6">
+                <div class="bg-[#0F0F0F] border border-border-subtle p-6 rounded-lg relative group hover:border-green-400/30 transition-all text-right">
+                    <div class="absolute -left-3 top-1/2 w-3 h-[1px] bg-green-400/30 hidden lg:block"></div>
+                    <h3 class="text-green-400 font-bold mb-2 flex items-center justify-end gap-2">
+                        Yield Harvesting
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </h3>
+                    <p class="text-xs text-text-secondary">Auto-bridge to Aster Vaults. <br/>Current APY: <span class="text-white">18.4%</span></p>
+                </div>
+                
+                <div class="bg-[#0F0F0F] border border-border-subtle p-6 rounded-lg relative group hover:border-purple-400/30 transition-all text-right">
+                    <div class="absolute -left-3 top-1/2 w-3 h-[1px] bg-purple-400/30 hidden lg:block"></div>
+                    <h3 class="text-purple-400 font-bold mb-2 flex items-center justify-end gap-2">
+                        Execution
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </h3>
+                    <p class="text-xs text-text-secondary">MEV-Protected Transactions.<br/>Success Rate: <span class="text-white">99.9%</span></p>
+                </div>
+            </div>
+            
         </div>
     </section>
 
