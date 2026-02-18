@@ -22,6 +22,36 @@
             }
         }
 
+        // TOAST SYSTEM
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                'info': 'border-[#F3BA2F] text-[#F3BA2F] bg-[#0B0E11]',
+                'error': 'border-red-500 text-red-500 bg-[#0B0E11]',
+                'success': 'border-green-500 text-green-500 bg-[#0B0E11]'
+            };
+
+            toast.className = `p-4 border-l-4 rounded shadow-2xl flex items-center gap-3 min-w-[300px] transform translate-y-10 opacity-0 transition-all duration-300 ${colors[type]}`;
+            toast.innerHTML = `
+                <span class="font-mono text-xs font-bold uppercase tracking-widest">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Animate In
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            });
+
+            // Remove after 3s
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
         // WALLET GATE LOGIC (SIMULATED)
         function checkWalletStatus() {
             const isConnected = localStorage.getItem('okto_wallet_connected') === 'true';
@@ -57,7 +87,7 @@
             setTimeout(() => {
                 localStorage.setItem('okto_wallet_connected', 'true');
                 updateUI(true);
-                // alert("SESSION INITIALIZED. ACCESS GRANTED."); // Removed alert for smoother UX
+                showToast("SESSION ESTABLISHED. IDENTITY VERIFIED.", "success");
             }, 1500);
         }
 
@@ -117,7 +147,7 @@
                         el.classList.remove("hover:text-[#F3BA2F]");
                         el.onclick = (e) => {
                             e.preventDefault();
-                            alert("ACCESS DENIED. \n\nSecurity Protocol: Active\nRequirement: Initialize Session (Connect Wallet)");
+                            showToast("ACCESS DENIED: AUTHENTICATION REQUIRED", "error");
                         };
                     }
                 });
@@ -135,6 +165,7 @@
                 text.innerText = "> CMD COPIED";
                 btn.classList.remove("bg-[#F3BA2F]", "text-[#0B0E11]");
                 btn.classList.add("bg-green-500", "text-black", "border-green-500");
+                showToast("INSTALL COMMAND COPIED TO CLIPBOARD", "success");
                 
                 setTimeout(() => {
                     text.innerText = originalText;
@@ -152,6 +183,9 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#0B0E11]">
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed bottom-10 right-10 z-[100] flex flex-col gap-4"></div>
 
     <!-- COMMAND DECK HEADER -->
     <header class="border-b border-[#F3BA2F]/20 bg-[#0B0E11]/90 backdrop-blur-xl sticky top-0 z-50">
@@ -372,12 +406,14 @@
         const terminalLines = [
             { text: "[INIT] Loading specs/genesis.yaml... OK", color: "text-blue-400", delay: 500 },
             { text: "[INIT] Connecting to Safety Rails... CONNECTED (ChainID: 56)", color: "text-blue-400", delay: 800 },
+            { text: "[AUTH] Verifying Operator Credentials... OK (DoubleGreen)", color: "text-green-400", delay: 600 },
             { text: "--------------------------------------------------", color: "text-white/50", delay: 100 },
             { text: "[MONITOR] DETECTING IDLE COMPUTE RESOURCES...", color: "text-yellow-400", delay: 1200 },
             { text: ">> IDLE STATE CONFIRMED. INITIATING SCALP SEQUENCE.", color: "text-[#F3BA2F]", delay: 800 },
+            { text: "[SCAN] CHECKING MEMPOOL FOR ARB OPPORTUNITIES...", color: "text-white/70", delay: 900 },
             { text: "[EXEC] PLACING BUY ORDER | LIMIT @ $635.20 | SIZE: 0.5 BNB", color: "text-magenta-400", delay: 1500 },
-            { text: "✅ ORDER FILLED: 0x8a7...3b2", color: "text-green-400", delay: 600 },
-            { text: "💰 [SCALPER] PROFIT CAPTURED: +$4.20", color: "text-cyan-400", delay: 1000 },
+            { text: "✅ ORDER FILLED: 0x8a7...3b2 (Gas: 0.0001 BNB)", color: "text-green-400", delay: 600 },
+            { text: "💰 [SCALPER] PROFIT CAPTURED: +$4.20 (0.66%)", color: "text-cyan-400", delay: 1000 },
             { text: "🌉 [BRIDGE] MOVING PROFIT ($10.00) TO ASTER VAULT...", color: "text-purple-400", delay: 1200 },
             { text: "🌾 [FARM] STAKING COMPLETE. APY: 18.5%", color: "text-white", delay: 800 },
             { text: "[SLEEP] Waiting for next opportunity...", color: "text-white/30", delay: 2000 }
