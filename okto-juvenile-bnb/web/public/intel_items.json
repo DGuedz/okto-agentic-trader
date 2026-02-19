@@ -6,48 +6,12 @@
     "disclaimer": "Evidence-linked signals only. No profit promises. Policies are neutral diffs."
   },
   "strip": [
-    {
-      "id": "dex_volume_24h",
-      "label": "DEX Volume (24h)",
-      "value": "Preview",
-      "delta": "",
-      "hint": "On-chain aggregates"
-    },
-    {
-      "id": "network_fees_24h",
-      "label": "Network Fees (24h)",
-      "value": "Preview",
-      "delta": "",
-      "hint": "Blocks + receipts"
-    },
-    {
-      "id": "new_pools_24h",
-      "label": "New Pools (24h)",
-      "value": "Preview",
-      "delta": "",
-      "hint": "Factory events"
-    },
-    {
-      "id": "router_activity",
-      "label": "Router Activity",
-      "value": "Preview",
-      "delta": "",
-      "hint": "Call frequency"
-    },
-    {
-      "id": "stable_flows",
-      "label": "Stable Flows",
-      "value": "Preview",
-      "delta": "",
-      "hint": "Transfer events"
-    },
-    {
-      "id": "risk_alerts",
-      "label": "Risk Alerts",
-      "value": "Preview",
-      "delta": "",
-      "hint": "Heuristic flags"
-    }
+    { "id": "dex_volume_24h", "label": "DEX Volume (24h)", "value": "Preview", "delta": "", "hint": "On-chain aggregates" },
+    { "id": "network_fees_24h", "label": "Network Fees (24h)", "value": "Preview", "delta": "", "hint": "Blocks + receipts" },
+    { "id": "perps_oi_proxy", "label": "Perps OI (proxy)", "value": "Preview", "delta": "", "hint": "Market positioning context" },
+    { "id": "incentives_active", "label": "Incentives Active", "value": "Preview", "delta": "", "hint": "Launchpool + Megadrop windows" },
+    { "id": "new_listings_programs", "label": "New Listings/Programs", "value": "Preview", "delta": "", "hint": "Program and listing radar" },
+    { "id": "risk_alerts", "label": "Risk Alerts", "value": "Preview", "delta": "", "hint": "Policy and heuristic flags" }
   ],
   "board": [
     {
@@ -130,27 +94,140 @@
       "timestamp": "2026-02-18T00:00:00Z",
       "summary": "Network fee conditions deviated from recent baseline. Enforce stricter fee ceilings.",
       "evidence": [
-        {
-          "label": "Block",
-          "type": "block",
-          "value": "00000000"
-        }
+        { "label": "Block", "type": "block", "value": "00000000" }
       ],
       "policy_patch": {
         "allowlist_add": [],
-        "budgets": {
-          "max_fee_native": "0.00015",
-          "max_slippage_bps": 20
-        },
+        "budgets": { "max_fee_native": "0.00015", "max_slippage_bps": 20 },
         "guards": {
           "simulation_first": true,
-          "circuit_breaker": {
-            "max_failures": 3,
-            "window_minutes": 60,
-            "cooldown_minutes": 60
-          }
+          "circuit_breaker": { "max_failures": 3, "window_minutes": 60, "cooldown_minutes": 60 }
         }
       }
+    },
+    {
+      "id": "item_004",
+      "title": "Launchpool eligibility window detected",
+      "tag": "Incentives",
+      "risk": "Medium",
+      "timestamp": "2026-02-19T00:00:00Z",
+      "summary": "Program window identified. Prepare policy guardrails for participation workflow and audit logging.",
+      "evidence": [
+        { "label": "Program Notice", "type": "address", "value": "0xPROGRAM_NOTICE_PLACEHOLDER" }
+      ],
+      "policy_patch": {
+        "allowlist_add": ["0xPROGRAM_NOTICE_PLACEHOLDER"],
+        "budgets": { "max_fee_native": "0.0002", "max_slippage_bps": 25 },
+        "guards": {
+          "simulation_first": true,
+          "circuit_breaker": { "max_failures": 2, "window_minutes": 30, "cooldown_minutes": 90 }
+        }
+      }
+    },
+    {
+      "id": "item_005",
+      "title": "Megadrop mission cycle observed",
+      "tag": "Incentives",
+      "risk": "Medium",
+      "timestamp": "2026-02-19T00:00:00Z",
+      "summary": "Megadrop campaign detected. Route through policy-first flow and track evidence receipts.",
+      "evidence": [
+        { "label": "Campaign Ref", "type": "address", "value": "0xMEGADROP_REF_PLACEHOLDER" }
+      ],
+      "policy_patch": {
+        "allowlist_add": ["0xMEGADROP_REF_PLACEHOLDER"],
+        "budgets": { "max_fee_native": "0.0002", "max_slippage_bps": 30 },
+        "guards": {
+          "simulation_first": true,
+          "circuit_breaker": { "max_failures": 2, "window_minutes": 45, "cooldown_minutes": 120 }
+        }
+      }
+    }
+  ],
+  "marketplace": [
+    {
+      "id": "mp_001",
+      "title_en": "Launchpool Operations Pack",
+      "title_pt": "Pacote Operacional Launchpool",
+      "category_en": "Incentives",
+      "category_pt": "Incentivos",
+      "benefit_en": "Track eligibility windows and emit auditable policy patches for participation workflows.",
+      "benefit_pt": "Rastreia janelas de elegibilidade e gera policy patches auditaveis para fluxos de participacao.",
+      "evidence_label": "Launchpool Hub",
+      "evidence_url": "https://www.binance.com/en/launchpool",
+      "policy_hint_en": "Use read-only source ingestion + simulation-first gate before enabling execution.",
+      "policy_hint_pt": "Use ingestao read-only + simulation-first gate antes de habilitar execution.",
+      "risk": "Medium"
+    },
+    {
+      "id": "mp_002",
+      "title_en": "Megadrop Tracking Pack",
+      "title_pt": "Pacote de Tracking Megadrop",
+      "category_en": "Incentives",
+      "category_pt": "Incentivos",
+      "benefit_en": "Aggregate campaign updates into one operational board with evidence-linked history.",
+      "benefit_pt": "Agrega atualizacoes de campanhas em um board operacional com historico evidence-linked.",
+      "evidence_label": "Megadrop Hub",
+      "evidence_url": "https://www.binance.com/en/megadrop",
+      "policy_hint_en": "Keep budgets capped and require human approval for policy promotion.",
+      "policy_hint_pt": "Mantenha budgets limitados e exija aprovacao humana para promover policy.",
+      "risk": "Medium"
+    },
+    {
+      "id": "mp_003",
+      "title_en": "BNB Chain Utility Pack",
+      "title_pt": "Pacote de Utilidade BNB Chain",
+      "category_en": "Network",
+      "category_pt": "Rede",
+      "benefit_en": "Map chain activity and fee regimes to improve execution timing and operational reliability.",
+      "benefit_pt": "Mapeia atividade da chain e fee regimes para melhorar timing de execution e confiabilidade operacional.",
+      "evidence_label": "BNB Chain",
+      "evidence_url": "https://www.bnbchain.org",
+      "policy_hint_en": "Enable fee ceilings and circuit breakers for adverse fee conditions.",
+      "policy_hint_pt": "Ative fee ceilings e circuit breakers para condicoes adversas de fee.",
+      "risk": "Low"
+    },
+    {
+      "id": "mp_004",
+      "title_en": "Listings and Program Radar",
+      "title_pt": "Radar de Listings e Programas",
+      "category_en": "Discovery",
+      "category_pt": "Descoberta",
+      "benefit_en": "Consolidate listing/program updates into policy-ready checklists for operator review.",
+      "benefit_pt": "Consolida atualizacoes de listing/programa em checklists policy-ready para revisao do operador.",
+      "evidence_label": "Binance Announcements",
+      "evidence_url": "https://www.binance.com/en/support/announcement",
+      "policy_hint_en": "New opportunities remain disabled until allowlists and risk checks are confirmed.",
+      "policy_hint_pt": "Novas oportunidades ficam desabilitadas ate allowlists e risk checks serem confirmados.",
+      "risk": "High"
+    },
+    {
+      "id": "mp_005",
+      "title_en": "Institutional Program Mapper",
+      "title_pt": "Mapeador de Programas Institucionais",
+      "category_en": "Institutional",
+      "category_pt": "Institucional",
+      "benefit_en": "Organize VIP and partner program requirements into auditable operating policies.",
+      "benefit_pt": "Organiza requisitos de programas VIP e parceiros em politicas operacionais auditaveis.",
+      "evidence_label": "VIP & Institutional",
+      "evidence_url": "https://www.binance.com/en/vip-institutional",
+      "policy_hint_en": "Apply least-privilege keys and separate profiles by environment.",
+      "policy_hint_pt": "Aplique chaves com menor privilegio e perfis separados por ambiente.",
+      "risk": "Low"
+    },
+    {
+      "id": "mp_006",
+      "title_en": "Wallet and Pay Utility Layer",
+      "title_pt": "Camada de Utilidade Wallet e Pay",
+      "category_en": "Operations",
+      "category_pt": "Operacoes",
+      "benefit_en": "Track payment and wallet utility features as operational extensions, not trading signals.",
+      "benefit_pt": "Rastreia recursos de pagamento e carteira como extensoes operacionais, nao como trading signals.",
+      "evidence_label": "Binance Pay",
+      "evidence_url": "https://pay.binance.com",
+      "policy_hint_en": "Use operational segmentation to isolate payment flows from execution keys.",
+      "policy_hint_pt": "Use segmentacao operacional para isolar fluxos de pagamento das chaves de execution.",
+      "risk": "Low"
     }
   ]
 }

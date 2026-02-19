@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { IntelBoard, type IntelItem } from "@/components/IntelBoard";
 import { IntelStrip } from "@/components/IntelStrip";
+import OpportunityMarketplace, { type OpportunityItem } from "@/components/OpportunityMarketplace";
 
 type IntelJson = {
   meta: {
@@ -13,6 +14,7 @@ type IntelJson = {
   };
   strip: { id: string; label: string; value: string; delta?: string; hint?: string }[];
   board: IntelItem[];
+  marketplace?: OpportunityItem[];
 };
 
 export default function IntelClient() {
@@ -34,6 +36,7 @@ export default function IntelClient() {
     <>
       <IntelStrip mode={data.meta.mode} items={data.strip} />
       <IntelBoard mode={data.meta.mode} items={data.board} />
+      <OpportunityMarketplace items={data.marketplace ?? []} />
     </>
   );
 }

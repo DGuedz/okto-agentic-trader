@@ -16,6 +16,7 @@ export default function DocsPage() {
                   <h3 className="text-white font-bold mb-4 uppercase text-xs tracking-widest border-b border-[#F3BA2F]/20 pb-2">Protocol</h3>
                   <ul className="space-y-3 text-sm">
                       <li><Link href="#intro" className="hover:text-[#F3BA2F] transition-colors">Introduction</Link></li>
+                      <li><Link href="#ai-economy" className="hover:text-[#F3BA2F] transition-colors">AI Agent Economy</Link></li>
                       <li><Link href="#sdd" className="hover:text-[#F3BA2F] transition-colors">Spec-Driven DevOps</Link></li>
                       <li><Link href="#safety" className="hover:text-[#F3BA2F] transition-colors">Safety Rails</Link></li>
                       <li><Link href="#usage" className="hover:text-[#F3BA2F] transition-colors">Protocol Usage</Link></li>
@@ -63,6 +64,35 @@ export default function DocsPage() {
                         en='OKTO is not a "bot". It is an autonomous agent. Once initialized, it executes logic defined in your genesis spec.'
                         pt='OKTO nao e "bot". E um autonomous agent. Depois de inicializado, executa a logic definida na sua genesis spec.'
                       />
+                  </div>
+              </section>
+
+              <section id="ai-economy">
+                  <div className="inline-block px-2 py-1 bg-accent-neon-400/10 text-accent-neon-400 text-[10px] rounded mb-4">
+                      NEW ARCHITECTURE
+                  </div>
+                  <h2 className="text-2xl font-bold text-white mb-4">AI Agent Economy (ERC-8004)</h2>
+                  <p className="mb-4 text-white/80">
+                      OKTO is architected to be a first-class citizen of the <strong>BNB Chain AI Agent Economy</strong>. We are actively aligning with the <strong>ERC-8004</strong> standard to ensure:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2 text-sm">
+                      <li><strong className="text-white">Identity Registry (The Passport):</strong> Adopting the ERC-8004 standard to establish a unique, verifiable on-chain identity. This ensures users and contracts can distinguish the authentic OKTO agent from imposters.</li>
+                      <li><strong className="text-white">Reputation Registry (The Credit Score):</strong> Building an immutable audit trail of performance. Trust is earned over time; every successful Grid/Scalp cycle contributes to OKTO&apos;s portable on-chain reputation.</li>
+                      <li><strong className="text-white">Sovereign Execution:</strong> Operating not just as a script, but as a distinct on-chain entity ready for the Martian ecosystem.</li>
+                  </ul>
+                  
+                  <div className="mt-6 bg-black/50 border border-white/10 rounded p-4 text-xs font-mono">
+                      <p className="text-[#F3BA2F] mb-2 font-bold uppercase tracking-widest">Target Infrastructure (BSC Testnet)</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                              <span className="block text-gray-500 mb-1">Identity Registry</span>
+                              <code className="text-white bg-white/10 px-2 py-1 rounded">0x8004A8...BD9e</code>
+                          </div>
+                          <div>
+                              <span className="block text-gray-500 mb-1">Reputation Registry</span>
+                              <code className="text-white bg-white/10 px-2 py-1 rounded">0x8004B6...713</code>
+                          </div>
+                      </div>
                   </div>
               </section>
 
