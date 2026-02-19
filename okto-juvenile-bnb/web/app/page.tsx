@@ -1,5 +1,6 @@
 import IntelClient from "@/components/IntelClient";
 import BiText from "@/components/BiText";
+import WaitlistPanel from "@/components/WaitlistPanel";
 
 export default function Home() {
   return (
@@ -41,6 +42,8 @@ $ python3 ops/grid_live.py --auto-regime
         en="Evidence-linked. Explorer-first. No profit promises."
         pt="Com evidence-linked proofs. Explorer-first. Sem promessa de lucro."
       />
+
+      <WaitlistPanel />
 
       <div className="mt-10">
         <IntelClient />

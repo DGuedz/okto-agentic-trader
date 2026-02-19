@@ -13,6 +13,9 @@ export default function WalletConnect() {
     if (connected) {
       setIsConnected(true);
       setAddress('0x71C...9A2');
+      if (!localStorage.getItem('okto_wallet_address')) {
+        localStorage.setItem('okto_wallet_address', '0x71C7656EC7ab88b098defB751B7401B5f6d899A2');
+      }
     }
   }, []);
 
@@ -20,6 +23,7 @@ export default function WalletConnect() {
     setIsConnecting(true);
     setTimeout(() => {
       localStorage.setItem('okto_wallet_connected', 'true');
+      localStorage.setItem('okto_wallet_address', '0x71C7656EC7ab88b098defB751B7401B5f6d899A2');
       setIsConnected(true);
       setAddress('0x71C...9A2');
       setIsConnecting(false);
@@ -29,6 +33,7 @@ export default function WalletConnect() {
 
   const handleDisconnect = () => {
     localStorage.removeItem('okto_wallet_connected');
+    localStorage.removeItem('okto_wallet_address');
     setIsConnected(false);
     setAddress(null);
     window.dispatchEvent(new Event('wallet-connection-changed'));
