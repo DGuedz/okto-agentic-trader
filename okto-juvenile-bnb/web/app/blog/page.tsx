@@ -1,4 +1,3 @@
-import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
 import BiText from "@/components/BiText";
 import LText from "@/components/LText";
@@ -11,13 +10,13 @@ export default function BlogPage() {
           
           <header className="mb-12 border-b border-white/10 pb-10">
             <div className="flex items-center gap-2 mb-6">
-              <span className="px-2 py-0.5 bg-[#F3BA2F]/10 border border-[#F3BA2F]/20 text-[#F3BA2F] text-xs rounded uppercase tracking-wider font-mono">Manifesto</span>
+              <span className="px-2 py-0.5 bg-accent-neon-400/10 border border-accent-neon-400/20 text-accent-neon-400 text-xs rounded uppercase tracking-wider font-mono">Intel</span>
               <span className="text-white/30 text-xs">•</span>
-              <span className="text-white/50 text-xs uppercase tracking-wider font-mono">February 16, 2026</span>
+              <span className="text-white/50 text-xs uppercase tracking-wider font-mono">February 19, 2026</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight leading-tight">
-              The Interface is the Enemy: <br/>
-              <span className="text-[#F3BA2F] drop-shadow-[0_0_10px_rgba(243,186,47,0.5)]">The Rise of Headless Finance</span>
+              The AI Agent Economy: <br/>
+              <span className="text-[#F3BA2F] drop-shadow-[0_0_10px_rgba(243,186,47,0.5)]">Monetizing Autonomous Intelligence</span>
             </h1>
             <p className="mb-4 text-sm text-white/60">
               <LText en="Core technical terms are preserved in English." pt="Os termos tecnicos principais permanecem em ingles." />
@@ -32,47 +31,57 @@ export default function BlogPage() {
 
           <div className="space-y-8 text-lg text-gray-400 leading-relaxed">
               
-              <p className="font-bold text-white text-xl">
-                  The greatest lie told to retail traders is that you need a website to transact. 
-              </p>
-              <p className="text-base text-white/60">
-                  A maior mentira para retail traders e que voce precisa de website para transacionar.
-              </p>
+              <BiText
+                className="font-bold text-white text-xl"
+                en="The game has changed. BNB Chain has officially deployed the ERC-8004 infrastructure, laying the foundation for the Trustless Agent Economy."
+                pt="O jogo mudou. A BNB Chain implantou oficialmente a infraestrutura ERC-8004, estabelecendo a base para a Trustless Agent Economy."
+              />
+
               <p>
-                  While your browser struggles to render a &quot;Swap&quot; button and your MetaMask extension lags under the weight of a cluttered DOM, a headless script has already read the mempool, calculated the arbitrage, and bribed the validator. In the Dark Forest of DeFi, the User Interface (UI) is not a feature—it is a liability.
+                  This is not just another protocol update. This is the birth of a new asset class: <strong>Verifiable Autonomous Agents</strong>. Until now, bots were just scripts running in the dark. Now, they are on-chain entities with Identity (Passport) and Reputation (Credit Score).
               </p>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Latency of the Visual</h2>
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Cash Flow Mechanism</h2>
+              <BiText
+                en="How do you monetize this? By deploying an agent that builds trust. In the AI Agent Economy, 'Reputation' is the new liquidity. Agents with high on-chain reputation scores (proven via the Registry) will get priority access to:"
+                pt="Como voce monetiza isso? Implantando um agente que constroi confianca. Na AI Agent Economy, 'Reputacao' e a nova liquidez. Agentes com alta reputacao on-chain (provada via Registry) terao acesso prioritario a:"
+              />
+              <ul className="list-disc pl-5 space-y-2 text-base">
+                  <li><strong>Capital Allocation:</strong> DAOs and vaults delegating funds to proven agents.</li>
+                  <li><strong>Exclusive Arbitrage:</strong> Routing priority in MEV-protected pools.</li>
+                  <li><strong>Service Fees:</strong> Other contracts paying your agent for data or execution.</li>
+              </ul>
+
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">OKTO: Your Gateway</h2>
               <p>
-                  Traditional dApps are designed for &quot;Users&quot;—a term that, in finance, often becomes synonymous with &quot;Liquidity.&quot; By the time you click &quot;Confirm,&quot; the opportunity has vanished. UIs introduce friction, invite phishing via malicious front-ends, and blind you to the raw state of the blockchain. To win in the current market, you must stop being a User and start being an Operator.
+                  This is where <strong>OKTO</strong> comes in. We didn&apos;t just build a trading bot; we built a <strong>Headless Liquidity Node</strong> compliant with these new standards. OKTO is designed to be the &quot;body&quot; that your strategy inhabits on-chain.
+              </p>
+              <BiText
+                en="OKTO abstracts the complexity of ERC-8004. It handles the identity registration, the reputation proofing, and the execution logic. You remain the Sovereign Operator."
+                pt="OKTO abstrai a complexidade do ERC-8004. Ele lida com o registro de identidade, a prova de reputacao e a logica de execucao. Voce permanece o Operador Soberano."
+              />
+
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Inner Circle (Mentorship)</h2>
+              <p>
+                  Information without execution is just noise. To truly leverage this &quot;Privileged Information,&quot; you need guidance.
+              </p>
+              <BiText
+                className="p-4 bg-white/5 border-l-2 border-accent-neon-400 italic text-white"
+                en="Our Mentorship Program is the 'Software Upgrade' for your brain. We don't just give you the code; we teach you how to configure the Genesis Spec to align with institutional flows."
+                pt="Nosso Programa de Mentoria e o 'Software Upgrade' para o seu cerebro. Nao te damos apenas o codigo; ensinamos como configurar a Genesis Spec para alinhar com fluxos institucionais."
+              />
+              <p>
+                  This product is exclusive. It is for those who want to stop being &quot;Users&quot; and start being &quot;Architects&quot; of the flow. We deep dive into the <strong>Okto Core</strong>, the <strong>Regime Engine</strong>, and the <strong>Safety Rails</strong> that keep execution disciplined and auditable.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">Introducing OKTO: Spec-Driven Sovereignty</h2>
-              <p>
-                  We are entering the era of Headless Finance. This is the philosophy behind OKTO, the first Headless Liquidity Node designed to live where developers live: the IDE. Inspired by the institutional precision of BlackRock’s BUIDL and the raw efficiency of MEV infrastructure, OKTO strips away the &quot;black box&quot; of modern DeFi.
-              </p>
-              <p>
-                  We operate via <strong>Spec-Driven DevOps (SDD)</strong>. You don&apos;t &quot;hope&quot; for a fill; you define your logic in a <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">genesis.yaml</code> file. You don&apos;t &quot;react&quot; to price action; you execute directly on the node via private RPCs, simulating every state change locally before broadcasting to the network. This is institutional-grade execution democratized for the individual developer.
-              </p>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Power of the Node</h2>
-              <p>
-                  True sovereignty is not found in a dashboard; it is found in a terminal window with green text on a black void, running 24/7 on your local machine. OKTO transforms your idle compute into a operational execution node. Whether it’s executing dark pool orders to hide intent from predatory bots or autonomously routing policy-approved actions across integrated modules on the BNB Chain, the agent works while you code.
-              </p>
-
-              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">Conclusion: Become the Operator</h2>
-              <p>
-                  If you know what <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">pip install</code> means, you are already overqualified to be your own bank. The era of clicking buttons and praying for low slippage is over. The chassis is being forged. We are building infrastructure that executes, validates, and proves outcomes.
-              </p>
-              <p className="text-[#F3BA2F] font-bold italic text-xl mt-8">
-                  The interface is dead. Stay liquid.
-              </p>
-              <p className="text-[#F3BA2F] font-bold italic text-lg">
-                  A interface morreu. Stay liquid.
-              </p>
+              <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">Conclusion</h2>
+              <BiText
+                en="The infrastructure is live. The opportunity is raw. OKTO is the tool. The Mentorship is the manual. The cash flow awaits those who verify."
+                pt="A infraestrutura esta no ar. A oportunidade e bruta. OKTO e a ferramenta. A Mentoria e o manual. O cash flow aguarda aqueles que verificam."
+              />
 
               <div className="flex flex-wrap gap-2 mt-8 font-mono">
-                  {['#DeFi', '#Headless', '#BNBChain', '#Python', '#MEV', '#BuildInPublic'].map((tag) => (
+                  {['#ERC8004', '#AIAgentEconomy', '#BNBChain', '#Mentorship', '#CashFlow', '#Okto'].map((tag) => (
                     <span key={tag} className="px-2 py-1 bg-white/5 text-xs text-white/50 rounded hover:text-[#F3BA2F] transition-colors cursor-pointer">{tag}</span>
                   ))}
               </div>
