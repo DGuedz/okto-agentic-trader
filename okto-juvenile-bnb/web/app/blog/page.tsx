@@ -31,6 +31,23 @@ export default function BlogPage() {
 
           <div className="space-y-8 text-lg text-gray-400 leading-relaxed">
               
+              <div className="mb-12 border-b border-white/10 pb-8">
+                  <span className="px-2 py-0.5 bg-[#F3BA2F]/10 border border-[#F3BA2F]/20 text-[#F3BA2F] text-xs rounded uppercase tracking-wider font-mono mb-4 inline-block">Previous Post</span>
+                  <h2 className="text-2xl font-bold text-white mb-2">The Interface is the Enemy</h2>
+                  <p className="text-sm text-gray-500 mb-4">February 16, 2026</p>
+                  <p className="mb-4">
+                      While your browser struggles to render a &quot;Swap&quot; button, a headless script has already won. In the Dark Forest of DeFi, the UI is a liability.
+                  </p>
+                  <BiText
+                    className="italic text-white/60 mb-4"
+                    en='"The greatest lie told to retail traders is that you need a website to transact."'
+                    pt='"A maior mentira contada aos traders de varejo é que você precisa de um site para transacionar."'
+                  />
+                  <p className="text-sm text-gray-500">
+                      Read the full manifesto in our archives.
+                  </p>
+              </div>
+
               <BiText
                 className="font-bold text-white text-xl"
                 en="The game has changed. BNB Chain has officially deployed the ERC-8004 infrastructure, laying the foundation for the Trustless Agent Economy."
