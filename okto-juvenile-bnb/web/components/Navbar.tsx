@@ -18,14 +18,17 @@ export default function Navbar() {
         
         {/* NAV: COMMAND LINKS */}
         <div className="hidden md:flex gap-8 text-xs md:text-sm text-gray-400">
+          <Link href="/demo" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
+            <span className="text-[#F3BA2F]/50">[/]</span> TERMINAL / TERMINAL
+          </Link>
           <Link href="/docs" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> DOCS
+            <span className="text-[#F3BA2F]/50">[/]</span> DOCS / DOCUMENTACAO
           </Link>
           <Link href="/architecture" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> ARCHITECT_CHANNEL
+            <span className="text-[#F3BA2F]/50">[/]</span> ARCHITECT_CHANNEL / ARQUITETURA
           </Link>
           <Link href="/blog" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> INTEL_BLOG
+            <span className="text-[#F3BA2F]/50">[/]</span> INTEL_BLOG / BLOG
           </Link>
         </div>
 

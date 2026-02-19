@@ -1,5 +1,6 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
+import BiText from "@/components/BiText";
 
 export default function DocsPage() {
   return (
@@ -45,15 +46,22 @@ export default function DocsPage() {
                   <div className="inline-block px-2 py-1 bg-[#F3BA2F]/10 text-[#F3BA2F] text-[10px] rounded mb-4">
                       PUBLIC CLEARANCE
                   </div>
+                  <div className="mb-4 text-xs text-gray-500">
+                    EN/PT enabled. Technical terms remain in English for operational consistency.
+                  </div>
                   <h1 className="text-4xl font-bold text-white mb-6">Introduction to OKTO</h1>
-                  <p className="text-lg leading-relaxed mb-6">
-                      OKTO is a <strong className="text-white">Headless Liquidity Node</strong> designed for the BNB Smart Chain. It allows developers to deploy institutional-grade trading strategies directly from their local environment, bypassing traditional web interfaces.
-                  </p>
+                  <BiText
+                    className="text-lg leading-relaxed mb-6 space-y-2"
+                    en="OKTO is a Headless Liquidity Node designed for BNB Smart Chain. It enables institutional-grade execution directly from local environment, without dependency on traditional web interfaces."
+                    pt="OKTO e um Headless Liquidity Node para BNB Smart Chain. Ele permite execution de nivel institucional direto do ambiente local, sem dependencia de web interfaces tradicionais."
+                  />
                   <div className="p-4 bg-white/5 border border-white/10 rounded text-sm">
                       <p className="text-[#F3BA2F]">⚠ WARNING:</p>
-                      <p className="mt-1">
-                          OKTO is not a &quot;bot&quot;. It is an autonomous agent. Once initialized, it will execute logic defined in your genesis spec without human intervention.
-                      </p>
+                      <BiText
+                        className="mt-1 space-y-1"
+                        en='OKTO is not a "bot". It is an autonomous agent. Once initialized, it executes logic defined in your genesis spec.'
+                        pt='OKTO nao e "bot". E um autonomous agent. Depois de inicializado, executa a logic definida na sua genesis spec.'
+                      />
                   </div>
               </section>
 
@@ -95,9 +103,11 @@ export default function DocsPage() {
 
               <section id="usage">
                   <h2 className="text-2xl font-bold text-white mb-4">Protocol Usage</h2>
-                  <p className="mb-4">
-                      Este protocolo é operado via terminal. A interface é o CLI e o fluxo é determinístico, com simulação local antes de qualquer envio on-chain.
-                  </p>
+                  <BiText
+                    className="mb-4 space-y-1"
+                    en="This protocol is operated via terminal. The interface is CLI-first and flow is deterministic, with local simulation before any on-chain submission."
+                    pt="Este protocolo opera via terminal. A interface e CLI-first e o fluxo e deterministico, com simulation local antes de qualquer envio on-chain."
+                  />
                   <div className="bg-black/50 border border-white/10 rounded p-4 overflow-x-auto mb-6">
                     <pre className="text-xs text-gray-300">
 {`$ git clone https://github.com/DGuedz/okto-agentic-trader
@@ -108,62 +118,66 @@ $ cd okto && python -m okto --mode live
                     </pre>
                   </div>
                   <ul className="list-disc pl-5 space-y-2">
-                      <li><strong className="text-white">Configuração:</strong> defina parâmetros no <code className="text-[#F3BA2F]">genesis.yaml</code> e carregue chaves por variáveis de ambiente.</li>
-                      <li><strong className="text-white">Segurança:</strong> assinatura ocorre somente no backend local. Chaves privadas nunca são logadas, persistidas ou expostas no frontend.</li>
-                      <li><strong className="text-white">Simulação:</strong> toda execução é validada localmente com verificação de slippage, custo e sequência.</li>
-                      <li><strong className="text-white">Liquidação:</strong> finalize somente após confirmação on-chain verificável.</li>
+                      <li><strong className="text-white">Configuration:</strong> define parameters in <code className="text-[#F3BA2F]">genesis.yaml</code> and load keys via environment variables.</li>
+                      <li><strong className="text-white">Security:</strong> signing occurs only in the local backend. Private keys are never logged, persisted, or exposed to the frontend.</li>
+                      <li><strong className="text-white">Simulation:</strong> every execution is validated locally with checks for slippage, cost, and sequence.</li>
+                      <li><strong className="text-white">Settlement:</strong> finalize only after verifiable on-chain confirmation.</li>
                   </ul>
               </section>
 
               <section id="license">
                   <h2 className="text-2xl font-bold text-white mb-4">Creative Commons — CC BY 4.0</h2>
-                  <p className="mb-4">
-                      O conteúdo público do projeto OKTO — Sovereign Agentic Trading Infrastructure (site, documentação, textos e materiais visuais autorais) é licenciado sob Creative Commons Attribution 4.0 International (CC BY 4.0).
-                  </p>
-                  <p className="mb-4">
-                      Esta licença permite copiar, redistribuir, remixar, adaptar e criar derivados, inclusive para uso comercial, desde que haja atribuição correta ao autor e à fonte.
-                  </p>
+                  <BiText
+                    className="mb-4 space-y-1"
+                    en="The public content of OKTO (site, docs, texts and visual materials) is licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)."
+                    pt="O conteudo publico do OKTO (site, docs, textos e materiais visuais) esta licenciado em Creative Commons Attribution 4.0 International (CC BY 4.0)."
+                  />
+                  <BiText
+                    className="mb-4 space-y-1"
+                    en="You may copy, redistribute, remix and adapt, including commercial use, as long as proper attribution is preserved."
+                    pt="Voce pode copiar, redistribuir, remixar e adaptar, inclusive para uso comercial, desde que a atribuicao correta seja mantida."
+                  />
                   <div className="grid md:grid-cols-2 gap-6">
                       <div className="bg-white/5 border border-white/10 rounded p-4">
-                          <h3 className="text-white font-bold mb-2 text-sm uppercase tracking-widest">Coberto por CC BY 4.0</h3>
+                          <h3 className="text-white font-bold mb-2 text-sm uppercase tracking-widest">Covered by CC BY 4.0</h3>
                           <ul className="list-disc pl-5 space-y-1 text-sm">
-                              <li>Documentação e páginas institucionais.</li>
-                              <li>Conteúdo editorial, manifestos e tutoriais.</li>
-                              <li>Materiais visuais autorais e screenshots do projeto.</li>
-                              <li>Conteúdo de apresentação e pitch.</li>
+                              <li>Documentation and institutional pages.</li>
+                              <li>Editorial content, manifestos, and tutorials.</li>
+                              <li>Original visual materials and project screenshots.</li>
+                              <li>Presentation content and pitch decks.</li>
                           </ul>
                       </div>
                       <div className="bg-white/5 border border-white/10 rounded p-4">
-                          <h3 className="text-white font-bold mb-2 text-sm uppercase tracking-widest">Exceções</h3>
+                          <h3 className="text-white font-bold mb-2 text-sm uppercase tracking-widest">Exceptions</h3>
                           <ul className="list-disc pl-5 space-y-1 text-sm">
-                              <li>Código-fonte do software.</li>
-                              <li>Marcas e logotipos de terceiros.</li>
-                              <li>Conteúdo com licença explícita diferente.</li>
+                              <li>Software source code.</li>
+                              <li>Third-party trademarks and logos.</li>
+                              <li>Content with a different explicit license.</li>
                           </ul>
                       </div>
                   </div>
                   <p className="text-xs text-gray-500 mt-4">
-                      Regra de ouro: Creative Commons é para conteúdo, não para software.
+                      Golden Rule: Creative Commons is for content, not for software.
                   </p>
               </section>
 
               <section id="attribution">
-                  <h2 className="text-2xl font-bold text-white mb-4">Atribuição Oficial</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">Official Attribution</h2>
                   <p className="mb-4">
-                      Para reutilizar qualquer parte do conteúdo do OKTO, use a atribuição completa abaixo.
+                      To reuse any part of OKTO content, use the full attribution below.
                   </p>
                   <div className="bg-black/50 border border-white/10 rounded p-4 text-sm space-y-1">
-                      <div><span className="text-white">Título:</span> OKTO — Sovereign Agentic Trading Infrastructure</div>
-                      <div><span className="text-white">Autor:</span> DGuedz / Double Green</div>
-                      <div><span className="text-white">Ano:</span> 2026</div>
-                      <div><span className="text-white">Fonte:</span> https://okto-agentic-trader.vercel.app</div>
-                      <div><span className="text-white">Perfil:</span> https://x.com/dg_doublegreen</div>
-                      <div><span className="text-white">Licença:</span> https://creativecommons.org/licenses/by/4.0/</div>
+                      <div><span className="text-white">Title:</span> OKTO — Sovereign Agentic Trading Infrastructure</div>
+                      <div><span className="text-white">Author:</span> DGuedz / Double Green</div>
+                      <div><span className="text-white">Year:</span> 2026</div>
+                      <div><span className="text-white">Source:</span> https://okto-agentic-trader.vercel.app</div>
+                      <div><span className="text-white">Profile:</span> https://x.com/dg_doublegreen</div>
+                      <div><span className="text-white">License:</span> https://creativecommons.org/licenses/by/4.0/</div>
                   </div>
                   <div className="mt-6 space-y-2 text-sm">
-                      <p className="text-white">Texto curto (1 linha):</p>
+                      <p className="text-white">Short text (1 line):</p>
                       <p>OKTO — Sovereign Agentic Trading Infrastructure © 2026 (DGuedz / Double Green) — CC BY 4.0.</p>
-                      <p className="text-white">Texto curto com links:</p>
+                      <p className="text-white">Short text with links:</p>
                       <p>
                         OKTO — Sovereign Agentic Trading Infrastructure © 2026 (DGuedz / Double Green) — Licensed under CC BY 4.0.
                       </p>
@@ -174,39 +188,39 @@ $ cd okto && python -m okto --mode live
                   <h2 className="text-2xl font-bold text-white mb-4">FAQ</h2>
                   <div className="space-y-4">
                       <div>
-                          <p className="text-white font-bold">Posso usar comercialmente?</p>
-                          <p>Sim. CC BY 4.0 permite uso comercial desde que haja atribuição correta.</p>
+                          <p className="text-white font-bold">Can I use it commercially?</p>
+                          <p>Yes. CC BY 4.0 allows commercial use with proper attribution. / Sim. CC BY 4.0 permite uso comercial com atribuicao correta.</p>
                       </div>
                       <div>
-                          <p className="text-white font-bold">Posso remixar e criar derivados?</p>
-                          <p>Sim. CC BY 4.0 permite adaptação e derivados.</p>
+                          <p className="text-white font-bold">Can I remix and create derivatives?</p>
+                          <p>Yes. CC BY 4.0 allows adaptation and derivatives. / Sim. CC BY 4.0 permite adaptacao e derivados.</p>
                       </div>
                       <div>
-                          <p className="text-white font-bold">Preciso licenciar meu derivado também em CC BY?</p>
-                          <p>Não. CC BY não é copyleft. Só exige crédito.</p>
+                          <p className="text-white font-bold">Do I need to license my derivative under CC BY too?</p>
+                          <p>No. CC BY is not copyleft. It only requires credit.</p>
                       </div>
                       <div>
-                          <p className="text-white font-bold">E o código do OKTO?</p>
-                          <p>Software deve usar licença de software (MIT/Apache-2.0). CC não é recomendado para código.</p>
+                          <p className="text-white font-bold">What about OKTO code?</p>
+                          <p>Software should use a software license (MIT/Apache-2.0). CC is not recommended for code.</p>
                       </div>
                       <div>
-                          <p className="text-white font-bold">E se eu não quiser uso comercial?</p>
-                          <p>Seria CC BY-NC, mas reduz adoção e compatibilidade. Para hackathons, CC BY é o padrão.</p>
+                          <p className="text-white font-bold">What if I don&#39;t want commercial use?</p>
+                          <p>That would be CC BY-NC, but it reduces adoption and compatibility. For hackathons, CC BY is the standard.</p>
                       </div>
                   </div>
               </section>
 
               <section id="third-party">
-                  <h2 className="text-2xl font-bold text-white mb-4">Aviso de Terceiros</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">Third-Party Notice</h2>
                   <p className="mb-4">
-                      Alguns materiais podem conter marcas, logos ou referências de terceiros. Esses itens permanecem sob os direitos de seus respectivos proprietários. Onde aplicável, o OKTO indica fontes ou mantém avisos de copyright originais.
+                      Some materials may contain third-party trademarks, logos, or references. These items remain under the rights of their respective owners. Where applicable, OKTO indicates sources or maintains original copyright notices.
                   </p>
                   <div className="bg-white/5 border border-white/10 rounded p-4 text-sm">
-                      <p className="text-white">Declaração oficial:</p>
+                      <p className="text-white">Official Declaration:</p>
                       <p>OKTO — Sovereign Agentic Trading Infrastructure © 2026 (DGuedz / Double Green)</p>
                       <p>Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)</p>
-                      <p>Licença: https://creativecommons.org/licenses/by/4.0/</p>
-                      <p>Fonte: https://okto-agentic-trader.vercel.app</p>
+                      <p>License: https://creativecommons.org/licenses/by/4.0/</p>
+                      <p>Source: https://okto-agentic-trader.vercel.app</p>
                   </div>
               </section>
 

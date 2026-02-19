@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Okto — Sovereign Agentic Trading Infrastructure",
-  description: "Headless, spec-driven, auditable DeFi trading agent.",
+  description: "Headless, spec-driven, auditable DeFi trading agent. Versao EN/PT para operadores no Brasil.",
 };
 
 export default function RootLayout({

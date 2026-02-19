@@ -1,5 +1,6 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
+import BiText from "@/components/BiText";
 
 export default function BlogPage() {
   return (
@@ -17,6 +18,11 @@ export default function BlogPage() {
               The Interface is the Enemy: <br/>
               <span className="text-[#F3BA2F] drop-shadow-[0_0_10px_rgba(243,186,47,0.5)]">The Rise of Headless Finance</span>
             </h1>
+            <BiText
+              className="mb-4 text-sm text-white/60"
+              en="EN/PT edition. Core technical terms are preserved in English."
+              pt="Edicao EN/PT. Os termos tecnicos principais permanecem em ingles."
+            />
             <div className="flex items-center gap-4">
               <div>
                 <div className="text-white font-bold text-sm">Double Green</div>
@@ -29,6 +35,9 @@ export default function BlogPage() {
               
               <p className="font-bold text-white text-xl">
                   The greatest lie told to retail traders is that you need a website to transact. 
+              </p>
+              <p className="text-base text-white/60">
+                  A maior mentira para retail traders e que voce precisa de website para transacionar.
               </p>
               <p>
                   While your browser struggles to render a &quot;Swap&quot; button and your MetaMask extension lags under the weight of a cluttered DOM, a headless script has already read the mempool, calculated the arbitrage, and bribed the validator. In the Dark Forest of DeFi, the User Interface (UI) is not a feature—it is a liability.
@@ -58,6 +67,9 @@ export default function BlogPage() {
               </p>
               <p className="text-[#F3BA2F] font-bold italic text-xl mt-8">
                   The interface is dead. Stay liquid.
+              </p>
+              <p className="text-[#F3BA2F] font-bold italic text-lg">
+                  A interface morreu. Stay liquid.
               </p>
 
               <div className="flex flex-wrap gap-2 mt-8 font-mono">

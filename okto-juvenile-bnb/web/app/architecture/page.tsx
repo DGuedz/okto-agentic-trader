@@ -1,5 +1,6 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
+import BiText from "@/components/BiText";
 
 export default function ArchitecturePage() {
   return (
@@ -16,9 +17,11 @@ export default function ArchitecturePage() {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             The <span className="text-[#F3BA2F]">Headless</span> Blueprint
           </h1>
-          <p className="max-w-2xl text-lg text-gray-500">
-            Okto is not a dApp. It is a sovereign execution node. Below is the unclassified structural diagram of the system.
-          </p>
+          <BiText
+            className="max-w-2xl text-lg text-gray-500 space-y-1"
+            en="Okto is not a dApp. It is a sovereign execution node. Below is the unclassified structural diagram of the system."
+            pt="Okto nao e um dApp. E um sovereign execution node. Abaixo esta o diagrama estrutural sem classificacao do sistema."
+          />
         </header>
 
         {/* DIAGRAM SECTION */}
@@ -29,18 +32,22 @@ export default function ArchitecturePage() {
               <div className="p-6 border border-[#F3BA2F]/20 rounded bg-[#F3BA2F]/5">
                 <h3 className="text-[#F3BA2F] font-bold mb-2 flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#F3BA2F] rounded-full animate-pulse"></span>
-                    Local-First
+                    Local-First / Local-First
                 </h3>
-                <p className="text-sm leading-relaxed">
-                    Logic runs on your hardware. Keys never leave your machine. No backend servers, no centralized APIs.
-                </p>
+                <BiText
+                  className="text-sm leading-relaxed space-y-1"
+                  en="Logic runs on your hardware. Keys never leave your machine. No backend servers, no centralized APIs."
+                  pt="A logic roda no seu hardware. Keys nunca saem da sua maquina. Sem backend servers, sem APIs centralizadas."
+                />
               </div>
               
               <div className="p-6 border border-white/10 rounded bg-white/5">
-                <h3 className="text-white font-bold mb-2">Spec-Driven (SDD)</h3>
-                <p className="text-sm leading-relaxed">
-                    Behavior is defined in <code className="text-[#F3BA2F]">genesis.yaml</code>. The code obeys the spec, preventing drift and unauthorized execution.
-                </p>
+                <h3 className="text-white font-bold mb-2">Spec-Driven (SDD) / Spec-Driven</h3>
+                <BiText
+                  className="text-sm leading-relaxed space-y-1"
+                  en="Behavior is defined in genesis.yaml. The code obeys the spec, preventing drift and unauthorized execution."
+                  pt="O behavior e definido no genesis.yaml. O code obedece a spec, evitando drift e execution nao autorizada."
+                />
               </div>
           </div>
 
@@ -90,7 +97,7 @@ export default function ArchitecturePage() {
         </section>
 
         <footer className="text-center text-xs text-gray-600 border-t border-white/5 pt-8">
-          <p>UNCLASSIFIED ARCHITECTURE DIAGRAM • OKTO PROTOCOL</p>
+          <p>UNCLASSIFIED ARCHITECTURE DIAGRAM • OKTO PROTOCOL / DIAGRAMA NAO CLASSIFICADO</p>
         </footer>
 
       </main>
