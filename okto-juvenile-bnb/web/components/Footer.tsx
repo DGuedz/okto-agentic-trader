@@ -1,3 +1,8 @@
+"use client";
+
+import BiText from "@/components/BiText";
+import LText from "@/components/LText";
+
 export default function Footer() {
   return (
     <footer className="border-t border-border-subtle bg-bg-1 mt-20">
@@ -5,24 +10,21 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div>
             <h3 className="font-mono font-bold text-lg text-text-primary mb-2">OKTO_INFRA</h3>
-            <p className="text-text-secondary text-sm max-w-md">
-              Sovereign Agentic Trading Infrastructure.
-              <br />
-              Infraestrutura Agentic Trading soberana.
-              <br />
-              Headless, spec-driven, and auditable by design.
-              <br />
-              Headless, guiada por spec e auditavel por design.
-              <br />
-              <span className="text-accent-amber-400 text-xs mt-2 block">Built for BNB Chain OpenClaw Hackathon 2026.</span>
-            </p>
+            <BiText
+              className="text-text-secondary text-sm max-w-md"
+              en="Sovereign Agentic Trading Infrastructure. Headless, spec-driven, and auditable by design."
+              pt="Infraestrutura Agentic Trading soberana. Headless, guiada por spec e auditavel por design."
+            />
+            <div className="text-accent-amber-400 text-xs mt-2 block">
+              <LText en="Built for BNB Chain OpenClaw Hackathon 2026." pt="Construido para o BNB Chain OpenClaw Hackathon 2026." />
+            </div>
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-text-muted">
-            <a href="/docs#usage" className="hover:text-accent-amber-400 transition-colors">Use Protocol / Uso</a>
-            <a href="/docs#license" className="hover:text-accent-amber-400 transition-colors">License / Licenca</a>
-            <a href="/architecture" className="hover:text-accent-amber-400 transition-colors">Architecture / Arquitetura</a>
-            <a href="/blog" className="hover:text-accent-amber-400 transition-colors">Manifesto / Manifesto</a>
-            <a href="/demo" className="hover:text-accent-amber-400 transition-colors">Demo / Demo</a>
+            <a href="/docs#usage" className="hover:text-accent-amber-400 transition-colors"><LText en="Use Protocol" pt="Uso do Protocol" /></a>
+            <a href="/docs#license" className="hover:text-accent-amber-400 transition-colors"><LText en="License" pt="Licenca" /></a>
+            <a href="/architecture" className="hover:text-accent-amber-400 transition-colors"><LText en="Architecture" pt="Arquitetura" /></a>
+            <a href="/blog" className="hover:text-accent-amber-400 transition-colors"><LText en="Manifesto" pt="Manifesto" /></a>
+            <a href="/demo" className="hover:text-accent-amber-400 transition-colors"><LText en="Demo" pt="Demo" /></a>
             <a href="https://github.com/DGuedz/okto-agentic-trader" className="hover:text-accent-amber-400 transition-colors">GitHub</a>
           </div>
         </div>
@@ -39,7 +41,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-accent-neon-400 animate-pulse"></span>
-            SYSTEM: ONLINE / SISTEMA: ONLINE
+            <LText en="SYSTEM: ONLINE" pt="SISTEMA: ONLINE" />
           </div>
         </div>
       </div>

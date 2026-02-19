@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type WaitlistEntry = {
   id: string;
@@ -52,6 +53,7 @@ function reserveSpot(method: "wallet" | "email", payload: { email?: string; wall
 }
 
 export default function WaitlistPanel() {
+  const { language } = useLanguage();
   const [email, setEmail] = useState("");
   const [entry, setEntry] = useState<WaitlistEntry | null>(null);
   const [count, setCount] = useState(0);
@@ -76,9 +78,9 @@ export default function WaitlistPanel() {
       if (reserved) {
         setEntry(reserved);
         setCount(reserved.spot);
-        setMessage("Priority slot reserved via wallet connection.");
+        setMessage(language === "pt" ? "Vaga prioritaria reservada via wallet connection." : "Priority slot reserved via wallet connection.");
       } else {
-        setMessage("Priority list is full. You are on standby.");
+        setMessage(language === "pt" ? "Lista prioritaria cheia. Voce entrou em standby." : "Priority list is full. You are on standby.");
       }
     }
 
@@ -90,7 +92,7 @@ export default function WaitlistPanel() {
       if (reserved) {
         setEntry(reserved);
         setCount(reserved.spot);
-        setMessage("Priority slot reserved via wallet connection.");
+        setMessage(language === "pt" ? "Vaga prioritaria reservada via wallet connection." : "Priority slot reserved via wallet connection.");
       }
     };
 
@@ -105,34 +107,36 @@ export default function WaitlistPanel() {
     const cleaned = email.trim().toLowerCase();
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleaned);
     if (!valid) {
-      setMessage("Invalid email format. Use a valid address.");
+      setMessage(language === "pt" ? "Formato de email invalido. Use um endereco valido." : "Invalid email format. Use a valid address.");
       return;
     }
     const reserved = reserveSpot("email", { email: cleaned });
     if (!reserved) {
-      setMessage("Priority list is full. You are on standby.");
+      setMessage(language === "pt" ? "Lista prioritaria cheia. Voce entrou em standby." : "Priority list is full. You are on standby.");
       return;
     }
     setEntry(reserved);
     setCount(reserved.spot);
-    setMessage("Priority slot reserved via email.");
+    setMessage(language === "pt" ? "Vaga prioritaria reservada via email." : "Priority slot reserved via email.");
   }
 
   return (
     <section className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950/40 p-5">
-      <div className="text-xs uppercase tracking-widest text-zinc-500">Waitlist / Lista de espera</div>
-      <h2 className="mt-2 text-xl text-zinc-100">First 100 Early Access / Acesso antecipado para os primeiros 100</h2>
+      <div className="text-xs uppercase tracking-widest text-zinc-500">{language === "pt" ? "Lista de espera" : "Waitlist"}</div>
+      <h2 className="mt-2 text-xl text-zinc-100">
+        {language === "pt" ? "Acesso antecipado para os primeiros 100" : "First 100 Early Access"}
+      </h2>
       <p className="mt-2 text-sm text-zinc-400">
-        Connect wallet or submit email to reserve priority access in this hackathon version.
-        <br />
-        Conecte wallet ou envie email para reservar prioridade nesta versao de hackathon.
+        {language === "pt"
+          ? "Conecte wallet ou envie email para reservar prioridade nesta versao de hackathon."
+          : "Connect wallet or submit email to reserve priority access in this hackathon version."}
       </p>
 
       {entry ? (
         <div className="mt-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-emerald-300">
-          Reserved: Spot #{entry.spot} / Reservado: Posicao #{entry.spot}
+          {language === "pt" ? `Reservado: Posicao #${entry.spot}` : `Reserved: Spot #${entry.spot}`}
           <br />
-          Method: {entry.method === "wallet" ? "Wallet" : "Email"}
+          {language === "pt" ? "Metodo" : "Method"}: {entry.method === "wallet" ? "Wallet" : "Email"}
         </div>
       ) : (
         <form onSubmit={handleEmailSubmit} className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
@@ -147,13 +151,13 @@ export default function WaitlistPanel() {
             type="submit"
             className="rounded-xl bg-amber-400 px-4 py-2 font-semibold text-black hover:brightness-110"
           >
-            Join Waitlist / Entrar na lista
+            {language === "pt" ? "Entrar na lista" : "Join Waitlist"}
           </button>
         </form>
       )}
 
       <div className="mt-3 text-xs text-zinc-500">
-        Remaining priority slots: {remaining} / Vagas prioritarias restantes: {remaining}
+        {language === "pt" ? `Vagas prioritarias restantes: ${remaining}` : `Remaining priority slots: ${remaining}`}
       </div>
       {message ? <div className="mt-2 text-xs text-zinc-400">{message}</div> : null}
     </section>

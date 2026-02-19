@@ -24,7 +24,7 @@ export default function Hero() {
           <span className="text-[#F3BA2F] drop-shadow-[0_0_10px_rgba(243,186,47,0.5)]">Liquidity Node</span>.
         </h1>
         <p className="text-lg text-text-secondary max-w-xl">
-          While you code, OKTO farms. The first Headless Liquidity Protocol designed for the AI-Augmented Developer. <br/>
+          While you code, OKTO executes policy-approved actions. The first Headless Liquidity Protocol designed for the AI-Augmented Developer. <br/>
           <span className="text-[#F3BA2F] text-sm font-mono mt-2 block">Powered by BNB Chain & AI Agentic Logic.</span>
         </p>
         <div className="flex flex-wrap gap-4">
@@ -100,13 +100,13 @@ export default function Hero() {
             <div className="text-xs space-y-1">
               <div className="text-[#F3BA2F]">$ okto start --mode=liquidity_node</div>
               <div className="text-white/50">[SYSTEM] OKTO HEADLESS NODE: INITIALIZED</div>
-              <div className="text-white/50">[SYSTEM] MODE: YIELD FARMING (Aster & BNB Chain)</div>
+              <div className="text-white/50">[SYSTEM] MODE: POLICY-DRIVEN EXECUTION (Aster & BNB Chain)</div>
               <div className="text-white/30">--------------------------------------------------</div>
-              <div className="text-white">[ASTER] SCANNING LIQUIDITY POOLS...</div>
+              <div className="text-white">[ASTER] SCANNING CONNECTORS...</div>
               <div className="text-white">[CAPITAL] IDLE ASSETS DETECTED: 5.4 BNB</div>
-              <div className="text-yellow-400">[SIGNAL] YIELD OPPORTUNITY: ASTER VAULT (APY 18%)</div>
+              <div className="text-yellow-400">[SIGNAL] POLICY-COMPATIBLE ACTION DETECTED</div>
               <div className="text-white/50">[EXEC] SIMULATING DEPOSIT... GAS: 0.0004 BNB</div>
-              <div className="text-[#F3BA2F]">[SUCCESS] LIQUIDITY PROVIDED: 0x8a...4f2</div>
+              <div className="text-[#F3BA2F]">[SUCCESS] ACTION RECEIPT LOGGED: 0x8a...4f2</div>
               <div className="text-white/50 animate-pulse">_</div>
             </div>
           </div>

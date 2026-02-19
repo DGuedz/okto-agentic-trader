@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import WalletConnect from "@/components/WalletConnect";
+import LText from "@/components/LText";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function Navbar() {
+  const { language, setLanguage } = useLanguage();
+
   return (
     <nav className="border-b border-[#F3BA2F]/20 bg-[#0B0E11]/90 backdrop-blur-xl sticky top-0 z-50 font-mono">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
@@ -19,16 +25,16 @@ export default function Navbar() {
         {/* NAV: COMMAND LINKS */}
         <div className="hidden md:flex gap-8 text-xs md:text-sm text-gray-400">
           <Link href="/demo" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> TERMINAL / TERMINAL
+            <span className="text-[#F3BA2F]/50">[/]</span> <LText en="TERMINAL" pt="TERMINAL" />
           </Link>
           <Link href="/docs" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> DOCS / DOCUMENTACAO
+            <span className="text-[#F3BA2F]/50">[/]</span> <LText en="DOCS" pt="DOCUMENTACAO" />
           </Link>
           <Link href="/architecture" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> ARCHITECT_CHANNEL / ARQUITETURA
+            <span className="text-[#F3BA2F]/50">[/]</span> <LText en="ARCHITECT_CHANNEL" pt="ARQUITETURA" />
           </Link>
           <Link href="/blog" className="hover:text-[#F3BA2F] transition-colors flex items-center gap-1">
-            <span className="text-[#F3BA2F]/50">[/]</span> INTEL_BLOG / BLOG
+            <span className="text-[#F3BA2F]/50">[/]</span> <LText en="INTEL_BLOG" pt="BLOG" />
           </Link>
         </div>
 
@@ -37,6 +43,22 @@ export default function Navbar() {
           <div className="hidden lg:flex flex-col items-end text-[10px] text-[#F3BA2F]/70 font-bold leading-tight">
             <span>LATENCY: 14ms</span>
             <span>GAS: 0.05 GWEI</span>
+          </div>
+          <div className="hidden md:flex items-center rounded-sm border border-[#F3BA2F]/40 overflow-hidden text-[10px]">
+            <button
+              onClick={() => setLanguage("en")}
+              className={`px-2 py-1 transition-colors ${language === "en" ? "bg-[#F3BA2F] text-black" : "text-[#F3BA2F]"}`}
+              aria-label="Switch language to English"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage("pt")}
+              className={`px-2 py-1 transition-colors ${language === "pt" ? "bg-[#F3BA2F] text-black" : "text-[#F3BA2F]"}`}
+              aria-label="Mudar idioma para Portugues"
+            >
+              PT
+            </button>
           </div>
           <WalletConnect />
         </div>

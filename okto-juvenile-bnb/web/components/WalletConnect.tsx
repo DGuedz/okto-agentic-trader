@@ -1,9 +1,11 @@
  "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Wallet, ChevronDown, CheckCircle, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function WalletConnect() {
+  const { language } = useLanguage();
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
@@ -52,7 +54,7 @@ export default function WalletConnect() {
         {/* Dropdown */}
         <div className="absolute right-0 mt-2 w-48 bg-[#0B0E11] border border-[#F3BA2F]/20 rounded-sm shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto z-50">
           <div className="p-3 border-b border-[#F3BA2F]/10 text-[10px] text-gray-500 font-mono uppercase tracking-wider">
-            Connected to BNB Chain
+            {language === "pt" ? "Conectado ao BNB Chain" : "Connected to BNB Chain"}
           </div>
           <a 
             href="https://bscscan.com/address/0x71C7656EC7ab88b098defB751B7401B5f6d899A2" 
@@ -60,13 +62,13 @@ export default function WalletConnect() {
             rel="noopener noreferrer"
             className="w-full text-left px-4 py-3 hover:bg-white/5 text-xs text-gray-300 flex items-center gap-2 font-mono transition-colors"
           >
-            <ExternalLink size={12} /> View on BscScan
+            <ExternalLink size={12} /> {language === "pt" ? "Ver no BscScan" : "View on BscScan"}
           </a>
           <button 
             onClick={handleDisconnect}
             className="w-full text-left px-4 py-3 hover:bg-red-500/10 text-xs text-red-400 font-mono transition-colors border-t border-[#F3BA2F]/10"
           >
-            Disconnect Session
+            {language === "pt" ? "Desconectar sessao" : "Disconnect Session"}
           </button>
         </div>
       </div>
@@ -82,11 +84,11 @@ export default function WalletConnect() {
       {isConnecting ? (
         <>
           <span className="w-3 h-3 border-2 border-[#F3BA2F] border-t-transparent rounded-full animate-spin" />
-          INITIALIZING...
+          {language === "pt" ? "INICIALIZANDO..." : "INITIALIZING..."}
         </>
       ) : (
         <>
-          Initialize_Session
+          {language === "pt" ? "Iniciar_Sessao" : "Initialize_Session"}
         </>
       )}
     </button>

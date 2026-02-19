@@ -1,22 +1,18 @@
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
+
 type BiTextProps = {
   en: string;
   pt: string;
   className?: string;
-  enClassName?: string;
-  ptClassName?: string;
 };
 
 export default function BiText({
   en,
   pt,
   className = "",
-  enClassName = "",
-  ptClassName = "",
 }: BiTextProps) {
-  return (
-    <div className={className}>
-      <div className={enClassName}>{en}</div>
-      <div className={ptClassName}>{pt}</div>
-    </div>
-  );
+  const { language } = useLanguage();
+  return <div className={className}>{language === "pt" ? pt : en}</div>;
 }

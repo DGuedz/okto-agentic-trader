@@ -1,6 +1,7 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
 import BiText from "@/components/BiText";
+import LText from "@/components/LText";
 
 export default function BlogPage() {
   return (
@@ -18,11 +19,9 @@ export default function BlogPage() {
               The Interface is the Enemy: <br/>
               <span className="text-[#F3BA2F] drop-shadow-[0_0_10px_rgba(243,186,47,0.5)]">The Rise of Headless Finance</span>
             </h1>
-            <BiText
-              className="mb-4 text-sm text-white/60"
-              en="EN/PT edition. Core technical terms are preserved in English."
-              pt="Edicao EN/PT. Os termos tecnicos principais permanecem em ingles."
-            />
+            <p className="mb-4 text-sm text-white/60">
+              <LText en="Core technical terms are preserved in English." pt="Os termos tecnicos principais permanecem em ingles." />
+            </p>
             <div className="flex items-center gap-4">
               <div>
                 <div className="text-white font-bold text-sm">Double Green</div>
@@ -58,12 +57,12 @@ export default function BlogPage() {
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">The Power of the Node</h2>
               <p>
-                  True sovereignty is not found in a dashboard; it is found in a terminal window with green text on a black void, running 24/7 on your local machine. OKTO transforms your idle compute into a revenue-generating node. Whether it’s executing dark pool orders to hide intent from predatory bots or automatically compounding yield into Aster DEX vaults on the BNB Chain, the agent works while you code.
+                  True sovereignty is not found in a dashboard; it is found in a terminal window with green text on a black void, running 24/7 on your local machine. OKTO transforms your idle compute into a operational execution node. Whether it’s executing dark pool orders to hide intent from predatory bots or autonomously routing policy-approved actions across integrated modules on the BNB Chain, the agent works while you code.
               </p>
 
               <h2 className="text-2xl font-bold text-white mt-12 mb-4 border-l-4 border-[#F3BA2F] pl-4">Conclusion: Become the Operator</h2>
               <p>
-                  If you know what <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">pip install</code> means, you are already overqualified to be your own bank. The era of clicking buttons and praying for low slippage is over. The chassis is being forged. We are building infrastructure that compounds, not tokens that fluctuate.
+                  If you know what <code className="bg-white/10 px-1 rounded text-[#F3BA2F]">pip install</code> means, you are already overqualified to be your own bank. The era of clicking buttons and praying for low slippage is over. The chassis is being forged. We are building infrastructure that executes, validates, and proves outcomes.
               </p>
               <p className="text-[#F3BA2F] font-bold italic text-xl mt-8">
                   The interface is dead. Stay liquid.

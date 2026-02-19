@@ -1,6 +1,7 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
 import BiText from "@/components/BiText";
+import LText from "@/components/LText";
 
 export default function ArchitecturePage() {
   return (
@@ -32,7 +33,7 @@ export default function ArchitecturePage() {
               <div className="p-6 border border-[#F3BA2F]/20 rounded bg-[#F3BA2F]/5">
                 <h3 className="text-[#F3BA2F] font-bold mb-2 flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#F3BA2F] rounded-full animate-pulse"></span>
-                    Local-First / Local-First
+                    <LText en="Local-First" pt="Local-First" />
                 </h3>
                 <BiText
                   className="text-sm leading-relaxed space-y-1"
@@ -42,7 +43,7 @@ export default function ArchitecturePage() {
               </div>
               
               <div className="p-6 border border-white/10 rounded bg-white/5">
-                <h3 className="text-white font-bold mb-2">Spec-Driven (SDD) / Spec-Driven</h3>
+                <h3 className="text-white font-bold mb-2"><LText en="Spec-Driven (SDD)" pt="Spec-Driven (SDD)" /></h3>
                 <BiText
                   className="text-sm leading-relaxed space-y-1"
                   en="Behavior is defined in genesis.yaml. The code obeys the spec, preventing drift and unauthorized execution."
@@ -97,7 +98,7 @@ export default function ArchitecturePage() {
         </section>
 
         <footer className="text-center text-xs text-gray-600 border-t border-white/5 pt-8">
-          <p>UNCLASSIFIED ARCHITECTURE DIAGRAM • OKTO PROTOCOL / DIAGRAMA NAO CLASSIFICADO</p>
+          <p><LText en="UNCLASSIFIED ARCHITECTURE DIAGRAM • OKTO PROTOCOL" pt="DIAGRAMA DE ARQUITETURA NAO CLASSIFICADO • OKTO PROTOCOL" /></p>
         </footer>
 
       </main>

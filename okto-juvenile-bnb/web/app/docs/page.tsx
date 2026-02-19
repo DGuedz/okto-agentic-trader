@@ -1,6 +1,7 @@
 import Link from "next/link";
 import WalletGate from "@/components/WalletGate";
 import BiText from "@/components/BiText";
+import LText from "@/components/LText";
 
 export default function DocsPage() {
   return (
@@ -47,7 +48,7 @@ export default function DocsPage() {
                       PUBLIC CLEARANCE
                   </div>
                   <div className="mb-4 text-xs text-gray-500">
-                    EN/PT enabled. Technical terms remain in English for operational consistency.
+                    <LText en="Technical terms remain in English for operational consistency." pt="Termos tecnicos permanecem em ingles para consistencia operacional." />
                   </div>
                   <h1 className="text-4xl font-bold text-white mb-6">Introduction to OKTO</h1>
                   <BiText
@@ -189,11 +190,17 @@ $ cd okto && python -m okto --mode live
                   <div className="space-y-4">
                       <div>
                           <p className="text-white font-bold">Can I use it commercially?</p>
-                          <p>Yes. CC BY 4.0 allows commercial use with proper attribution. / Sim. CC BY 4.0 permite uso comercial com atribuicao correta.</p>
+                          <BiText
+                            en="Yes. CC BY 4.0 allows commercial use with proper attribution."
+                            pt="Sim. CC BY 4.0 permite uso comercial com atribuicao correta."
+                          />
                       </div>
                       <div>
                           <p className="text-white font-bold">Can I remix and create derivatives?</p>
-                          <p>Yes. CC BY 4.0 allows adaptation and derivatives. / Sim. CC BY 4.0 permite adaptacao e derivados.</p>
+                          <BiText
+                            en="Yes. CC BY 4.0 allows adaptation and derivatives."
+                            pt="Sim. CC BY 4.0 permite adaptacao e derivados."
+                          />
                       </div>
                       <div>
                           <p className="text-white font-bold">Do I need to license my derivative under CC BY too?</p>
